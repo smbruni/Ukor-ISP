@@ -49,38 +49,38 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 0 0% 23%;
+    --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 15%;
+    --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 15%;
+    --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 20%;
+    --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 70%;
-    --accent: 0 0% 20%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 50%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 30%;
-    --input: 0 0% 25%;
-    --ring: 0 0% 95%;
-    --chart-1: 220 70% 65%;
-    --chart-2: 160 60% 60%;
-    --chart-3: 30 80% 70%;
-    --chart-4: 280 65% 75%;
-    --chart-5: 340 75% 70%;
-    --sidebar-background: 240 5.9% 25%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 224.3 76.3% 55%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 3.7% 20%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 3.7% 30%;
-    --sidebar-ring: 217.2 91.2% 75%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -91,70 +91,4 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-}
-
-/* Melhorias para modo claro e escuro */
-.light .card {
-  background-color: #ffffff !important;
-  border: 1px solid #e5e7eb !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
-}
-
-.light .card * {
-  color: #111827 !important;
-}
-
-.dark .card {
-  background-color: #1f2937 !important;
-  border: 1px solid #374151 !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3) !important;
-}
-
-.dark .card * {
-  color: #f9fafb !important;
-}
-
-/* Progress bars melhoradas */
-.progress {
-  background-color: #e5e7eb;
-}
-
-.dark .progress {
-  background-color: #374151;
-}
-
-.progress-indicator {
-  background-color: #3b82f6;
-}
-
-/* Badges com melhor contraste */
-.badge {
-  font-weight: 500;
-  border: 1px solid transparent;
-}
-
-/* Botões com melhor contraste */
-button {
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
-}
-
-.dark button {
-  background-color: #374151 !important;
-  color: #f9fafb !important;
-  border: 1px solid #4b5563 !important;
-}
-
-.dark button:hover {
-  background-color: #4b5563 !important;
-}
-
-.light button {
-  background-color: #f3f4f6 !important;
-  color: #111827 !important;
-  border: 1px solid #d1d5db !important;
-}
-
-.light button:hover {
-  background-color: #e5e7eb !important;
 }

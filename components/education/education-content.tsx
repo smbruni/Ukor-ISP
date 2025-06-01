@@ -1,346 +1,340 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState } from "react"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, Play, Clock, Users, Star, Brain, Heart, Apple, Moon, Zap, TrendingUp } from 'lucide-react'
+import { Input } from "@/components/ui/input"
+import { Search, BookOpen, Play, Clock, CheckCircle, Star } from "lucide-react"
 
 export function EducationContent() {
-  const categories = [
-    {
-      name: "Liderança",
-      icon: TrendingUp,
-      color: "blue",
-      courses: 12,
-      enrolled: 1247,
-      description: "Desenvolvimento de habilidades de liderança",
-    },
-    {
-      name: "Saúde Mental",
-      icon: Brain,
-      color: "blue",
-      courses: 12,
-      enrolled: 1247,
-      description: "Gestão de estresse, ansiedade e burnout",
-    },
-    {
-      name: "Sono e Recuperação",
-      icon: Moon,
-      color: "indigo",
-      courses: 6,
-      enrolled: 634,
-      description: "Higiene do sono e recuperação",
-    },
-    {
-      name: "Gestão de Estresse",
-      icon: Zap,
-      color: "yellow",
-      courses: 10,
-      enrolled: 1123,
-      description: "Gestão de tempo e foco",
-    },
-    {
-      name: "Saúde Nutricional",
-      icon: Apple,
-      color: "green",
-      courses: 15,
-      enrolled: 1456,
-      description: "Alimentação saudável e performance",
-    },
-    {
-      name: "Produtividade",
-      icon: TrendingUp,
-      color: "purple",
-      courses: 10,
-      enrolled: 1123,
-      description: "Gestão de tempo e foco",
-    },
-  ]
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filter, setFilter] = useState("all")
 
-  const featuredCourses = [
+  const courses = [
     {
-      title: "Liderança de Alta Performance",
-      instructor: "Dr. Carlos Mente",
+      id: 1,
+      title: "Fundamentos de Saúde Corporativa",
+      description: "Aprenda os princípios básicos para promover saúde no ambiente de trabalho.",
+      image: "/placeholder.svg?height=200&width=300",
+      category: "saude",
       duration: "4h 30min",
       lessons: 12,
-      rating: 4.9,
-      category: "Liderança",
-      progress: 0,
-      thumbnail: "/placeholder.svg?height=120&width=200",
+      progress: 75,
+      rating: 4.8,
+      featured: true,
     },
     {
-      title: "Gestão de Estresse no Trabalho",
-      instructor: "Dr. Carlos Mente",
-      duration: "4h 30min",
-      lessons: 12,
-      rating: 4.9,
-      enrolled: 234,
-      category: "Saúde Mental",
-      progress: 0,
-      thumbnail: "/placeholder.svg?height=120&width=200",
-    },
-    {
-      title: "Nutrição para Alta Performance",
-      instructor: "Dr. Ana Nutrição",
+      id: 2,
+      title: "Gestão do Estresse no Trabalho",
+      description: "Técnicas práticas para gerenciar o estresse e aumentar a produtividade.",
+      image: "/placeholder.svg?height=200&width=300",
+      category: "mental",
       duration: "3h 15min",
       lessons: 8,
-      rating: 4.8,
-      enrolled: 189,
-      category: "Nutrição",
-      progress: 45,
-      thumbnail: "/placeholder.svg?height=120&width=200",
-    },
-    {
-      title: "Exercícios para Escritório",
-      instructor: "Prof. João Fitness",
-      duration: "2h 45min",
-      lessons: 6,
-      rating: 4.7,
-      enrolled: 156,
-      category: "Saúde Física",
-      progress: 0,
-      thumbnail: "/placeholder.svg?height=120&width=200",
-    },
-    {
-      title: "Otimização do Sono",
-      instructor: "Dra. Luna Sono",
-      duration: "3h 00min",
-      lessons: 9,
+      progress: 50,
       rating: 4.9,
-      enrolled: 98,
-      category: "Sono",
-      progress: 78,
-      thumbnail: "/placeholder.svg?height=120&width=200",
+      featured: true,
+    },
+    {
+      id: 3,
+      title: "Nutrição para Alta Performance",
+      description: "Como a alimentação impacta sua energia e performance no trabalho.",
+      image: "/placeholder.svg?height=200&width=300",
+      category: "nutricao",
+      duration: "5h 45min",
+      lessons: 15,
+      progress: 30,
+      rating: 4.7,
+      featured: false,
+    },
+    {
+      id: 4,
+      title: "Ergonomia e Postura no Home Office",
+      description: "Organize seu espaço de trabalho para prevenir lesões e aumentar o conforto.",
+      image: "/placeholder.svg?height=200&width=300",
+      category: "fisica",
+      duration: "2h 20min",
+      lessons: 6,
+      progress: 100,
+      rating: 4.5,
+      featured: false,
+    },
+    {
+      id: 5,
+      title: "Mindfulness para Profissionais",
+      description: "Práticas de atenção plena para reduzir ansiedade e melhorar foco.",
+      image: "/placeholder.svg?height=200&width=300",
+      category: "mental",
+      duration: "3h 50min",
+      lessons: 10,
+      progress: 0,
+      rating: 4.9,
+      featured: true,
+    },
+    {
+      id: 6,
+      title: "Sono e Produtividade",
+      description: "Como otimizar seu sono para maximizar sua performance profissional.",
+      image: "/placeholder.svg?height=200&width=300",
+      category: "sono",
+      duration: "4h 10min",
+      lessons: 12,
+      progress: 25,
+      rating: 4.8,
+      featured: false,
     },
   ]
 
-  const learningPaths = [
-    {
-      title: "Programa Completo de Wellness",
-      description: "Jornada completa de 12 semanas para transformação da saúde",
-      courses: 5,
-      duration: "20h",
-      level: "Iniciante",
-      completion: 23,
-    },
-    {
-      title: "Liderança Saudável",
-      description: "Para gestores que querem promover bem-estar em suas equipes",
-      courses: 4,
-      duration: "15h",
-      level: "Intermediário",
-      completion: 67,
-    },
-    {
-      title: "Performance Mental",
-      description: "Técnicas avançadas para otimização cognitiva",
-      courses: 6,
-      duration: "18h",
-      level: "Avançado",
-      completion: 12,
-    },
-  ]
+  const filteredCourses = courses.filter((course) => {
+    const matchesSearch =
+      course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      course.description.toLowerCase().includes(searchTerm.toLowerCase())
+
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "featured" && course.featured) ||
+      (filter === "in-progress" && course.progress > 0 && course.progress < 100) ||
+      (filter === "completed" && course.progress === 100) ||
+      filter === course.category
+
+    return matchesSearch && matchesFilter
+  })
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Plataforma Educacional Ukor</h2>
-        <p className="text-muted-foreground">Conteúdo educacional integrado sobre saúde, bem-estar e performance</p>
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">Plataforma Educacional</h1>
+          <p className="text-gray-500">Cursos e treinamentos para saúde e performance</p>
+        </div>
       </div>
 
-      <Tabs defaultValue="courses" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="courses">Cursos</TabsTrigger>
-          <TabsTrigger value="paths">Trilhas de Aprendizado</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <Input
+            placeholder="Buscar cursos..."
+            className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
-        <TabsContent value="courses">
-          <div className="space-y-6">
-            {/* Categorias */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {categories.map((category, index) => (
-                <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow">
-                  <CardContent className="p-4 text-center">
-                    <div
-                      className={`mx-auto w-12 h-12 bg-${category.color}-100 rounded-lg flex items-center justify-center mb-3`}
-                    >
-                      <category.icon className={`h-6 w-6 text-${category.color}-600`} />
-                    </div>
-                    <h3 className="font-semibold mb-1">{category.name}</h3>
-                    <p className="text-xs text-muted-foreground mb-2">{category.description}</p>
-                    <div className="text-xs space-y-1">
-                      <div>{category.courses} cursos</div>
-                      <div>{category.enrolled} inscritos</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+        <Tabs defaultValue="all" className="w-full md:w-auto" onValueChange={setFilter}>
+          <TabsList>
+            <TabsTrigger value="all">Todos</TabsTrigger>
+            <TabsTrigger value="featured">Destaques</TabsTrigger>
+            <TabsTrigger value="in-progress">Em Andamento</TabsTrigger>
+            <TabsTrigger value="completed">Concluídos</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredCourses.map((course) => (
+          <Card key={course.id} className="overflow-hidden flex flex-col">
+            <div className="relative">
+              <img src={course.image || "/placeholder.svg"} alt={course.title} className="w-full h-48 object-cover" />
+              {course.featured && <Badge className="absolute top-2 right-2 bg-yellow-500">Destaque</Badge>}
             </div>
 
-            {/* Cursos em Destaque */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Cursos em Destaque</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {featuredCourses.map((course, index) => (
-                  <Card key={index} className="overflow-hidden">
-                    <div className="aspect-video bg-gray-200 relative">
-                      <img
-                        src={course.thumbnail || "/placeholder.svg"}
-                        alt={course.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                        <Button size="sm" variant="secondary">
-                          <Play className="w-4 h-4 mr-2" />
-                          Assistir
-                        </Button>
-                      </div>
-                    </div>
-                    <CardContent className="p-4">
-                      <Badge variant="outline" className="mb-2 text-xs">
-                        {course.category}
-                      </Badge>
-                      <h4 className="font-semibold mb-2 line-clamp-2">{course.title}</h4>
-                      <p className="text-sm text-muted-foreground mb-3">{course.instructor}</p>
-
-                      <div className="space-y-2 text-xs text-muted-foreground">
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {course.duration}
-                          </span>
-                          <span className="flex items-center">
-                            <BookOpen className="w-3 h-3 mr-1" />
-                            {course.lessons} aulas
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="flex items-center">
-                            <Star className="w-3 h-3 mr-1 text-yellow-500" />
-                            {course.rating}
-                          </span>
-                          <span className="flex items-center">
-                            <Users className="w-3 h-3 mr-1" />
-                            {course.enrolled}
-                          </span>
-                        </div>
-                      </div>
-
-                      {course.progress > 0 && (
-                        <div className="mt-3">
-                          <div className="flex justify-between text-xs mb-1">
-                            <span>Progresso</span>
-                            <span>{course.progress}%</span>
-                          </div>
-                          <Progress value={course.progress} className="h-1" />
-                        </div>
-                      )}
-
-                      <Button className="w-full mt-3" size="sm">
-                        {course.progress > 0 ? "Continuar" : "Iniciar Curso"}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <CardTitle>{course.title}</CardTitle>
+                <Badge variant="outline" className="capitalize">
+                  {course.category === "saude"
+                    ? "Saúde"
+                    : course.category === "mental"
+                      ? "Mental"
+                      : course.category === "nutricao"
+                        ? "Nutrição"
+                        : course.category === "fisica"
+                          ? "Física"
+                          : course.category === "sono"
+                            ? "Sono"
+                            : course.category}
+                </Badge>
               </div>
-            </div>
-          </div>
-        </TabsContent>
+              <CardDescription>{course.description}</CardDescription>
+            </CardHeader>
 
-        <TabsContent value="paths">
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Trilhas de Aprendizado</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {learningPaths.map((path, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{path.title}</CardTitle>
-                    <CardDescription>{path.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                          <div className="text-lg font-semibold">{path.courses}</div>
-                          <div className="text-xs text-muted-foreground">Cursos</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-semibold">{path.duration}</div>
-                          <div className="text-xs text-muted-foreground">Duração</div>
-                        </div>
-                        <div>
-                          <Badge variant="outline">{path.level}</Badge>
-                        </div>
-                      </div>
+            <CardContent className="flex-1">
+              <div className="flex items-center text-sm text-gray-500 mb-4">
+                <Clock className="h-4 w-4 mr-1" />
+                <span>{course.duration}</span>
+                <span className="mx-2">•</span>
+                <BookOpen className="h-4 w-4 mr-1" />
+                <span>{course.lessons} aulas</span>
+                <span className="mx-2">•</span>
+                <Star className="h-4 w-4 mr-1 text-yellow-500" />
+                <span>{course.rating}</span>
+              </div>
 
-                      <div>
-                        <div className="flex justify-between text-sm mb-2">
-                          <span>Progresso</span>
-                          <span>{path.completion}%</span>
-                        </div>
-                        <Progress value={path.completion} />
-                      </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>{course.progress}%</span>
+                </div>
+                <Progress value={course.progress} />
+              </div>
+            </CardContent>
 
-                      <Button className="w-full">{path.completion > 0 ? "Continuar Trilha" : "Iniciar Trilha"}</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </TabsContent>
+            <CardFooter className="pt-0">
+              <Button className="w-full">
+                {course.progress === 0 ? (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Iniciar Curso
+                  </>
+                ) : course.progress === 100 ? (
+                  <>
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Certificado
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Continuar
+                  </>
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
 
-        <TabsContent value="analytics">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">2,847</div>
-                <p className="text-xs text-muted-foreground">+12% vs mês anterior</p>
-              </CardContent>
-            </Card>
+      {filteredCourses.length === 0 && (
+        <div className="text-center py-12">
+          <BookOpen className="h-12 w-12 mx-auto text-gray-400" />
+          <h3 className="mt-4 text-lg font-medium">Nenhum curso encontrado</h3>
+          <p className="mt-2 text-gray-500">Tente ajustar seus filtros ou termos de busca.</p>
+        </div>
+      )}
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Horas Estudadas</CardTitle>
-                <Clock className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">18,492</div>
-                <p className="text-xs text-muted-foreground">+8% vs mês anterior</p>
-              </CardContent>
-            </Card>
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Trilhas de Aprendizado</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Saúde Integral</CardTitle>
+              <CardDescription>Trilha completa para saúde física e mental</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>45%</span>
+                </div>
+                <Progress value={45} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Fundamentos de Saúde</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Nutrição Básica</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Gestão do Estresse</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Sono Reparador</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Continuar Trilha
+              </Button>
+            </CardFooter>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Taxa de Conclusão</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">73%</div>
-                <p className="text-xs text-muted-foreground">+5% vs mês anterior</p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Alta Performance</CardTitle>
+              <CardDescription>Maximize sua produtividade e resultados</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>20%</span>
+                </div>
+                <Progress value={20} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Fundamentos de Produtividade</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Gestão de Energia</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Foco e Concentração</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Hábitos de Alta Performance</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Continuar Trilha
+              </Button>
+            </CardFooter>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Satisfação</CardTitle>
-                <Star className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">4.8</div>
-                <p className="text-xs text-muted-foreground">Avaliação média</p>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
+          <Card>
+            <CardHeader>
+              <CardTitle>Liderança em Saúde</CardTitle>
+              <CardDescription>Para gestores e líderes de equipe</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>0%</span>
+                </div>
+                <Progress value={0} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Cultura de Saúde</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Gestão de Equipes Saudáveis</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Métricas de Bem-estar</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">ROI em Saúde</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Iniciar Trilha
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
