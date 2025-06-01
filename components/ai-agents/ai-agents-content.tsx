@@ -20,10 +20,21 @@ export function AIAgentsContent() {
       role: "Nutricionista Virtual",
       avatar: "/placeholder.svg?height=40&width=40",
       icon: <Utensils className="h-5 w-5" />,
-      description: "Planos alimentares personalizados e orientações nutricionais baseadas no seu perfil.",
-      expertise: ["Nutrição Personalizada", "Dietas Específicas", "Hábitos Alimentares", "Suplementação"],
+      description:
+        "Planos alimentares personalizados e orientações nutricionais baseadas no seu perfil de saúde e objetivos.",
+      expertise: [
+        "Nutrição Personalizada",
+        "Dietas Específicas",
+        "Hábitos Alimentares",
+        "Suplementação",
+        "Análise Nutricional",
+      ],
       messages: [
-        { sender: "agent", content: "Olá! Sou sua nutricionista virtual. Como posso ajudar com sua alimentação hoje?" },
+        {
+          sender: "agent",
+          content:
+            "Olá! Sou sua nutricionista virtual. Posso ajudar com planos alimentares personalizados baseados nos seus dados de saúde. Como posso auxiliar hoje?",
+        },
       ],
     },
     {
@@ -32,10 +43,21 @@ export function AIAgentsContent() {
       role: "Mental Coach",
       avatar: "/placeholder.svg?height=40&width=40",
       icon: <Brain className="h-5 w-5" />,
-      description: "Suporte psicológico e técnicas para gerenciamento de estresse e saúde mental.",
-      expertise: ["Gestão de Estresse", "Mindfulness", "Equilíbrio Emocional", "Produtividade Mental"],
+      description:
+        "Suporte psicológico especializado, técnicas para gerenciamento de estresse e promoção da saúde mental no ambiente corporativo.",
+      expertise: [
+        "Gestão de Estresse",
+        "Mindfulness",
+        "Equilíbrio Emocional",
+        "Prevenção Burnout",
+        "Resiliência Mental",
+      ],
       messages: [
-        { sender: "agent", content: "Olá! Estou aqui para ajudar com sua saúde mental. Como está se sentindo hoje?" },
+        {
+          sender: "agent",
+          content:
+            "Olá! Sou seu mental coach especializado em saúde mental corporativa. Como está se sentindo hoje? Posso ajudar com técnicas de gestão de estresse.",
+        },
       ],
     },
     {
@@ -44,57 +66,112 @@ export function AIAgentsContent() {
       role: "Personal Trainer Virtual",
       avatar: "/placeholder.svg?height=40&width=40",
       icon: <Dumbbell className="h-5 w-5" />,
-      description: "Treinos personalizados e orientações para atividade física adequada ao seu perfil.",
-      expertise: ["Treinos Personalizados", "Ergonomia", "Condicionamento", "Recuperação Muscular"],
-      messages: [
-        {
-          sender: "agent",
-          content: "Olá! Sou seu personal trainer virtual. Vamos trabalhar em sua saúde física hoje?",
-        },
+      description:
+        "Treinos personalizados, orientações para atividade física e programas de condicionamento adequados ao ambiente corporativo.",
+      expertise: [
+        "Treinos Personalizados",
+        "Ergonomia Corporativa",
+        "Condicionamento Físico",
+        "Recuperação Muscular",
+        "Exercícios no Escritório",
       ],
-    },
-    {
-      id: "relationship",
-      name: "Connect",
-      role: "Relationship Coach",
-      avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Users className="h-5 w-5" />,
-      description: "Orientações para melhorar relacionamentos interpessoais e comunicação no ambiente de trabalho.",
-      expertise: ["Comunicação Efetiva", "Resolução de Conflitos", "Trabalho em Equipe", "Networking"],
       messages: [
         {
           sender: "agent",
-          content: "Olá! Estou aqui para ajudar com seus relacionamentos profissionais. Como posso auxiliar?",
-        },
-      ],
-    },
-    {
-      id: "performance",
-      name: "Peak",
-      role: "Performance Coach",
-      avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Zap className="h-5 w-5" />,
-      description: "Estratégias para otimização de performance, produtividade e gestão de tempo.",
-      expertise: ["Produtividade", "Gestão de Tempo", "Foco", "Metas e Objetivos"],
-      messages: [
-        {
-          sender: "agent",
-          content: "Olá! Sou seu coach de performance. Vamos trabalhar para maximizar seu potencial hoje?",
+          content:
+            "Olá! Sou seu personal trainer virtual especializado em fitness corporativo. Vamos criar um programa de exercícios adequado à sua rotina de trabalho?",
         },
       ],
     },
     {
       id: "leadership",
-      name: "Leader",
+      name: "Leader Coach",
       role: "Leadership Coach",
       avatar: "/placeholder.svg?height=40&width=40",
       icon: <Users className="h-5 w-5" />,
-      description: "Desenvolvimento de habilidades de liderança e gestão de equipes.",
-      expertise: ["Liderança Situacional", "Gestão de Equipes", "Tomada de Decisão", "Desenvolvimento de Talentos"],
+      description:
+        "Desenvolvimento de habilidades de liderança, gestão de equipes e estratégias para maximizar o potencial da sua equipe.",
+      expertise: [
+        "Liderança Situacional",
+        "Gestão de Equipes",
+        "Tomada de Decisão",
+        "Desenvolvimento de Talentos",
+        "Comunicação Assertiva",
+      ],
       messages: [
         {
           sender: "agent",
-          content: "Olá! Estou aqui para ajudar no seu desenvolvimento como líder. Como posso auxiliar?",
+          content:
+            "Olá! Sou seu leadership coach. Estou aqui para ajudar no desenvolvimento das suas habilidades de liderança e gestão de equipes. Como posso auxiliar?",
+        },
+      ],
+    },
+    {
+      id: "cultural-performance",
+      name: "Culture & Performance",
+      role: "Cultural & Performance Coach",
+      avatar: "/placeholder.svg?height=40&width=40",
+      icon: <Zap className="h-5 w-5" />,
+      description:
+        "Especialista em cultura organizacional e otimização de performance, focando no alinhamento entre valores pessoais e corporativos.",
+      expertise: [
+        "Cultura Organizacional",
+        "Engajamento",
+        "Performance",
+        "Valores Corporativos",
+        "Transformação Cultural",
+      ],
+      messages: [
+        {
+          sender: "agent",
+          content:
+            "Olá! Sou especialista em cultura e performance organizacional. Vamos trabalhar juntos para alinhar seus objetivos com a cultura da empresa?",
+        },
+      ],
+    },
+    {
+      id: "productivity",
+      name: "Productivity Pro",
+      role: "Productivity Coach",
+      avatar: "/placeholder.svg?height=40&width=40",
+      icon: <Zap className="h-5 w-5" />,
+      description:
+        "Estratégias avançadas para otimização de produtividade, gestão de tempo e foco no ambiente de trabalho.",
+      expertise: [
+        "Produtividade Avançada",
+        "Gestão de Tempo",
+        "Foco e Concentração",
+        "Metodologias Ágeis",
+        "Work-Life Balance",
+      ],
+      messages: [
+        {
+          sender: "agent",
+          content:
+            "Olá! Sou seu coach de produtividade. Vamos implementar estratégias para maximizar sua eficiência e alcançar seus objetivos profissionais?",
+        },
+      ],
+    },
+    {
+      id: "wellness",
+      name: "Wellness Guide",
+      role: "Wellness Coach",
+      avatar: "/placeholder.svg?height=40&width=40",
+      icon: <Brain className="h-5 w-5" />,
+      description:
+        "Orientações holísticas para bem-estar integral, integrando saúde física, mental e emocional no ambiente corporativo.",
+      expertise: [
+        "Bem-estar Integral",
+        "Qualidade de Vida",
+        "Equilíbrio Vida-Trabalho",
+        "Saúde Preventiva",
+        "Lifestyle Saudável",
+      ],
+      messages: [
+        {
+          sender: "agent",
+          content:
+            "Olá! Sou seu wellness coach. Estou aqui para ajudar você a alcançar um bem-estar integral, equilibrando todos os aspectos da sua vida profissional e pessoal.",
         },
       ],
     },

@@ -15,7 +15,6 @@ import {
   DollarSign,
   FileText,
   Database,
-  Calculator,
   HelpCircle,
   Users,
   ChevronLeft,
@@ -27,33 +26,22 @@ import {
   AlertTriangle,
   Heart,
   Moon,
-  Download,
-  Shield,
-  Smartphone,
-  Upload,
+  Play,
+  CheckCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
   ResponsiveContainer,
   LineChart as RechartsLineChart,
-  BarChart as RechartsBarChart,
-  PieChart as RechartsPieChart,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   Line,
-  Bar,
-  Pie,
 } from "recharts"
 
 // Header Component
@@ -521,370 +509,588 @@ function DashboardContent() {
   )
 }
 
-// Analytics Content com gráficos
+// AI Agents Content
+function AIAgentsContent() {
+  const [selectedAgent, setSelectedAgent] = useState(null)
+
+  const agents = [
+    {
+      id: 1,
+      name: "Nutri IA",
+      role: "Nutricionista Virtual",
+      description: "Especialista em nutrição corporativa e hábitos alimentares saudáveis",
+      avatar: "🥗",
+      specialties: [
+        "Planejamento nutricional",
+        "Análise de hábitos alimentares",
+        "Receitas saudáveis",
+        "Educação nutricional",
+      ],
+      status: "online",
+      conversations: 1247,
+      rating: 4.9,
+      lastMessage: "Olá! Como posso ajudar com sua alimentação hoje?",
+    },
+    {
+      id: 2,
+      name: "Mente Sã",
+      role: "Mental Coach",
+      description: "Coach especializado em saúde mental e bem-estar emocional",
+      avatar: "🧠",
+      specialties: ["Gestão de estresse", "Ansiedade", "Mindfulness", "Equilíbrio emocional"],
+      status: "online",
+      conversations: 892,
+      rating: 4.8,
+      lastMessage: "Vamos trabalhar juntos para fortalecer sua saúde mental!",
+    },
+    {
+      id: 3,
+      name: "Fit Coach",
+      role: "Personal Trainer Virtual",
+      description: "Personal trainer especializado em exercícios para ambiente corporativo",
+      avatar: "💪",
+      specialties: ["Exercícios no escritório", "Ergonomia", "Condicionamento físico", "Prevenção de lesões"],
+      status: "online",
+      conversations: 756,
+      rating: 4.7,
+      lastMessage: "Pronto para se movimentar? Vamos começar!",
+    },
+    {
+      id: 4,
+      name: "Leader Coach",
+      role: "Leadership Coach",
+      description: "Coach especializado em desenvolvimento de liderança e gestão de equipes",
+      avatar: "👑",
+      specialties: ["Liderança transformacional", "Gestão de equipes", "Comunicação", "Desenvolvimento pessoal"],
+      status: "online",
+      conversations: 634,
+      rating: 4.9,
+      lastMessage: "Vamos desenvolver suas habilidades de liderança!",
+    },
+    {
+      id: 5,
+      name: "Culture & Performance",
+      role: "Cultural & Performance Coach",
+      description: "Especialista em cultura organizacional e performance de equipes",
+      avatar: "🎯",
+      specialties: ["Cultura organizacional", "Performance de equipes", "Engajamento", "Produtividade"],
+      status: "online",
+      conversations: 523,
+      rating: 4.8,
+      lastMessage: "Como posso ajudar a melhorar a performance da sua equipe?",
+    },
+    {
+      id: 6,
+      name: "Productivity Pro",
+      role: "Productivity Coach",
+      description: "Coach especializado em produtividade e gestão do tempo",
+      avatar: "⚡",
+      specialties: ["Gestão do tempo", "Organização", "Foco", "Eficiência"],
+      status: "online",
+      conversations: 445,
+      rating: 4.6,
+      lastMessage: "Vamos otimizar sua produtividade juntos!",
+    },
+    {
+      id: 7,
+      name: "Wellness Guide",
+      role: "Wellness Coach",
+      description: "Guia completo para bem-estar corporativo e qualidade de vida",
+      avatar: "🌟",
+      specialties: ["Bem-estar geral", "Qualidade de vida", "Work-life balance", "Autocuidado"],
+      status: "online",
+      conversations: 378,
+      rating: 4.7,
+      lastMessage: "Seu bem-estar é minha prioridade. Como posso ajudar?",
+    },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">IA Agents</h2>
+        <p className="text-muted-foreground">Consultores virtuais especializados em saúde e bem-estar</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {agents.map((agent) => (
+          <Card
+            key={agent.id}
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => setSelectedAgent(agent)}
+          >
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="text-3xl">{agent.avatar}</div>
+                  <div>
+                    <CardTitle className="text-lg">{agent.name}</CardTitle>
+                    <CardDescription>{agent.role}</CardDescription>
+                  </div>
+                </div>
+                <Badge variant={agent.status === "online" ? "default" : "secondary"}>{agent.status}</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">{agent.description}</p>
+
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Conversas:</span>
+                    <div className="font-medium">{agent.conversations}</div>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Avaliação:</span>
+                    <div className="font-medium">
+                      {agent.rating} <span className="text-yellow-500">★</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-sm text-muted-foreground">Especialidades:</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {agent.specialties.slice(0, 2).map((specialty, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {specialty}
+                      </Badge>
+                    ))}
+                    {agent.specialties.length > 2 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{agent.specialties.length - 2}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button size="sm" className="flex-1">
+                    Conversar
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex-1">
+                    Perfil
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {selectedAgent && (
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Chat com {selectedAgent.name}</CardTitle>
+            <CardDescription>Converse com seu consultor virtual especializado</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="bg-muted p-3 rounded-lg">
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="text-lg">{selectedAgent.avatar}</span>
+                  <span className="font-medium">{selectedAgent.name}</span>
+                </div>
+                <p className="text-sm">{selectedAgent.lastMessage}</p>
+              </div>
+
+              <div className="flex gap-2">
+                <Input placeholder="Digite sua mensagem..." className="flex-1" />
+                <Button>Enviar</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  )
+}
+
+// Placeholder functions for other sections - você pode expandir estes conforme necessário
 function AnalyticsContent() {
-  const [period, setPeriod] = useState("6m")
-  const [department, setDepartment] = useState("all")
+  const [selectedModel, setSelectedModel] = useState("burnout")
+  const [timeRange, setTimeRange] = useState("3m")
 
-  const burnoutData = [
-    { dept: "TI", atual: 23, previsto: 35 },
-    { dept: "RH", atual: 12, previsto: 18 },
-    { dept: "Financeiro", atual: 8, previsto: 12 },
-    { dept: "Operações", atual: 15, previsto: 22 },
+  const burnoutPrediction = [
+    { month: "Jan", risco: 15, atual: 12 },
+    { month: "Fev", risco: 18, atual: 14 },
+    { month: "Mar", risco: 22, atual: 19 },
+    { month: "Abr", risco: 25, atual: 23 },
+    { month: "Mai", risco: 28, atual: 26 },
+    { month: "Jun", risco: 32, atual: 29 },
   ]
 
-  const productivityData = [
-    { month: "Jul", atual: 78, previsto: 82 },
-    { month: "Ago", atual: 80, previsto: 85 },
-    { month: "Set", atual: 82, previsto: 87 },
-    { month: "Out", atual: 85, previsto: 90 },
-  ]
-
-  const trendsData = [
-    { month: "Jan", stress: 65, sleep: 45, nutrition: 68, physical: 72 },
-    { month: "Fev", stress: 62, sleep: 48, nutrition: 70, physical: 74 },
-    { month: "Mar", stress: 58, sleep: 52, nutrition: 72, physical: 76 },
-    { month: "Abr", stress: 55, sleep: 55, nutrition: 74, physical: 78 },
-    { month: "Mai", stress: 52, sleep: 58, nutrition: 76, physical: 80 },
-    { month: "Jun", stress: 48, sleep: 62, nutrition: 78, physical: 82 },
-  ]
-
-  const correlationData = [
-    { name: "Sono vs Produtividade", value: 0.85 },
-    { name: "Estresse vs Absenteísmo", value: 0.72 },
-    { name: "Exercício vs Bem-estar", value: 0.68 },
-    { name: "Nutrição vs Energia", value: 0.75 },
-  ]
-
-  const scenarioData = [
-    { scenario: "Conservador", burnout: 28, productivity: 82, cost: 450000 },
-    { scenario: "Moderado", burnout: 22, productivity: 88, cost: 680000 },
-    { scenario: "Otimista", burnout: 15, productivity: 95, cost: 920000 },
+  const productivityPrediction = [
+    { month: "Jan", previsto: 85, atual: 82 },
+    { month: "Fev", previsto: 87, atual: 84 },
+    { month: "Mar", previsto: 89, atual: 88 },
+    { month: "Abr", previsto: 91, atual: 89 },
+    { month: "Mai", previsto: 88, atual: 87 },
+    { month: "Jun", previsto: 90, atual: 89 },
   ]
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Análises Preditivas</h2>
-        <p className="text-muted-foreground">Modelos de IA e previsões para saúde e performance</p>
+        <p className="text-muted-foreground">Modelos de IA para previsão de riscos e tendências de saúde</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Período" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="3m">Últimos 3 meses</SelectItem>
-              <SelectItem value="6m">Últimos 6 meses</SelectItem>
-              <SelectItem value="1y">Último ano</SelectItem>
-              <SelectItem value="all">Todo período</SelectItem>
-            </SelectContent>
-          </Select>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <select
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="burnout">Modelo de Burnout</option>
+          <option value="productivity">Modelo de Produtividade</option>
+          <option value="absenteeism">Modelo de Absenteísmo</option>
+          <option value="turnover">Modelo de Turnover</option>
+        </select>
 
-          <Select value={department} onValueChange={setDepartment}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Departamento" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="ti">Tecnologia</SelectItem>
-              <SelectItem value="rh">Recursos Humanos</SelectItem>
-              <SelectItem value="financeiro">Financeiro</SelectItem>
-              <SelectItem value="operacoes">Operações</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Button variant="outline" size="sm" className="gap-2">
-          <Download className="h-4 w-4" />
-          Exportar Relatório
-        </Button>
+        <select
+          value={timeRange}
+          onChange={(e) => setTimeRange(e.target.value)}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="3m">Próximos 3 meses</option>
+          <option value="6m">Próximos 6 meses</option>
+          <option value="1y">Próximo ano</option>
+        </select>
       </div>
 
-      <Tabs defaultValue="predictions" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="predictions">Previsões</TabsTrigger>
-          <TabsTrigger value="trends">Tendências</TabsTrigger>
-          <TabsTrigger value="correlations">Correlações</TabsTrigger>
-          <TabsTrigger value="scenarios">Cenários</TabsTrigger>
-        </TabsList>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Acurácia do Modelo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">94.2%</div>
+            <p className="text-xs text-muted-foreground">Últimos 12 meses</p>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="predictions" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Previsão de Burnout</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-red-500">+15%</div>
-                <p className="text-xs text-muted-foreground">Próximos 3 meses</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Confiança</span>
-                    <span>87%</span>
-                  </div>
-                  <Progress value={87} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Alertas Ativos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-amber-600">23</div>
+            <p className="text-xs text-muted-foreground">Requerem atenção</p>
+          </CardContent>
+        </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Previsão de Absenteísmo</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-amber-500">4.2%</div>
-                <p className="text-xs text-muted-foreground">Próximo trimestre</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Confiança</span>
-                    <span>92%</span>
-                  </div>
-                  <Progress value={92} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Prevenções</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">156</div>
+            <p className="text-xs text-muted-foreground">Casos evitados</p>
+          </CardContent>
+        </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Previsão de Turnover</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-amber-500">8.7%</div>
-                <p className="text-xs text-muted-foreground">Próximos 6 meses</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Confiança</span>
-                    <span>84%</span>
-                  </div>
-                  <Progress value={84} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Economia</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">R$ 890K</div>
+            <p className="text-xs text-muted-foreground">Em custos evitados</p>
+          </CardContent>
+        </Card>
+      </div>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Previsão de Produtividade</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-500">+7%</div>
-                <p className="text-xs text-muted-foreground">Próximo trimestre</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Confiança</span>
-                    <span>78%</span>
-                  </div>
-                  <Progress value={78} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Previsão de Risco de Burnout</CardTitle>
+            <CardDescription>Comparativo entre previsão e realidade</CardDescription>
+          </CardHeader>
+          <CardContent className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsLineChart data={burnoutPrediction}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="risco" stroke="#ef4444" strokeWidth={2} name="Previsão" />
+                <Line type="monotone" dataKey="atual" stroke="#3b82f6" strokeWidth={2} name="Atual" />
+              </RechartsLineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Previsão de Burnout por Departamento</CardTitle>
-                <CardDescription>Projeção para os próximos 6 meses</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsBarChart data={burnoutData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="dept" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="atual" fill="#8884d8" name="Atual" />
-                    <Bar dataKey="previsto" fill="#82ca9d" name="Previsto" />
-                  </RechartsBarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Previsão de Produtividade</CardTitle>
-                <CardDescription>Projeção para os próximos 6 meses</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsLineChart data={productivityData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="atual" stroke="#8884d8" name="Atual" />
-                    <Line type="monotone" dataKey="previsto" stroke="#82ca9d" name="Previsto" />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Alertas Preditivos</CardTitle>
-              <CardDescription>Situações que requerem atenção preventiva</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="bg-red-100 p-2 rounded-full mr-3">
-                    <AlertTriangle className="h-4 w-4 text-red-500" />
+        <Card>
+          <CardHeader>
+            <CardTitle>Fatores de Risco Identificados</CardTitle>
+            <CardDescription>Principais indicadores de alerta</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Sobrecarga de trabalho</span>
+                <div className="flex items-center">
+                  <div className="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                    <div className="bg-red-500 h-2 rounded-full" style={{ width: "85%" }}></div>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-sm">Risco de Burnout Elevado</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Departamento de TI tem 85% de chance de aumento nos próximos 2 meses
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-amber-100 p-2 rounded-full mr-3">
-                    <Users className="h-4 w-4 text-amber-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm">Aumento de Turnover</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Equipe de Desenvolvimento tem 72% de chance de perder membros
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-blue-100 p-2 rounded-full mr-3">
-                    <Activity className="h-4 w-4 text-blue-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm">Queda de Produtividade</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Departamento Financeiro tem 68% de chance de queda nos próximos 3 meses
-                    </p>
-                  </div>
+                  <span className="text-sm font-medium">85%</span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
-        <TabsContent value="trends">
-          <Card>
-            <CardHeader>
-              <CardTitle>Tendências de Saúde e Performance</CardTitle>
-              <CardDescription>Análise de tendências ao longo do tempo</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsLineChart data={trendsData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="stress" stroke="#ff7300" name="Estresse" />
-                  <Line type="monotone" dataKey="sleep" stroke="#8884d8" name="Sono" />
-                  <Line type="monotone" dataKey="nutrition" stroke="#82ca9d" name="Nutrição" />
-                  <Line type="monotone" dataKey="physical" stroke="#ffc658" name="Atividade Física" />
-                </RechartsLineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="correlations">
-          <Card>
-            <CardHeader>
-              <CardTitle>Correlações entre Variáveis</CardTitle>
-              <CardDescription>Análise de relações entre diferentes métricas de saúde e performance</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsBarChart data={correlationData} layout="horizontal">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" domain={[0, 1]} />
-                  <YAxis dataKey="name" type="category" width={150} />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#8884d8" />
-                </RechartsBarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="scenarios">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Simulação de Cenários</CardTitle>
-                <CardDescription>Projeções baseadas em diferentes níveis de investimento em saúde</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {scenarioData.map((scenario) => (
-                    <div key={scenario.scenario} className="p-4 border rounded-lg">
-                      <h3 className="font-semibold mb-3">{scenario.scenario}</h3>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm">Burnout:</span>
-                          <span className="font-medium">{scenario.burnout}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Produtividade:</span>
-                          <span className="font-medium">{scenario.productivity}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Investimento:</span>
-                          <span className="font-medium">R$ {scenario.cost.toLocaleString()}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Qualidade do sono</span>
+                <div className="flex items-center">
+                  <div className="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                    <div className="bg-amber-500 h-2 rounded-full" style={{ width: "72%" }}></div>
+                  </div>
+                  <span className="text-sm font-medium">72%</span>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Estresse percebido</span>
+                <div className="flex items-center">
+                  <div className="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                    <div className="bg-red-500 h-2 rounded-full" style={{ width: "78%" }}></div>
+                  </div>
+                  <span className="text-sm font-medium">78%</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Suporte social</span>
+                <div className="flex items-center">
+                  <div className="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                    <div className="bg-green-500 h-2 rounded-full" style={{ width: "45%" }}></div>
+                  </div>
+                  <span className="text-sm font-medium">45%</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Alertas Preditivos em Tempo Real</CardTitle>
+          <CardDescription>Colaboradores em risco identificados pelo modelo</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+              <div>
+                <h4 className="font-medium text-red-800">João Silva - Desenvolvimento</h4>
+                <p className="text-sm text-red-600">Risco de burnout: 89% | Ação recomendada: Intervenção imediata</p>
+              </div>
+              <Button size="sm" variant="outline">
+                Ver Detalhes
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-between p-3 bg-amber-50 rounded-lg border-l-4 border-amber-500">
+              <div>
+                <h4 className="font-medium text-amber-800">Maria Santos - Marketing</h4>
+                <p className="text-sm text-amber-600">Risco de burnout: 67% | Ação recomendada: Monitoramento</p>
+              </div>
+              <Button size="sm" variant="outline">
+                Ver Detalhes
+              </Button>
+            </div>
+
+            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+              <div>
+                <h4 className="font-medium text-blue-800">Carlos Oliveira - Vendas</h4>
+                <p className="text-sm text-blue-600">Melhoria prevista: +15% produtividade | Ação: Manter estratégia</p>
+              </div>
+              <Button size="sm" variant="outline">
+                Ver Detalhes
+              </Button>
+            </div>
           </div>
-        </TabsContent>
-      </Tabs>
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
-// ROI Content com calculadora e gráficos
+// ISP Diagnóstico Content
+function ISPContent() {
+  const [selectedPillar, setSelectedPillar] = useState("geral")
+
+  const pillars = [
+    { id: "fisica", name: "Saúde Física", score: 78, color: "bg-blue-500", icon: "💪" },
+    { id: "mental", name: "Saúde Mental", score: 65, color: "bg-purple-500", icon: "🧠" },
+    { id: "nutricional", name: "Saúde Nutricional", score: 72, color: "bg-green-500", icon: "🥗" },
+    { id: "sono", name: "Qualidade do Sono", score: 58, color: "bg-indigo-500", icon: "😴" },
+    { id: "social", name: "Saúde Social", score: 81, color: "bg-pink-500", icon: "👥" },
+    { id: "proposito", name: "Propósito", score: 75, color: "bg-orange-500", icon: "🎯" },
+  ]
+
+  const overallISP = Math.round(pillars.reduce((acc, pillar) => acc + pillar.score, 0) / pillars.length)
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">ISP - Índice de Saúde e Performance</h2>
+        <p className="text-muted-foreground">Diagnóstico completo baseado nos 6 pilares de saúde</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="md:col-span-1">
+          <CardHeader className="text-center">
+            <CardTitle>ISP Geral</CardTitle>
+            <CardDescription>Índice consolidado</CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <div className="relative w-32 h-32 mx-auto mb-4">
+              <div className="absolute inset-0 rounded-full border-8 border-gray-200"></div>
+              <div
+                className="absolute inset-0 rounded-full border-8 border-primary border-t-transparent transform -rotate-90"
+                style={{
+                  background: `conic-gradient(from 0deg, hsl(var(--primary)) ${overallISP * 3.6}deg, transparent ${overallISP * 3.6}deg)`,
+                }}
+              ></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-3xl font-bold">{overallISP}</span>
+              </div>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {overallISP >= 80 ? "Excelente" : overallISP >= 70 ? "Bom" : overallISP >= 60 ? "Regular" : "Atenção"}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Pilares de Saúde</CardTitle>
+            <CardDescription>Avaliação detalhada por dimensão</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {pillars.map((pillar) => (
+                <div
+                  key={pillar.id}
+                  className="p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => setSelectedPillar(pillar.id)}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">{pillar.icon}</div>
+                    <h3 className="font-medium text-sm">{pillar.name}</h3>
+                    <div className="text-2xl font-bold mt-2">{pillar.score}</div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                      <div className={`h-2 rounded-full ${pillar.color}`} style={{ width: `${pillar.score}%` }}></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Evolução do ISP</CardTitle>
+            <CardDescription>Últimos 6 meses</CardDescription>
+          </CardHeader>
+          <CardContent className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsLineChart
+                data={[
+                  { month: "Jan", isp: 65 },
+                  { month: "Fev", isp: 68 },
+                  { month: "Mar", isp: 72 },
+                  { month: "Abr", isp: 69 },
+                  { month: "Mai", isp: 74 },
+                  { month: "Jun", isp: overallISP },
+                ]}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="isp" stroke="#8884d8" strokeWidth={3} />
+              </RechartsLineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Recomendações Personalizadas</CardTitle>
+            <CardDescription>Baseadas no seu perfil ISP</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <h4 className="font-medium text-blue-800">Prioridade Alta</h4>
+                <p className="text-sm text-blue-600">Melhorar qualidade do sono - Score atual: 58</p>
+                <Button size="sm" className="mt-2" variant="outline">
+                  Ver Plano
+                </Button>
+              </div>
+
+              <div className="p-3 bg-amber-50 rounded-lg">
+                <h4 className="font-medium text-amber-800">Prioridade Média</h4>
+                <p className="text-sm text-amber-600">Fortalecer saúde mental - Score atual: 65</p>
+                <Button size="sm" className="mt-2" variant="outline">
+                  Ver Plano
+                </Button>
+              </div>
+
+              <div className="p-3 bg-green-50 rounded-lg">
+                <h4 className="font-medium text-green-800">Manter</h4>
+                <p className="text-sm text-green-600">Saúde social está excelente - Score: 81</p>
+                <Button size="sm" className="mt-2" variant="outline">
+                  Ver Dicas
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Comparativo por Departamento</CardTitle>
+          <CardDescription>ISP médio por área da empresa</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {[
+              { dept: "Tecnologia", isp: 73, employees: 45 },
+              { dept: "Marketing", isp: 78, employees: 23 },
+              { dept: "Vendas", isp: 71, employees: 34 },
+              { dept: "RH", isp: 82, employees: 12 },
+              { dept: "Financeiro", isp: 69, employees: 18 },
+            ].map((dept) => (
+              <div key={dept.dept} className="flex items-center justify-between">
+                <div>
+                  <span className="font-medium">{dept.dept}</span>
+                  <span className="text-sm text-muted-foreground ml-2">({dept.employees} colaboradores)</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-32 bg-gray-200 rounded-full h-2">
+                    <div className="bg-primary h-2 rounded-full" style={{ width: `${dept.isp}%` }}></div>
+                  </div>
+                  <span className="font-bold w-8">{dept.isp}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// ROI em Saúde Content
 function ROIContent() {
   const [period, setPeriod] = useState("6m")
   const [department, setDepartment] = useState("all")
-  const [showCalculator, setShowCalculator] = useState(false)
-  const [investment, setInvestment] = useState("")
-  const [expectedReturn, setExpectedReturn] = useState("")
-
-  const roiEvolutionData = [
-    { month: "Jan", investment: 120000, return: 280000, roi: 233 },
-    { month: "Fev", investment: 140000, return: 320000, roi: 229 },
-    { month: "Mar", investment: 160000, return: 380000, roi: 238 },
-    { month: "Abr", investment: 180000, return: 450000, roi: 250 },
-    { month: "Mai", investment: 200000, return: 540000, roi: 270 },
-    { month: "Jun", investment: 220000, return: 650000, roi: 295 },
-  ]
-
-  const departmentROIData = [
-    { dept: "TI", investment: 85000, return: 320000, roi: 376 },
-    { dept: "RH", investment: 45000, return: 180000, roi: 400 },
-    { dept: "Financeiro", investment: 35000, return: 125000, roi: 357 },
-    { dept: "Operações", investment: 55000, return: 195000, roi: 355 },
-  ]
-
-  const projectionData = [
-    { month: "Jul", conservative: 310, moderate: 340, optimistic: 380 },
-    { month: "Ago", conservative: 315, moderate: 350, optimistic: 395 },
-    { month: "Set", conservative: 320, moderate: 360, optimistic: 410 },
-    { month: "Out", conservative: 325, moderate: 370, optimistic: 425 },
-    { month: "Nov", conservative: 330, moderate: 380, optimistic: 440 },
-    { month: "Dez", conservative: 335, moderate: 390, optimistic: 455 },
-  ]
 
   return (
     <div className="space-y-6">
@@ -895,87 +1101,31 @@ function ROIContent() {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex flex-col sm:flex-row gap-4">
-          <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Período" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="3m">Últimos 3 meses</SelectItem>
-              <SelectItem value="6m">Últimos 6 meses</SelectItem>
-              <SelectItem value="1y">Último ano</SelectItem>
-              <SelectItem value="all">Todo período</SelectItem>
-            </SelectContent>
-          </Select>
+          <select value={period} onChange={(e) => setPeriod(e.target.value)} className="px-3 py-2 border rounded-lg">
+            <option value="3m">Últimos 3 meses</option>
+            <option value="6m">Últimos 6 meses</option>
+            <option value="1y">Último ano</option>
+            <option value="all">Todo período</option>
+          </select>
 
-          <Select value={department} onValueChange={setDepartment}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Departamento" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="ti">Tecnologia</SelectItem>
-              <SelectItem value="rh">Recursos Humanos</SelectItem>
-              <SelectItem value="financeiro">Financeiro</SelectItem>
-              <SelectItem value="operacoes">Operações</SelectItem>
-            </SelectContent>
-          </Select>
+          <select
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            className="px-3 py-2 border rounded-lg"
+          >
+            <option value="all">Todos</option>
+            <option value="ti">Tecnologia</option>
+            <option value="rh">Recursos Humanos</option>
+            <option value="financeiro">Financeiro</option>
+            <option value="operacoes">Operações</option>
+          </select>
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setShowCalculator(!showCalculator)} className="gap-2">
-            <Calculator className="h-4 w-4" />
-            Calculadora ROI
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2">
-            <Download className="h-4 w-4" />
-            Exportar Relatório
-          </Button>
-        </div>
+        <Button variant="outline" size="sm" className="gap-2">
+          <TrendingUp className="h-4 w-4" />
+          Exportar Relatório
+        </Button>
       </div>
-
-      {showCalculator && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Calculadora de ROI</CardTitle>
-            <CardDescription>Simule diferentes cenários de investimento</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="text-sm font-medium">Investimento (R$)</label>
-                <Input
-                  type="number"
-                  placeholder="Ex: 100000"
-                  value={investment}
-                  onChange={(e) => setInvestment(e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium">Retorno Esperado (R$)</label>
-                <Input
-                  type="number"
-                  placeholder="Ex: 340000"
-                  value={expectedReturn}
-                  onChange={(e) => setExpectedReturn(e.target.value)}
-                />
-              </div>
-              <div className="flex items-end">
-                <Button className="w-full">Calcular ROI</Button>
-              </div>
-            </div>
-            {investment && expectedReturn && (
-              <div className="mt-4 p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold text-green-600">
-                  ROI: {(((Number(expectedReturn) - Number(investment)) / Number(investment)) * 100).toFixed(1)}%
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Para cada R$ 1 investido, o retorno é de R$ {(Number(expectedReturn) / Number(investment)).toFixed(2)}
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
@@ -1023,866 +1173,114 @@ function ROIContent() {
         </Card>
       </div>
 
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="detailed">Análise Detalhada</TabsTrigger>
-          <TabsTrigger value="projections">Projeções</TabsTrigger>
-        </TabsList>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Evolução do ROI</CardTitle>
+            <CardDescription>Comparativo entre investimento e retorno</CardDescription>
+          </CardHeader>
+          <CardContent className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsLineChart
+                data={[
+                  { month: "Jan", investimento: 120, retorno: 280 },
+                  { month: "Fev", investimento: 120, retorno: 320 },
+                  { month: "Mar", investimento: 120, retorno: 380 },
+                  { month: "Abr", investimento: 120, retorno: 420 },
+                  { month: "Mai", investimento: 120, retorno: 450 },
+                  { month: "Jun", investimento: 120, retorno: 480 },
+                ]}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="investimento" stroke="#ef4444" strokeWidth={2} name="Investimento" />
+                <Line type="monotone" dataKey="retorno" stroke="#22c55e" strokeWidth={2} name="Retorno" />
+              </RechartsLineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Evolução do ROI</CardTitle>
-                <CardDescription>Comparativo entre investimento e retorno</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsLineChart data={roiEvolutionData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="roi" stroke="#8884d8" name="ROI %" />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Distribuição de Impactos</CardTitle>
-                <CardDescription>Áreas mais impactadas pelo programa</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsPieChart>
-                    <Pie
-                      data={[
-                        { name: "Redução Absenteísmo", value: 32 },
-                        { name: "Aumento Produtividade", value: 18 },
-                        { name: "Redução Turnover", value: 24 },
-                        { name: "Redução Sinistralidade", value: 15 },
-                        { name: "Outros", value: 11 },
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label
-                    >
-                      {[
-                        { name: "Redução Absenteísmo", value: 32 },
-                        { name: "Aumento Produtividade", value: 18 },
-                        { name: "Redução Turnover", value: 24 },
-                        { name: "Redução Sinistralidade", value: 15 },
-                        { name: "Outros", value: 11 },
-                      ].map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#8dd1e1"][index]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </RechartsPieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Principais Indicadores</CardTitle>
-              <CardDescription>Métricas de impacto financeiro</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm">Redução de Absenteísmo</span>
-                    <span className="text-sm font-medium">32%</span>
-                  </div>
-                  <div className="w-full bg-secondary h-2 rounded-full">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: "32%" }}></div>
-                  </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Principais Indicadores</CardTitle>
+            <CardDescription>Métricas de impacto financeiro</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Redução de Absenteísmo</span>
+                  <span className="text-sm font-medium">32%</span>
                 </div>
-
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm">Aumento de Produtividade</span>
-                    <span className="text-sm font-medium">18%</span>
-                  </div>
-                  <div className="w-full bg-secondary h-2 rounded-full">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: "18%" }}></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm">Redução de Turnover</span>
-                    <span className="text-sm font-medium">24%</span>
-                  </div>
-                  <div className="w-full bg-secondary h-2 rounded-full">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: "24%" }}></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm">Redução de Sinistralidade</span>
-                    <span className="text-sm font-medium">15%</span>
-                  </div>
-                  <div className="w-full bg-secondary h-2 rounded-full">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: "15%" }}></div>
-                  </div>
+                <div className="w-full bg-secondary h-2 rounded-full">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "32%" }}></div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
-        <TabsContent value="detailed">
-          <Card>
-            <CardHeader>
-              <CardTitle>Análise Detalhada por Departamento</CardTitle>
-              <CardDescription>Comparativo de ROI entre departamentos</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsBarChart data={departmentROIData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dept" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="roi" fill="#8884d8" name="ROI %" />
-                </RechartsBarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="projections">
-          <Card>
-            <CardHeader>
-              <CardTitle>Projeções Futuras</CardTitle>
-              <CardDescription>Estimativa de ROI para os próximos 6 meses</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsLineChart data={projectionData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="conservative" stroke="#ff7300" name="Conservador" />
-                  <Line type="monotone" dataKey="moderate" stroke="#8884d8" name="Moderado" />
-                  <Line type="monotone" dataKey="optimistic" stroke="#82ca9d" name="Otimista" />
-                </RechartsLineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
-}
-
-// ISP Content com gráficos
-function ISPContent() {
-  const ispGeneralData = [
-    { month: "Jan", isp: 65 },
-    { month: "Fev", isp: 68 },
-    { month: "Mar", isp: 72 },
-    { month: "Abr", isp: 69 },
-    { month: "Mai", isp: 74 },
-    { month: "Jun", isp: 78 },
-  ]
-
-  const ispDepartmentData = [
-    { dept: "TI", isp: 72 },
-    { dept: "RH", isp: 85 },
-    { dept: "Financeiro", isp: 78 },
-    { dept: "Operações", isp: 68 },
-    { dept: "Marketing", isp: 82 },
-  ]
-
-  const ispEvolutionData = [
-    { month: "Jan", sono: 45, mental: 65, fisica: 72, nutricional: 68, engajamento: 78, produtividade: 67 },
-    { month: "Fev", sono: 48, mental: 67, fisica: 74, nutricional: 70, engajamento: 80, produtividade: 69 },
-    { month: "Mar", sono: 52, mental: 70, fisica: 76, nutricional: 72, engajamento: 82, produtividade: 72 },
-    { month: "Abr", sono: 55, mental: 72, fisica: 78, nutricional: 74, engajamento: 84, produtividade: 74 },
-    { month: "Mai", sono: 58, mental: 74, fisica: 80, nutricional: 76, engajamento: 86, produtividade: 76 },
-    { month: "Jun", sono: 62, mental: 76, fisica: 82, nutricional: 78, engajamento: 88, produtividade: 78 },
-  ]
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">ISP - Índice de Saúde e Performance</h2>
-        <p className="text-muted-foreground">
-          Diagnóstico completo baseado nos 6 pilares: Sono, Saúde Física, Saúde Mental, Saúde Nutricional, Engajamento e
-          Produtividade
-        </p>
-      </div>
-
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="diagnostic">Diagnóstico Completo</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="md:col-span-3">
-              <CardHeader>
-                <CardTitle>ISP Geral da Empresa</CardTitle>
-                <CardDescription>Índice consolidado baseado em todos os indicadores de saúde</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsLineChart data={ispGeneralData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="isp" stroke="#8884d8" strokeWidth={3} />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Sono</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-red-500">45</div>
-                <p className="text-xs text-muted-foreground">Crítico</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Score</span>
-                    <span>45/100</span>
-                  </div>
-                  <Progress value={45} className="h-1" />
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Aumento de Produtividade</span>
+                  <span className="text-sm font-medium">18%</span>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Saúde Mental</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-amber-500">65</div>
-                <p className="text-xs text-muted-foreground">Atenção</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Score</span>
-                    <span>65/100</span>
-                  </div>
-                  <Progress value={65} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Saúde Física</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-500">72</div>
-                <p className="text-xs text-muted-foreground">Bom</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Score</span>
-                    <span>72/100</span>
-                  </div>
-                  <Progress value={72} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Saúde Nutricional</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-amber-500">68</div>
-                <p className="text-xs text-muted-foreground">Atenção</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Score</span>
-                    <span>68/100</span>
-                  </div>
-                  <Progress value={68} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Engajamento</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-500">78</div>
-                <p className="text-xs text-muted-foreground">Bom</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Score</span>
-                    <span>78/100</span>
-                  </div>
-                  <Progress value={78} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Produtividade</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-amber-500">67</div>
-                <p className="text-xs text-muted-foreground">Atenção</p>
-                <div className="mt-2">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span>Score</span>
-                    <span>67/100</span>
-                  </div>
-                  <Progress value={67} className="h-1" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>ISP por Departamento</CardTitle>
-                <CardDescription>Comparativo entre departamentos</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsBarChart data={ispDepartmentData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="dept" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="isp" fill="#8884d8" />
-                  </RechartsBarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Evolução do ISP</CardTitle>
-                <CardDescription>Histórico dos últimos 6 meses</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsLineChart data={ispEvolutionData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="sono" stroke="#ff7300" name="Sono" />
-                    <Line type="monotone" dataKey="mental" stroke="#8884d8" name="Mental" />
-                    <Line type="monotone" dataKey="fisica" stroke="#82ca9d" name="Física" />
-                    <Line type="monotone" dataKey="nutricional" stroke="#ffc658" name="Nutricional" />
-                    <Line type="monotone" dataKey="engajamento" stroke="#8dd1e1" name="Engajamento" />
-                    <Line type="monotone" dataKey="produtividade" stroke="#d084d0" name="Produtividade" />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="diagnostic">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Diagnóstico Completo</CardTitle>
-                <CardDescription>Análise detalhada dos 6 pilares de saúde</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2 flex items-center">
-                      <Moon className="h-5 w-5 mr-2 text-blue-500" />
-                      Sono
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Score Geral</span>
-                        <span className="font-medium text-red-500">45/100 (Crítico)</span>
-                      </div>
-                      <Progress value={45} className="h-2" />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        O sono é o pilar mais crítico, com 45% dos colaboradores reportando problemas de qualidade e
-                        duração do sono. Impacta diretamente a produtividade e saúde mental.
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                        <div className="bg-red-50 p-3 rounded-lg">
-                          <div className="font-medium">Duração</div>
-                          <div className="text-sm text-muted-foreground">Média de 5.8h (recomendado: 7-8h)</div>
-                        </div>
-                        <div className="bg-red-50 p-3 rounded-lg">
-                          <div className="font-medium">Qualidade</div>
-                          <div className="text-sm text-muted-foreground">42% reportam sono fragmentado</div>
-                        </div>
-                        <div className="bg-amber-50 p-3 rounded-lg">
-                          <div className="font-medium">Regularidade</div>
-                          <div className="text-sm text-muted-foreground">Variação média de 1.5h nos horários</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2 flex items-center">
-                      <Heart className="h-5 w-5 mr-2 text-red-500" />
-                      Saúde Mental
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Score Geral</span>
-                        <span className="font-medium text-amber-500">65/100 (Atenção)</span>
-                      </div>
-                      <Progress value={65} className="h-2" />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        A saúde mental apresenta sinais de atenção, com 32% dos colaboradores reportando níveis elevados
-                        de estresse e 18% com sintomas de ansiedade.
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                        <div className="bg-amber-50 p-3 rounded-lg">
-                          <div className="font-medium">Estresse</div>
-                          <div className="text-sm text-muted-foreground">32% com níveis elevados</div>
-                        </div>
-                        <div className="bg-amber-50 p-3 rounded-lg">
-                          <div className="font-medium">Ansiedade</div>
-                          <div className="text-sm text-muted-foreground">18% com sintomas significativos</div>
-                        </div>
-                        <div className="bg-green-50 p-3 rounded-lg">
-                          <div className="font-medium">Bem-estar</div>
-                          <div className="text-sm text-muted-foreground">72% reportam satisfação geral</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2 flex items-center">
-                      <Activity className="h-5 w-5 mr-2 text-green-500" />
-                      Saúde Física
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Score Geral</span>
-                        <span className="font-medium text-green-500">72/100 (Bom)</span>
-                      </div>
-                      <Progress value={72} className="h-2" />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        A saúde física apresenta bons indicadores, com 65% dos colaboradores praticando atividade física
-                        regularmente. Ainda há oportunidades de melhoria em ergonomia.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2 flex items-center">
-                      <Users className="h-5 w-5 mr-2 text-blue-500" />
-                      Engajamento
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Score Geral</span>
-                        <span className="font-medium text-green-500">78/100 (Bom)</span>
-                      </div>
-                      <Progress value={78} className="h-2" />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        O engajamento apresenta bons indicadores, com 78% dos colaboradores reportando satisfação com o
-                        trabalho e 82% recomendariam a empresa como um bom lugar para trabalhar.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2 flex items-center">
-                      <Activity className="h-5 w-5 mr-2 text-yellow-500" />
-                      Produtividade
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Score Geral</span>
-                        <span className="font-medium text-amber-500">67/100 (Atenção)</span>
-                      </div>
-                      <Progress value={67} className="h-2" />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        A produtividade requer atenção, com 38% dos colaboradores reportando dificuldades de
-                        concentração e 25% com sensação de sobrecarga frequente.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Diagnóstico por Departamento</CardTitle>
-                <CardDescription>Análise detalhada dos 6 pilares por departamento</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-semibold mb-2">Tecnologia</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>Sono:</span>
-                          <span className="text-red-500">38/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Mental:</span>
-                          <span className="text-amber-500">58/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Física:</span>
-                          <span className="text-amber-500">65/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Nutricional:</span>
-                          <span className="text-amber-500">62/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Engajamento:</span>
-                          <span className="text-green-500">82/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Produtividade:</span>
-                          <span className="text-green-500">85/100</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-semibold mb-2">Recursos Humanos</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>Sono:</span>
-                          <span className="text-amber-500">65/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Mental:</span>
-                          <span className="text-green-500">78/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Física:</span>
-                          <span className="text-green-500">82/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Nutricional:</span>
-                          <span className="text-green-500">85/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Engajamento:</span>
-                          <span className="text-green-500">88/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Produtividade:</span>
-                          <span className="text-green-500">82/100</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-semibold mb-2">Financeiro</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>Sono:</span>
-                          <span className="text-amber-500">52/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Mental:</span>
-                          <span className="text-amber-500">68/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Física:</span>
-                          <span className="text-green-500">75/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Nutricional:</span>
-                          <span className="text-amber-500">68/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Engajamento:</span>
-                          <span className="text-green-500">78/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Produtividade:</span>
-                          <span className="text-green-500">72/100</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-semibold mb-2">Operações</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span>Sono:</span>
-                          <span className="text-red-500">42/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Mental:</span>
-                          <span className="text-amber-500">62/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Física:</span>
-                          <span className="text-amber-500">68/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Nutricional:</span>
-                          <span className="text-amber-500">65/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Engajamento:</span>
-                          <span className="text-green-500">72/100</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span>Produtividade:</span>
-                          <span className="text-amber-500">65/100</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
-}
-
-// Add missing content functions
-function PerformanceContent() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Performance por Departamento</h2>
-        <p className="text-muted-foreground">Análise de performance baseada em produtividade e eficiência</p>
-      </div>
-      <Card>
-        <CardContent className="p-6">
-          <p className="text-muted-foreground">Conteúdo de performance em desenvolvimento...</p>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
-
-// Questionnaires Content
-function QuestionnairesContent() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filter, setFilter] = useState("all")
-
-  const questionnaires = [
-    {
-      id: 1,
-      title: "Saúde Mental e Bem-estar",
-      description: "Avaliação de níveis de estresse, ansiedade e bem-estar geral",
-      questions: 25,
-      duration: "8-10 min",
-      responses: 847,
-      lastUpdate: "2024-01-15",
-      status: "Ativo",
-      category: "mental",
-    },
-    {
-      id: 2,
-      title: "Saúde Física e Ergonomia",
-      description: "Avaliação de condições físicas e ergonômicas no trabalho",
-      questions: 20,
-      duration: "6-8 min",
-      responses: 723,
-      lastUpdate: "2024-01-10",
-      status: "Ativo",
-      category: "fisica",
-    },
-    {
-      id: 3,
-      title: "Hábitos Nutricionais",
-      description: "Análise de padrões alimentares e hábitos nutricionais",
-      questions: 18,
-      duration: "5-7 min",
-      responses: 692,
-      lastUpdate: "2024-01-12",
-      status: "Ativo",
-      category: "nutricao",
-    },
-    {
-      id: 4,
-      title: "Qualidade do Sono",
-      description: "Avaliação da qualidade e padrões de sono",
-      questions: 15,
-      duration: "4-6 min",
-      responses: 756,
-      lastUpdate: "2024-01-08",
-      status: "Ativo",
-      category: "sono",
-    },
-    {
-      id: 5,
-      title: "Gestão de Estresse",
-      description: "Identificação de fontes de estresse e estratégias de enfrentamento",
-      questions: 22,
-      duration: "7-9 min",
-      responses: 634,
-      lastUpdate: "2024-01-14",
-      status: "Ativo",
-      category: "estresse",
-    },
-    {
-      id: 6,
-      title: "Cultura Organizacional",
-      description: "Percepção sobre ambiente de trabalho e cultura da empresa",
-      questions: 30,
-      duration: "10-12 min",
-      responses: 589,
-      lastUpdate: "2024-01-11",
-      status: "Ativo",
-      category: "cultura",
-    },
-  ]
-
-  const filteredQuestionnaires = questionnaires.filter((q) => {
-    const matchesSearch =
-      q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      q.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesFilter = filter === "all" || q.category === filter || q.status.toLowerCase() === filter
-    return matchesSearch && matchesFilter
-  })
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Questionários de Saúde</h2>
-        <p className="text-muted-foreground">
-          Avaliações estruturadas para monitoramento da saúde e bem-estar dos colaboradores
-        </p>
-      </div>
-
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            placeholder="Buscar questionários..."
-            className="pl-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filtrar por" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="ativo">Ativos</SelectItem>
-            <SelectItem value="mental">Saúde Mental</SelectItem>
-            <SelectItem value="fisica">Saúde Física</SelectItem>
-            <SelectItem value="nutricao">Nutrição</SelectItem>
-            <SelectItem value="sono">Sono</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredQuestionnaires.map((questionnaire) => (
-          <Card key={questionnaire.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <Badge variant="outline" className="mb-2">
-                  {questionnaire.category === "mental"
-                    ? "Saúde Mental"
-                    : questionnaire.category === "fisica"
-                      ? "Saúde Física"
-                      : questionnaire.category === "nutricao"
-                        ? "Nutrição"
-                        : questionnaire.category === "sono"
-                          ? "Sono"
-                          : questionnaire.category === "estresse"
-                            ? "Estresse"
-                            : "Cultura"}
-                </Badge>
-                <Badge variant={questionnaire.status === "Ativo" ? "default" : "secondary"}>
-                  {questionnaire.status}
-                </Badge>
-              </div>
-              <CardTitle className="text-lg">{questionnaire.title}</CardTitle>
-              <CardDescription>{questionnaire.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Questões:</span>
-                    <div className="font-medium">{questionnaire.questions}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Duração:</span>
-                    <div className="font-medium">{questionnaire.duration}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Respostas:</span>
-                    <div className="font-medium">{questionnaire.responses}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Atualizado:</span>
-                    <div className="font-medium">{new Date(questionnaire.lastUpdate).toLocaleDateString()}</div>
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1">
-                    Ver Respostas
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
-                    Editar
-                  </Button>
+                <div className="w-full bg-secondary h-2 rounded-full">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "18%" }}></div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Redução de Turnover</span>
+                  <span className="text-sm font-medium">24%</span>
+                </div>
+                <div className="w-full bg-secondary h-2 rounded-full">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "24%" }}></div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Redução de Sinistralidade</span>
+                  <span className="text-sm font-medium">15%</span>
+                </div>
+                <div className="w-full bg-secondary h-2 rounded-full">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "15%" }}></div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Estatísticas de Participação</CardTitle>
-          <CardDescription>Taxa de resposta por questionário nos últimos 30 dias</CardDescription>
+          <CardTitle>Análise Detalhada por Departamento</CardTitle>
+          <CardDescription>Comparativo de ROI entre departamentos</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {questionnaires.map((q) => (
-              <div key={q.id}>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium">{q.title}</span>
-                  <span className="text-sm text-muted-foreground">{Math.round((q.responses / 1000) * 100)}%</span>
+            {[
+              { dept: "Tecnologia", investimento: 180, retorno: 650, roi: 261 },
+              { dept: "Marketing", investimento: 120, retorno: 480, roi: 300 },
+              { dept: "Vendas", investimento: 200, retorno: 890, roi: 345 },
+              { dept: "RH", investimento: 80, retorno: 320, roi: 300 },
+              { dept: "Financeiro", investimento: 140, retorno: 520, roi: 271 },
+            ].map((dept) => (
+              <div key={dept.dept} className="grid grid-cols-4 gap-4 items-center p-3 border rounded-lg">
+                <div className="font-medium">{dept.dept}</div>
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Investimento:</span>
+                  <div className="font-medium">R$ {dept.investimento}K</div>
                 </div>
-                <Progress value={(q.responses / 1000) * 100} className="h-2" />
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Retorno:</span>
+                  <div className="font-medium">R$ {dept.retorno}K</div>
+                </div>
+                <div className="text-sm">
+                  <span className="text-muted-foreground">ROI:</span>
+                  <div className="font-bold text-green-600">{dept.roi}%</div>
+                </div>
               </div>
             ))}
           </div>
@@ -1892,663 +1290,366 @@ function QuestionnairesContent() {
   )
 }
 
-// Data Content
-function DataContent() {
-  const integrations = [
+// Questionários Content
+function QuestionnairesContent() {
+  const [activeTab, setActiveTab] = useState("available")
+
+  const availableQuestionnaires = [
     {
       id: 1,
-      name: "Plano de Saúde",
-      type: "health",
-      status: "Conectado",
-      lastSync: "2024-01-15 14:30",
-      records: 1247,
-      icon: <Shield className="h-5 w-5" />,
+      title: "Avaliação de Burnout (MBI)",
+      description: "Maslach Burnout Inventory - Avaliação completa de esgotamento profissional",
+      duration: "15 min",
+      questions: 22,
+      category: "Mental",
+      priority: "Alta",
+      lastUpdated: "2024-01-15",
     },
     {
       id: 2,
-      name: "Sistema de RH",
-      type: "hr",
-      status: "Conectado",
-      lastSync: "2024-01-15 12:00",
-      records: 1247,
-      icon: <Users className="h-5 w-5" />,
+      title: "Qualidade do Sono (PSQI)",
+      description: "Pittsburgh Sleep Quality Index - Avaliação da qualidade do sono",
+      duration: "8 min",
+      questions: 19,
+      category: "Sono",
+      priority: "Média",
+      lastUpdated: "2024-01-10",
     },
     {
       id: 3,
-      name: "Wearables (Fitbit/Apple)",
-      type: "wearables",
-      status: "Conectado",
-      lastSync: "2024-01-15 15:45",
-      records: 892,
-      icon: <Smartphone className="h-5 w-5" />,
+      title: "Estresse Percebido (PSS)",
+      description: "Perceived Stress Scale - Medição do nível de estresse percebido",
+      duration: "5 min",
+      questions: 10,
+      category: "Mental",
+      priority: "Alta",
+      lastUpdated: "2024-01-12",
+    },
+  ]
+
+  const completedQuestionnaires = [
+    {
+      id: 1,
+      title: "Avaliação Nutricional",
+      completedDate: "2024-01-08",
+      score: 78,
+      status: "Bom",
+      nextDue: "2024-04-08",
     },
     {
-      id: 4,
-      name: "Upload de Documentos",
-      type: "documents",
-      status: "Ativo",
-      lastSync: "2024-01-15 16:20",
-      records: 456,
-      icon: <Upload className="h-5 w-5" />,
+      id: 2,
+      title: "Atividade Física",
+      completedDate: "2024-01-05",
+      score: 65,
+      status: "Regular",
+      nextDue: "2024-04-05",
     },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Questionários de Saúde</h2>
+        <p className="text-muted-foreground">Avaliações estruturadas para monitoramento da saúde</p>
+      </div>
+
+      <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
+        <button
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === "available" ? "bg-background shadow-sm" : "text-muted-foreground"
+          }`}
+          onClick={() => setActiveTab("available")}
+        >
+          Disponíveis (3)
+        </button>
+        <button
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === "completed" ? "bg-background shadow-sm" : "text-muted-foreground"
+          }`}
+          onClick={() => setActiveTab("completed")}
+        >
+          Concluídos (2)
+        </button>
+        <button
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === "analytics" ? "bg-background shadow-sm" : "text-muted-foreground"
+          }`}
+          onClick={() => setActiveTab("analytics")}
+        >
+          Analytics
+        </button>
+      </div>
+
+      {activeTab === "available" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {availableQuestionnaires.map((questionnaire) => (
+            <Card key={questionnaire.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <CardTitle className="text-lg">{questionnaire.title}</CardTitle>
+                  <Badge variant={questionnaire.priority === "Alta" ? "destructive" : "secondary"}>
+                    {questionnaire.priority}
+                  </Badge>
+                </div>
+                <CardDescription>{questionnaire.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Duração:</span>
+                    <span className="font-medium">{questionnaire.duration}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Questões:</span>
+                    <span className="font-medium">{questionnaire.questions}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Categoria:</span>
+                    <Badge variant="outline">{questionnaire.category}</Badge>
+                  </div>
+                  <div className="pt-3">
+                    <Button className="w-full">Iniciar Questionário</Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "completed" && (
+        <div className="space-y-4">
+          {completedQuestionnaires.map((questionnaire) => (
+            <Card key={questionnaire.id}>
+              <CardContent className="p-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="font-medium">{questionnaire.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Concluído em {new Date(questionnaire.completedDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold">{questionnaire.score}</div>
+                    <div className="text-sm text-muted-foreground">{questionnaire.status}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-muted-foreground">Próxima avaliação:</div>
+                    <div className="text-sm font-medium">{new Date(questionnaire.nextDue).toLocaleDateString()}</div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Ver Resultados
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {activeTab === "analytics" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Taxa de Conclusão</CardTitle>
+              <CardDescription>Percentual de questionários concluídos</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold mb-2">87%</div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-green-500 h-2 rounded-full" style={{ width: "87%" }}></div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-2">+5% vs mês anterior</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Tempo Médio de Resposta</CardTitle>
+              <CardDescription>Duração média para completar questionários</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold mb-2">12 min</div>
+              <p className="text-sm text-muted-foreground">Meta: 15 min</p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Dados de Saúde Content
+function DataContent() {
+  const [selectedIntegration, setSelectedIntegration] = useState("all")
+
+  const integrations = [
+    { id: "fitbit", name: "Fitbit", status: "Conectado", users: 234, lastSync: "2 min atrás" },
+    { id: "apple", name: "Apple Health", status: "Conectado", users: 189, lastSync: "5 min atrás" },
+    { id: "google", name: "Google Fit", status: "Conectado", users: 156, lastSync: "1 min atrás" },
+    { id: "garmin", name: "Garmin", status: "Conectado", users: 78, lastSync: "3 min atrás" },
+    { id: "samsung", name: "Samsung Health", status: "Erro", users: 45, lastSync: "2h atrás" },
   ]
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Dados de Saúde</h2>
-        <p className="text-muted-foreground">Integração e gerenciamento de dados de saúde de múltiplas fontes</p>
+        <p className="text-muted-foreground">Integração e gerenciamento de dados de saúde</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total de Registros</CardTitle>
+            <CardTitle className="text-sm">Total de Usuários</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3,842</div>
-            <p className="text-xs text-muted-foreground">+156 esta semana</p>
+            <div className="text-2xl font-bold">702</div>
+            <p className="text-xs text-muted-foreground">+12 esta semana</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Fontes Ativas</CardTitle>
+            <CardTitle className="text-sm">Dados Coletados</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4</div>
-            <p className="text-xs text-muted-foreground">Todas conectadas</p>
+            <div className="text-2xl font-bold">2.4M</div>
+            <p className="text-xs text-muted-foreground">Pontos de dados</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Última Sincronização</CardTitle>
+            <CardTitle className="text-sm">Integrações Ativas</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">16:20</div>
-            <p className="text-xs text-muted-foreground">Hoje</p>
+            <div className="text-2xl font-bold">4/5</div>
+            <p className="text-xs text-muted-foreground">1 com erro</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Qualidade dos Dados</CardTitle>
+            <CardTitle className="text-sm">Última Sincronização</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">94%</div>
-            <p className="text-xs text-muted-foreground">Excelente</p>
+            <div className="text-2xl font-bold">1 min</div>
+            <p className="text-xs text-muted-foreground">atrás</p>
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Integrações de Dispositivos</CardTitle>
+          <CardDescription>Status das conexões com dispositivos de saúde</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {integrations.map((integration) => (
+              <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div
+                    className={`w-3 h-3 rounded-full ${
+                      integration.status === "Conectado" ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  ></div>
+                  <div>
+                    <h3 className="font-medium">{integration.name}</h3>
+                    <p className="text-sm text-muted-foreground">{integration.users} usuários conectados</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium">{integration.status}</div>
+                  <div className="text-xs text-muted-foreground">Última sync: {integration.lastSync}</div>
+                </div>
+                <Button variant="outline" size="sm">
+                  {integration.status === "Conectado" ? "Configurar" : "Reconectar"}
+                </Button>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {integrations.map((integration) => (
-          <Card key={integration.id}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">{integration.icon}</div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Métricas Coletadas</CardTitle>
+            <CardDescription>Tipos de dados mais capturados</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {[
+                { metric: "Passos", count: "1.2M", percentage: 85 },
+                { metric: "Frequência Cardíaca", count: "890K", percentage: 72 },
+                { metric: "Sono", count: "456K", percentage: 65 },
+                { metric: "Calorias", count: "234K", percentage: 45 },
+                { metric: "Exercícios", count: "123K", percentage: 38 },
+              ].map((item) => (
+                <div key={item.metric} className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg">{integration.name}</CardTitle>
-                    <CardDescription>
-                      {integration.type === "health"
-                        ? "Dados médicos e sinistralidade"
-                        : integration.type === "hr"
-                          ? "Dados de colaboradores e absenteísmo"
-                          : integration.type === "wearables"
-                            ? "Dados de atividade física e sono"
-                            : "Documentos e exames médicos"}
-                    </CardDescription>
+                    <span className="font-medium">{item.metric}</span>
+                    <span className="text-sm text-muted-foreground ml-2">({item.count})</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-20 bg-gray-200 rounded-full h-2">
+                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${item.percentage}%` }}></div>
+                    </div>
+                    <span className="text-sm font-medium w-8">{item.percentage}%</span>
                   </div>
                 </div>
-                <Badge variant={integration.status === "Conectado" ? "default" : "secondary"}>
-                  {integration.status}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Registros:</span>
-                    <div className="font-medium">{integration.records.toLocaleString()}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Última Sync:</span>
-                    <div className="font-medium">{integration.lastSync}</div>
-                  </div>
-                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="flex-1">
-                    Configurar
-                  </Button>
-                  <Button size="sm" variant="outline" className="flex-1">
-                    Sincronizar
-                  </Button>
+        <Card>
+          <CardHeader>
+            <CardTitle>Qualidade dos Dados</CardTitle>
+            <CardDescription>Indicadores de confiabilidade</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Completude</span>
+                  <span className="text-sm font-medium">94%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-green-500 h-2 rounded-full" style={{ width: "94%" }}></div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Precisão</span>
+                  <span className="text-sm font-medium">91%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: "91%" }}></div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm">Consistência</span>
+                  <span className="text-sm font-medium">88%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: "88%" }}></div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-
-      <Tabs defaultValue="health" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="health">Plano de Saúde</TabsTrigger>
-          <TabsTrigger value="hr">Dados de RH</TabsTrigger>
-          <TabsTrigger value="wearables">Wearables</TabsTrigger>
-          <TabsTrigger value="documents">Documentos</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="health">
-          <Card>
-            <CardHeader>
-              <CardTitle>Integração com Plano de Saúde</CardTitle>
-              <CardDescription>Dados de sinistralidade, consultas e exames</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Consultas</h4>
-                    <div className="text-2xl font-bold">1,247</div>
-                    <p className="text-sm text-muted-foreground">Últimos 6 meses</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Exames</h4>
-                    <div className="text-2xl font-bold">892</div>
-                    <p className="text-sm text-muted-foreground">Últimos 6 meses</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Sinistralidade</h4>
-                    <div className="text-2xl font-bold">12.8%</div>
-                    <p className="text-sm text-muted-foreground">Taxa atual</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="hr">
-          <Card>
-            <CardHeader>
-              <CardTitle>Integração com Sistema de RH</CardTitle>
-              <CardDescription>Dados de colaboradores, absenteísmo e performance</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Colaboradores</h4>
-                    <div className="text-2xl font-bold">1,247</div>
-                    <p className="text-sm text-muted-foreground">Total ativo</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Absenteísmo</h4>
-                    <div className="text-2xl font-bold">3.2%</div>
-                    <p className="text-sm text-muted-foreground">Taxa mensal</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Turnover</h4>
-                    <div className="text-2xl font-bold">8.7%</div>
-                    <p className="text-sm text-muted-foreground">Taxa anual</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="wearables">
-          <Card>
-            <CardHeader>
-              <CardTitle>Integração com Wearables</CardTitle>
-              <CardDescription>Dados de atividade física, sono e saúde</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Usuários Conectados</h4>
-                    <div className="text-2xl font-bold">892</div>
-                    <p className="text-sm text-muted-foreground">71% dos colaboradores</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Passos Médios</h4>
-                    <div className="text-2xl font-bold">7,234</div>
-                    <p className="text-sm text-muted-foreground">Por dia</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Sono Médio</h4>
-                    <div className="text-2xl font-bold">6.8h</div>
-                    <p className="text-sm text-muted-foreground">Por noite</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="documents">
-          <Card>
-            <CardHeader>
-              <CardTitle>Upload de Documentos</CardTitle>
-              <CardDescription>Exames, atestados e documentos médicos</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                  <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">Fazer Upload de Documentos</h3>
-                  <p className="text-muted-foreground mb-4">Arraste e solte arquivos aqui ou clique para selecionar</p>
-                  <Button>Selecionar Arquivos</Button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Documentos</h4>
-                    <div className="text-2xl font-bold">456</div>
-                    <p className="text-sm text-muted-foreground">Total carregados</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Processados</h4>
-                    <div className="text-2xl font-bold">432</div>
-                    <p className="text-sm text-muted-foreground">94.7% processados</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Pendentes</h4>
-                    <div className="text-2xl font-bold">24</div>
-                    <p className="text-sm text-muted-foreground">Em análise</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
     </div>
   )
 }
 
-// Benefits Content
-function BenefitsContent() {
-  const [period, setPeriod] = useState("6m")
-  const [department, setDepartment] = useState("all")
-
-  const partnersData = [
-    {
-      month: "Jan",
-      wellhub: 45000,
-      zenklub: 12000,
-      vittude: 8000,
-      conexa: 15000,
-      vt: 18000,
-      va: 32000,
-      vr: 28000,
-      homeoffice: 22000,
-    },
-    {
-      month: "Fev",
-      wellhub: 47000,
-      zenklub: 13000,
-      vittude: 8500,
-      conexa: 16000,
-      vt: 19000,
-      va: 33500,
-      vr: 29000,
-      homeoffice: 23000,
-    },
-    {
-      month: "Mar",
-      wellhub: 48000,
-      zenklub: 13500,
-      vittude: 9000,
-      conexa: 16500,
-      vt: 19500,
-      va: 34000,
-      vr: 30000,
-      homeoffice: 24000,
-    },
-    {
-      month: "Abr",
-      wellhub: 46000,
-      zenklub: 12500,
-      vittude: 8200,
-      conexa: 15500,
-      vt: 18500,
-      va: 33000,
-      vr: 28500,
-      homeoffice: 22500,
-    },
-    {
-      month: "Mai",
-      wellhub: 49000,
-      zenklub: 14000,
-      vittude: 9500,
-      conexa: 17000,
-      vt: 20000,
-      va: 35000,
-      vr: 31000,
-      homeoffice: 25000,
-    },
-    {
-      month: "Jun",
-      wellhub: 50000,
-      zenklub: 14500,
-      vittude: 10000,
-      conexa: 17500,
-      vt: 20500,
-      va: 36000,
-      vr: 32000,
-      homeoffice: 26000,
-    },
-  ]
-
-  const utilizationData = [
-    { partner: "Wellhub", total: 1247, utilizacao: 892, percentual: 71.5, satisfacao: 4.8 },
-    { partner: "Zenklub", total: 1247, utilizacao: 456, percentual: 36.6, satisfacao: 4.6 },
-    { partner: "Vittude", total: 1247, utilizacao: 234, percentual: 18.8, satisfacao: 4.4 },
-    { partner: "Conexa", total: 1247, utilizacao: 678, percentual: 54.4, satisfacao: 4.7 },
-    { partner: "Vale Transporte", total: 1247, utilizacao: 1089, percentual: 87.3, satisfacao: 4.2 },
-    { partner: "Vale Alimentação", total: 1247, utilizacao: 1247, percentual: 100, satisfacao: 4.5 },
-    { partner: "Vale Refeição", total: 1247, utilizacao: 1156, percentual: 92.7, satisfacao: 4.3 },
-    { partner: "Vale Home Office", total: 1247, utilizacao: 987, percentual: 79.1, satisfacao: 4.9 },
-  ]
-
-  const departmentUtilizationData = [
-    { dept: "TI", wellhub: 85, zenklub: 45, vittude: 23, conexa: 67, vt: 89, va: 100, vr: 95, homeoffice: 98 },
-    { dept: "RH", wellhub: 78, zenklub: 56, vittude: 34, conexa: 78, vt: 92, va: 100, vr: 98, homeoffice: 87 },
-    { dept: "Financeiro", wellhub: 65, zenklub: 32, vittude: 18, conexa: 45, vt: 85, va: 100, vr: 89, homeoffice: 76 },
-    { dept: "Operações", wellhub: 72, zenklub: 28, vittude: 12, conexa: 52, vt: 88, va: 100, vr: 92, homeoffice: 65 },
-    { dept: "Marketing", wellhub: 88, zenklub: 67, vittude: 45, conexa: 72, vt: 78, va: 100, vr: 87, homeoffice: 92 },
-  ]
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Analytics de Benefícios Corporativos</h2>
-        <p className="text-muted-foreground">
-          Análise consolidada dos parceiros: Wellhub, Zenklub, Vittude, Conexa, VA, VR, VT e Vale Home Office
-        </p>
-      </div>
-
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Período" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="3m">Últimos 3 meses</SelectItem>
-              <SelectItem value="6m">Últimos 6 meses</SelectItem>
-              <SelectItem value="1y">Último ano</SelectItem>
-              <SelectItem value="all">Todo período</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={department} onValueChange={setDepartment}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Departamento" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="ti">Tecnologia</SelectItem>
-              <SelectItem value="rh">Recursos Humanos</SelectItem>
-              <SelectItem value="financeiro">Financeiro</SelectItem>
-              <SelectItem value="operacoes">Operações</SelectItem>
-              <SelectItem value="marketing">Marketing</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Button variant="outline" size="sm" className="gap-2">
-          <Download className="h-4 w-4" />
-          Exportar Relatório
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Wellhub</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 294K</div>
-            <p className="text-xs text-muted-foreground">71.5% utilização</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+8% vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Zenklub</CardTitle>
-            <Brain className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 79K</div>
-            <p className="text-xs text-muted-foreground">36.6% utilização</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+15% vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Vale Alimentação</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 209K</div>
-            <p className="text-xs text-muted-foreground">100% utilização</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+6% vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Vale Home Office</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 147K</div>
-            <p className="text-xs text-muted-foreground">79.1% utilização</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+12% vs período anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="utilization">Utilização</TabsTrigger>
-          <TabsTrigger value="satisfaction">Satisfação</TabsTrigger>
-          <TabsTrigger value="projections">Projeções</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Evolução dos Custos por Parceiro</CardTitle>
-              <CardDescription>Gastos mensais por parceiro/benefício</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RechartsLineChart data={partnersData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="wellhub" stroke="#8884d8" name="Wellhub" />
-                  <Line type="monotone" dataKey="zenklub" stroke="#82ca9d" name="Zenklub" />
-                  <Line type="monotone" dataKey="va" stroke="#ffc658" name="Vale Alimentação" />
-                  <Line type="monotone" dataKey="homeoffice" stroke="#ff7300" name="Vale Home Office" />
-                </RechartsLineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="utilization">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Taxa de Utilização por Parceiro</CardTitle>
-                <CardDescription>Percentual de colaboradores que utilizam cada benefício</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {utilizationData.map((item) => (
-                    <div key={item.partner}>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">{item.partner}</span>
-                        <span className="text-sm text-muted-foreground">
-                          {item.percentual}% ({item.utilizacao}/{item.total})
-                        </span>
-                      </div>
-                      <Progress value={item.percentual} className="h-2" />
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Utilização por Departamento</CardTitle>
-                <CardDescription>Percentual de utilização de cada benefício por departamento</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsBarChart data={departmentUtilizationData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="dept" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="wellhub" fill="#8884d8" name="Wellhub" />
-                    <Bar dataKey="zenklub" fill="#82ca9d" name="Zenklub" />
-                    <Bar dataKey="va" fill="#ffc658" name="Vale Alimentação" />
-                    <Bar dataKey="homeoffice" fill="#ff7300" name="Vale Home Office" />
-                  </RechartsBarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="satisfaction">
-          <Card>
-            <CardHeader>
-              <CardTitle>Índice de Satisfação por Parceiro</CardTitle>
-              <CardDescription>Avaliação média dos colaboradores (escala 1-5)</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {utilizationData.map((item) => (
-                  <div key={item.partner} className="p-4 border rounded-lg text-center">
-                    <h4 className="font-medium mb-2">{item.partner}</h4>
-                    <div className="text-3xl font-bold text-primary mb-1">{item.satisfacao}</div>
-                    <div className="flex justify-center">
-                      {[...Array(5)].map((_, i) => (
-                        <span
-                          key={i}
-                          className={`text-lg ${i < Math.floor(item.satisfacao) ? "text-yellow-400" : "text-gray-300"}`}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">{item.utilizacao} avaliações</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="projections">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Projeção de Custos</CardTitle>
-                <CardDescription>Estimativa de gastos para os próximos 6 meses</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Cenário Conservador</h4>
-                    <div className="text-2xl font-bold text-blue-600">R$ 1.8M</div>
-                    <p className="text-sm text-muted-foreground">+5% crescimento</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Cenário Moderado</h4>
-                    <div className="text-2xl font-bold text-green-600">R$ 2.1M</div>
-                    <p className="text-sm text-muted-foreground">+15% crescimento</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Cenário Otimista</h4>
-                    <div className="text-2xl font-bold text-purple-600">R$ 2.4M</div>
-                    <p className="text-sm text-muted-foreground">+25% crescimento</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Potenciais Economias</CardTitle>
-                <CardDescription>Oportunidades de otimização identificadas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <h4 className="font-medium">Renegociação Wellhub</h4>
-                      <p className="text-sm text-muted-foreground">Desconto por volume de usuários</p>
-                    </div>
-                    <div className="text-green-600 font-bold">-R$ 45K/ano</div>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <h4 className="font-medium">Otimização Vale Transporte</h4>
-                      <p className="text-sm text-muted-foreground">Ajuste baseado em home office</p>
-                    </div>
-                    <div className="text-green-600 font-bold">-R$ 32K/ano</div>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <h4 className="font-medium">Consolidação Saúde Mental</h4>
-                      <p className="text-sm text-muted-foreground">Unificar Zenklub e Vittude</p>
-                    </div>
-                    <div className="text-green-600 font-bold">-R$ 28K/ano</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
-}
-
-// Education Content
+// Educação Content
 function EducationContent() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filter, setFilter] = useState("all")
@@ -2626,74 +1727,31 @@ function EducationContent() {
       rating: 4.8,
       featured: false,
     },
-    {
-      id: 7,
-      title: "Liderança Transformacional",
-      description: "Desenvolva habilidades de liderança para inspirar e motivar equipes.",
-      image: "/placeholder.svg?height=200&width=300",
-      category: "lideranca",
-      duration: "6h 30min",
-      lessons: 18,
-      progress: 0,
-      rating: 4.9,
-      featured: true,
-    },
-    {
-      id: 8,
-      title: "Inteligência Emocional no Trabalho",
-      description: "Aprenda a gerenciar emoções e melhorar relacionamentos profissionais.",
-      image: "/placeholder.svg?height=200&width=300",
-      category: "emocional",
-      duration: "4h 45min",
-      lessons: 14,
-      progress: 60,
-      rating: 4.8,
-      featured: false,
-    },
-    {
-      id: 9,
-      title: "Produtividade e Gestão do Tempo",
-      description: "Técnicas avançadas para otimizar seu tempo e aumentar a eficiência.",
-      image: "/placeholder.svg?height=200&width=300",
-      category: "produtividade",
-      duration: "3h 20min",
-      lessons: 10,
-      progress: 40,
-      rating: 4.7,
-      featured: false,
-    },
-    {
-      id: 10,
-      title: "Comunicação Assertiva",
-      description: "Desenvolva habilidades de comunicação clara e eficaz.",
-      image: "/placeholder.svg?height=200&width=300",
-      category: "comunicacao",
-      duration: "2h 50min",
-      lessons: 8,
-      progress: 0,
-      rating: 4.6,
-      featured: false,
-    },
   ]
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       course.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesFilter = filter === "all" || course.category === filter
+
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "featured" && course.featured) ||
+      (filter === "in-progress" && course.progress > 0 && course.progress < 100) ||
+      (filter === "completed" && course.progress === 100) ||
+      filter === course.category
+
     return matchesSearch && matchesFilter
   })
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Cursos e Trilhas de Aprendizado</h2>
-        <p className="text-muted-foreground">
-          Desenvolva suas habilidades e conhecimentos em saúde corporativa e bem-estar
-        </p>
+        <h2 className="text-2xl font-bold">Plataforma Educacional</h2>
+        <p className="text-muted-foreground">Cursos e treinamentos para saúde e performance</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <Input
@@ -2704,100 +1762,569 @@ function EducationContent() {
           />
         </div>
 
-        <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filtrar por" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="saude">Saúde</SelectItem>
-            <SelectItem value="mental">Saúde Mental</SelectItem>
-            <SelectItem value="nutricao">Nutrição</SelectItem>
-            <SelectItem value="fisica">Saúde Física</SelectItem>
-            <SelectItem value="sono">Sono</SelectItem>
-            <SelectItem value="lideranca">Liderança</SelectItem>
-            <SelectItem value="emocional">Inteligência Emocional</SelectItem>
-            <SelectItem value="produtividade">Produtividade</SelectItem>
-            <SelectItem value="comunicacao">Comunicação</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              filter === "all" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setFilter("all")}
+          >
+            Todos
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              filter === "featured" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setFilter("featured")}
+          >
+            Destaques
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              filter === "in-progress" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setFilter("in-progress")}
+          >
+            Em Andamento
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              filter === "completed" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setFilter("completed")}
+          >
+            Concluídos
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => (
-          <Card key={course.id} className="hover:shadow-lg transition-shadow">
+          <Card key={course.id} className="overflow-hidden flex flex-col">
+            <div className="relative">
+              <img src={course.image || "/placeholder.svg"} alt={course.title} className="w-full h-48 object-cover" />
+              {course.featured && <Badge className="absolute top-2 right-2 bg-yellow-500">Destaque</Badge>}
+            </div>
+
             <CardHeader>
               <div className="flex justify-between items-start">
-                {course.featured && (
-                  <Badge variant="secondary" className="mb-2">
-                    Destaque
-                  </Badge>
-                )}
+                <CardTitle>{course.title}</CardTitle>
+                <Badge variant="outline" className="capitalize">
+                  {course.category === "saude"
+                    ? "Saúde"
+                    : course.category === "mental"
+                      ? "Mental"
+                      : course.category === "nutricao"
+                        ? "Nutrição"
+                        : course.category === "fisica"
+                          ? "Física"
+                          : course.category === "sono"
+                            ? "Sono"
+                            : course.category}
+                </Badge>
               </div>
-              <CardTitle className="text-lg">{course.title}</CardTitle>
               <CardDescription>{course.description}</CardDescription>
             </CardHeader>
+
+            <CardContent className="flex-1">
+              <div className="flex items-center text-sm text-gray-500 mb-4">
+                <Clock className="h-4 w-4 mr-1" />
+                <span>{course.duration}</span>
+                <span className="mx-2">•</span>
+                <BookOpen className="h-4 w-4 mr-1" />
+                <span>{course.lessons} aulas</span>
+                <span className="mx-2">•</span>
+                <span className="text-yellow-500">★</span>
+                <span>{course.rating}</span>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>{course.progress}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: `${course.progress}%` }}></div>
+                </div>
+              </div>
+            </CardContent>
+
+            <div className="p-6 pt-0">
+              <Button className="w-full">
+                {course.progress === 0 ? (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Iniciar Curso
+                  </>
+                ) : course.progress === 100 ? (
+                  <>
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Certificado
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Continuar
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      {filteredCourses.length === 0 && (
+        <div className="text-center py-12">
+          <BookOpen className="h-12 w-12 mx-auto text-gray-400" />
+          <h3 className="mt-4 text-lg font-medium">Nenhum curso encontrado</h3>
+          <p className="mt-2 text-gray-500">Tente ajustar seus filtros ou termos de busca.</p>
+        </div>
+      )}
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Trilhas de Aprendizado</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Saúde Integral</CardTitle>
+              <CardDescription>Trilha completa para saúde física e mental</CardDescription>
+            </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Duração:</span>
-                    <div className="font-medium">{course.duration}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Lições:</span>
-                    <div className="font-medium">{course.lessons}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Categoria:</span>
-                    <div className="font-medium">{course.category}</div>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Avaliação:</span>
-                    <div className="font-medium">
-                      {course.rating} <span className="text-yellow-500">★</span>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>45%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "45%" }}></div>
+                </div>
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Fundamentos de Saúde</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Nutrição Básica</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Gestão do Estresse</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Sono Reparador</span>
+                </div>
+              </div>
+            </CardContent>
+            <div className="p-6 pt-0">
+              <Button variant="outline" className="w-full">
+                Continuar Trilha
+              </Button>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Alta Performance</CardTitle>
+              <CardDescription>Maximize sua produtividade e resultados</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>20%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "20%" }}></div>
+                </div>
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Fundamentos de Produtividade</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Gestão de Energia</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Foco e Concentração</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Hábitos de Alta Performance</span>
+                </div>
+              </div>
+            </CardContent>
+            <div className="p-6 pt-0">
+              <Button variant="outline" className="w-full">
+                Continuar Trilha
+              </Button>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Liderança em Saúde</CardTitle>
+              <CardDescription>Para gestores e líderes de equipe</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>0%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: "0%" }}></div>
+                </div>
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Cultura de Saúde</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Gestão de Equipes Saudáveis</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Métricas de Bem-estar</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">ROI em Saúde</span>
+                </div>
+              </div>
+            </CardContent>
+            <div className="p-6 pt-0">
+              <Button variant="outline" className="w-full">
+                Iniciar Trilha
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Benefícios Content
+function BenefitsContent() {
+  const [selectedView, setSelectedView] = useState("overview")
+  const [selectedDepartment, setSelectedDepartment] = useState("all")
+
+  const benefitsData = [
+    {
+      category: "Saúde",
+      items: [
+        { name: "Plano de Saúde", usage: 89, cost: 450000, satisfaction: 4.2 },
+        { name: "Plano Odontológico", usage: 67, cost: 120000, satisfaction: 4.0 },
+        { name: "Seguro de Vida", usage: 100, cost: 80000, satisfaction: 4.5 },
+      ],
+    },
+    {
+      category: "Bem-estar",
+      items: [
+        { name: "Vale Refeição", usage: 95, cost: 280000, satisfaction: 4.3 },
+        { name: "Vale Alimentação", usage: 78, cost: 150000, satisfaction: 4.1 },
+        { name: "Auxílio Academia", usage: 34, cost: 45000, satisfaction: 4.7 },
+      ],
+    },
+    {
+      category: "Desenvolvimento",
+      items: [
+        { name: "Auxílio Educação", usage: 23, cost: 75000, satisfaction: 4.8 },
+        { name: "Cursos e Certificações", usage: 45, cost: 95000, satisfaction: 4.6 },
+        { name: "Conferências", usage: 12, cost: 35000, satisfaction: 4.4 },
+      ],
+    },
+    {
+      category: "Transporte",
+      items: [
+        { name: "Vale Transporte", usage: 67, cost: 180000, satisfaction: 3.9 },
+        { name: "Estacionamento", usage: 89, cost: 120000, satisfaction: 4.1 },
+        { name: "Auxílio Combustível", usage: 34, cost: 85000, satisfaction: 4.0 },
+      ],
+    },
+  ]
+
+  const totalCost = benefitsData.reduce(
+    (acc, category) => acc + category.items.reduce((catAcc, item) => catAcc + item.cost, 0),
+    0,
+  )
+
+  const averageUsage = Math.round(
+    benefitsData.reduce((acc, category) => acc + category.items.reduce((catAcc, item) => catAcc + item.usage, 0), 0) /
+      benefitsData.reduce((acc, category) => acc + category.items.length, 0),
+  )
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Analytics de Benefícios Corporativos</h2>
+        <p className="text-muted-foreground">Análise consolidada de utilização e satisfação dos benefícios</p>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              selectedView === "overview" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setSelectedView("overview")}
+          >
+            Visão Geral
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              selectedView === "department" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setSelectedView("department")}
+          >
+            Por Departamento
+          </button>
+          <button
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              selectedView === "roi" ? "bg-background shadow-sm" : "text-muted-foreground"
+            }`}
+            onClick={() => setSelectedView("roi")}
+          >
+            ROI Benefícios
+          </button>
+        </div>
+
+        <select
+          value={selectedDepartment}
+          onChange={(e) => setSelectedDepartment(e.target.value)}
+          className="px-3 py-2 border rounded-lg"
+        >
+          <option value="all">Todos os Departamentos</option>
+          <option value="ti">Tecnologia</option>
+          <option value="rh">Recursos Humanos</option>
+          <option value="financeiro">Financeiro</option>
+          <option value="marketing">Marketing</option>
+          <option value="vendas">Vendas</option>
+        </select>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Custo Total</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">R$ {(totalCost / 1000).toFixed(0)}K</div>
+            <p className="text-xs text-muted-foreground">Por mês</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Utilização Média</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{averageUsage}%</div>
+            <p className="text-xs text-muted-foreground">Todos os benefícios</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Satisfação Geral</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">4.3</div>
+            <p className="text-xs text-muted-foreground">De 5.0</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">ROI Benefícios</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">285%</div>
+            <p className="text-xs text-muted-foreground">Retorno anual</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {selectedView === "overview" && (
+        <div className="space-y-6">
+          {benefitsData.map((category) => (
+            <Card key={category.category}>
+              <CardHeader>
+                <CardTitle>{category.category}</CardTitle>
+                <CardDescription>Análise detalhada dos benefícios de {category.category.toLowerCase()}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {category.items.map((item) => (
+                    <div
+                      key={item.name}
+                      className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center p-3 border rounded-lg"
+                    >
+                      <div className="font-medium">{item.name}</div>
+                      <div className="text-sm">
+                        <span className="text-muted-foreground">Utilização:</span>
+                        <div className="flex items-center mt-1">
+                          <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                            <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${item.usage}%` }}></div>
+                          </div>
+                          <span className="font-medium">{item.usage}%</span>
+                        </div>
+                      </div>
+                      <div className="text-sm">
+                        <span className="text-muted-foreground">Custo Mensal:</span>
+                        <div className="font-medium">R$ {(item.cost / 1000).toFixed(0)}K</div>
+                      </div>
+                      <div className="text-sm">
+                        <span className="text-muted-foreground">Satisfação:</span>
+                        <div className="font-medium flex items-center">
+                          {item.satisfaction} <span className="text-yellow-500 ml-1">★</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {selectedView === "department" && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Utilização por Departamento</CardTitle>
+            <CardDescription>Comparativo de uso dos benefícios entre departamentos</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { dept: "Tecnologia", planoSaude: 92, valeRefeicao: 98, auxEducacao: 45, auxAcademia: 28 },
+                { dept: "Marketing", planoSaude: 88, valeRefeicao: 95, auxEducacao: 32, auxAcademia: 41 },
+                { dept: "Vendas", planoSaude: 85, valeRefeicao: 92, auxEducacao: 18, auxAcademia: 35 },
+                { dept: "RH", planoSaude: 95, valeRefeicao: 100, auxEducacao: 67, auxAcademia: 58 },
+                { dept: "Financeiro", planoSaude: 90, valeRefeicao: 94, auxEducacao: 28, auxAcademia: 22 },
+              ].map((dept) => (
+                <div key={dept.dept} className="p-4 border rounded-lg">
+                  <h3 className="font-medium mb-3">{dept.dept}</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Plano Saúde:</span>
+                      <div className="font-medium">{dept.planoSaude}%</div>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Vale Refeição:</span>
+                      <div className="font-medium">{dept.valeRefeicao}%</div>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Aux. Educação:</span>
+                      <div className="font-medium">{dept.auxEducacao}%</div>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Aux. Academia:</span>
+                      <div className="font-medium">{dept.auxAcademia}%</div>
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-                <Progress value={course.progress} className="h-2" />
-                <div className="text-sm text-muted-foreground">Progresso: {course.progress}%</div>
+      {selectedView === "roi" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>ROI por Categoria</CardTitle>
+              <CardDescription>Retorno sobre investimento por tipo de benefício</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  { category: "Saúde", roi: 320, investment: 650, return: 2080 },
+                  { category: "Bem-estar", roi: 280, investment: 475, return: 1330 },
+                  { category: "Desenvolvimento", roi: 450, investment: 205, return: 922 },
+                  { category: "Transporte", roi: 180, investment: 385, return: 693 },
+                ].map((item) => (
+                  <div key={item.category} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <h4 className="font-medium">{item.category}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Investimento: R$ {item.investment}K | Retorno: R$ {item.return}K
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xl font-bold text-green-600">{item.roi}%</div>
+                      <div className="text-xs text-muted-foreground">ROI</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1">
-                    Continuar Curso
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
-                    Detalhes
-                  </Button>
+          <Card>
+            <CardHeader>
+              <CardTitle>Impacto nos Indicadores</CardTitle>
+              <CardDescription>Como os benefícios afetam métricas de RH</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm">Redução de Turnover</span>
+                    <span className="text-sm font-medium">-28%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-green-500 h-2 rounded-full" style={{ width: "28%" }}></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm">Aumento de Satisfação</span>
+                    <span className="text-sm font-medium">+35%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: "35%" }}></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm">Redução de Absenteísmo</span>
+                    <span className="text-sm font-medium">-22%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-purple-500 h-2 rounded-full" style={{ width: "22%" }}></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm">Aumento de Produtividade</span>
+                    <span className="text-sm font-medium">+18%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-orange-500 h-2 rounded-full" style={{ width: "18%" }}></div>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
-
-// AI Agents Content
-function AIAgentsContent() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">IA Agents</h2>
-        <p className="text-muted-foreground">Consultores virtuais especializados em saúde e bem-estar</p>
-      </div>
-      <Card>
-        <CardContent className="p-6">
-          <p className="text-muted-foreground">Conteúdo de IA Agents em desenvolvimento...</p>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
-
-// Remove duplicate functions
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("dashboard")
@@ -2840,8 +2367,6 @@ export default function Home() {
 
   return (
     <div className="h-screen flex flex-col">
-      <Header notifications={notifications} onClearNotifications={handleClearNotifications} />
-
       <div className="flex flex-1">
         <Sidebar
           activeSection={activeSection}
@@ -2850,15 +2375,21 @@ export default function Home() {
           onToggleCollapse={handleToggleCollapse}
         />
 
-        <main className="flex-1 p-6 overflow-y-auto">
-          {activeSection === "dashboard" && <DashboardContent />}
-          {activeSection === "analytics" && <AnalyticsContent />}
-          {activeSection === "roi" && <ROIContent />}
-          {activeSection === "isp" && <ISPContent />}
-          {activeSection === "questionnaires" && <QuestionnairesContent />}
-          {activeSection === "data" && <DataContent />}
-          {activeSection === "benefits" && <BenefitsContent />}
-        </main>
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${collapsed ? "ml-16" : "ml-64"}`}>
+          <Header notifications={notifications} onClearNotifications={handleClearNotifications} />
+
+          <main className="flex-1 p-6 overflow-y-auto">
+            {activeSection === "dashboard" && <DashboardContent />}
+            {activeSection === "analytics" && <AnalyticsContent />}
+            {activeSection === "roi" && <ROIContent />}
+            {activeSection === "isp" && <ISPContent />}
+            {activeSection === "questionnaires" && <QuestionnairesContent />}
+            {activeSection === "data" && <DataContent />}
+            {activeSection === "benefits" && <BenefitsContent />}
+            {activeSection === "ai-agents" && <AIAgentsContent />}
+            {activeSection === "education" && <EducationContent />}
+          </main>
+        </div>
       </div>
     </div>
   )
