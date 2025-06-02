@@ -388,17 +388,91 @@ export function DataContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Atividade Semanal</CardTitle>
-                <CardDescription>Dados agregados dos wearables</CardDescription>
+                <CardTitle>Frequência Cardíaca - Tendência Semanal</CardTitle>
+                <CardDescription>Batimentos por minuto (BPM) - Média da empresa</CardDescription>
               </CardHeader>
               <CardContent className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={wearableData}>
+                  <LineChart
+                    data={[
+                      { day: "Seg", bpm: 72, min: 65, max: 85 },
+                      { day: "Ter", bpm: 75, min: 68, max: 88 },
+                      { day: "Qua", bpm: 70, min: 62, max: 82 },
+                      { day: "Qui", bpm: 73, min: 66, max: 86 },
+                      { day: "Sex", bpm: 76, min: 69, max: 89 },
+                      { day: "Sab", bpm: 68, min: 60, max: 78 },
+                      { day: "Dom", bpm: 65, min: 58, max: 75 },
+                    ]}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="day" />
-                    <YAxis />
+                    <YAxis domain={[50, 100]} />
                     <Tooltip />
-                    <Bar dataKey="steps" fill="#8884d8" name="Passos" />
+                    <Line type="monotone" dataKey="bpm" stroke="#8884d8" strokeWidth={2} name="FC Média" />
+                    <Line type="monotone" dataKey="min" stroke="#82ca9d" strokeDasharray="5 5" name="Mínima" />
+                    <Line type="monotone" dataKey="max" stroke="#ffc658" strokeDasharray="5 5" name="Máxima" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Saturação de Oxigênio (SpO2)</CardTitle>
+                <CardDescription>Distribuição dos níveis de oxigenação</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: "Normal (95-100%)", value: 78, color: "#00C49F" },
+                        { name: "Limítrofe (90-94%)", value: 18, color: "#FFBB28" },
+                        { name: "Baixo (<90%)", value: 4, color: "#FF8042" },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {[
+                        { name: "Normal (95-100%)", value: 78, color: "#00C49F" },
+                        { name: "Limítrofe (90-94%)", value: 18, color: "#FFBB28" },
+                        { name: "Baixo (<90%)", value: 4, color: "#FF8042" },
+                      ].map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Qualidade do Sono</CardTitle>
+                <CardDescription>Análise dos padrões de sono dos colaboradores</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={[
+                      { stage: "Sono Profundo", duration: 1.8, ideal: 2.0 },
+                      { stage: "Sono Leve", duration: 3.2, ideal: 3.5 },
+                      { stage: "REM", duration: 1.5, ideal: 1.8 },
+                      { stage: "Acordado", duration: 0.7, ideal: 0.3 },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="stage" />
+                    <YAxis label={{ value: "Horas", angle: -90, position: "insideLeft" }} />
+                    <Tooltip formatter={(value) => [`${value}h`, ""]} />
+                    <Bar dataKey="duration" fill="#8884d8" name="Atual" />
+                    <Bar dataKey="ideal" fill="#82ca9d" name="Ideal" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -406,53 +480,268 @@ export function DataContent() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Dispositivos por Marca</CardTitle>
-                <CardDescription>Distribuição dos wearables conectados</CardDescription>
+                <CardTitle>Pressão Arterial - Distribuição</CardTitle>
+                <CardDescription>Classificação dos níveis pressóricos</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                      <span>Apple Watch</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-medium">456</div>
-                      <div className="text-xs text-muted-foreground">36.6%</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
+                    <div className="flex items-center space-x-3">
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span>Fitbit</span>
+                      <div>
+                        <p className="font-medium text-green-900">Normal</p>
+                        <p className="text-sm text-green-700">{"<120/80 mmHg"}</p>
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium">342</div>
-                      <div className="text-xs text-muted-foreground">27.4%</div>
+                      <div className="font-bold text-green-900">68%</div>
+                      <div className="text-xs text-green-600">847 colaboradores</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div>
+                        <p className="font-medium text-yellow-900">Pré-hipertensão</p>
+                        <p className="text-sm text-yellow-700">120-139/80-89 mmHg</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-yellow-900">22%</div>
+                      <div className="text-xs text-yellow-600">274 colaboradores</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                    <div className="flex items-center space-x-3">
                       <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                      <span>Samsung Galaxy</span>
+                      <div>
+                        <p className="font-medium text-orange-900">Hipertensão Estágio 1</p>
+                        <p className="text-sm text-orange-700">140-159/90-99 mmHg</p>
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium">289</div>
-                      <div className="text-xs text-muted-foreground">23.2%</div>
+                      <div className="font-bold text-orange-900">8%</div>
+                      <div className="text-xs text-orange-600">100 colaboradores</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                      <span>Garmin</span>
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div>
+                        <p className="font-medium text-red-900">Hipertensão Estágio 2</p>
+                        <p className="text-sm text-red-700">≥160/100 mmHg</p>
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium">160</div>
-                      <div className="text-xs text-muted-foreground">12.8%</div>
+                      <div className="font-bold text-red-900">2%</div>
+                      <div className="text-xs text-red-600">26 colaboradores</div>
                     </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Temperatura Corporal</CardTitle>
+                <CardDescription>Monitoramento contínuo - Últimas 24h</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={[
+                      { hour: "00h", temp: 36.2, normal_min: 36.1, normal_max: 37.2 },
+                      { hour: "04h", temp: 35.9, normal_min: 36.1, normal_max: 37.2 },
+                      { hour: "08h", temp: 36.5, normal_min: 36.1, normal_max: 37.2 },
+                      { hour: "12h", temp: 36.8, normal_min: 36.1, normal_max: 37.2 },
+                      { hour: "16h", temp: 37.0, normal_min: 36.1, normal_max: 37.2 },
+                      { hour: "20h", temp: 36.7, normal_min: 36.1, normal_max: 37.2 },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="hour" />
+                    <YAxis domain={[35, 38]} />
+                    <Tooltip formatter={(value) => [`${value}°C`, ""]} />
+                    <Line type="monotone" dataKey="temp" stroke="#8884d8" strokeWidth={2} name="Temperatura" />
+                    <Line
+                      type="monotone"
+                      dataKey="normal_min"
+                      stroke="#82ca9d"
+                      strokeDasharray="5 5"
+                      name="Limite Inferior"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="normal_max"
+                      stroke="#82ca9d"
+                      strokeDasharray="5 5"
+                      name="Limite Superior"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Níveis de Glicose</CardTitle>
+                <CardDescription>Monitoramento para colaboradores diabéticos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="p-3 bg-green-50 rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">78%</div>
+                      <div className="text-xs text-gray-600">Níveis Normais</div>
+                      <div className="text-xs text-gray-500">70-140 mg/dL</div>
+                    </div>
+                    <div className="p-3 bg-yellow-50 rounded-lg">
+                      <div className="text-2xl font-bold text-yellow-600">18%</div>
+                      <div className="text-xs text-gray-600">Pré-diabetes</div>
+                      <div className="text-xs text-gray-500">140-199 mg/dL</div>
+                    </div>
+                    <div className="p-3 bg-red-50 rounded-lg">
+                      <div className="text-2xl font-bold text-red-600">4%</div>
+                      <div className="text-xs text-gray-600">Diabetes</div>
+                      <div className="text-xs text-gray-500">≥200 mg/dL</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">Colaboradores Monitorados</p>
+                        <p className="text-sm text-muted-foreground">Com dispositivos CGM</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold">156</div>
+                        <div className="text-xs text-muted-foreground">12.5% do total</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">Alertas Enviados</p>
+                        <p className="text-sm text-muted-foreground">Últimas 24h</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-orange-600">23</div>
+                        <div className="text-xs text-muted-foreground">Níveis alterados</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">Média Geral</p>
+                        <p className="text-sm text-muted-foreground">Glicemia em jejum</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-green-600">95 mg/dL</div>
+                        <div className="text-xs text-muted-foreground">Dentro do normal</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Seção de Alertas e Insights */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Alertas de Saúde em Tempo Real</CardTitle>
+                <CardDescription>Monitoramento contínuo dos sinais vitais</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3 p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                    <div>
+                      <p className="font-medium text-red-900">Frequência Cardíaca Elevada</p>
+                      <p className="text-sm text-red-700">3 colaboradores com FC &gt; 100 BPM</p>
+                      <p className="text-xs text-red-600">Há 15 minutos</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+                    <div>
+                      <p className="font-medium text-yellow-900">SpO2 Baixa</p>
+                      <p className="text-sm text-yellow-700">1 colaborador com saturação &lt; 95%</p>
+                      <p className="text-xs text-yellow-600">Há 32 minutos</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
+                    <div>
+                      <p className="font-medium text-orange-900">Glicose Alterada</p>
+                      <p className="text-sm text-orange-700">2 colaboradores com níveis &gt; 180 mg/dL</p>
+                      <p className="text-xs text-orange-600">Há 1 hora</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full mt-2"></div>
+                    <div>
+                      <p className="font-medium text-blue-900">Sono Insuficiente</p>
+                      <p className="text-sm text-blue-700">12 colaboradores com &lt; 6h de sono</p>
+                      <p className="text-xs text-blue-600">Hoje</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Insights e Recomendações</CardTitle>
+                <CardDescription>Análise inteligente dos dados coletados</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                    <h4 className="font-semibold text-gray-900 mb-2">💡 Insight Principal</h4>
+                    <p className="text-sm text-gray-700">
+                      Colaboradores com melhor qualidade de sono apresentam 23% menos episódios de frequência cardíaca
+                      elevada durante o trabalho.
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                      <div>
+                        <p className="font-medium text-green-900">Melhoria Detectada</p>
+                        <p className="text-sm text-gray-600">Pressão arterial média reduziu 5% no último mês</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                      <div>
+                        <p className="font-medium text-orange-900">Atenção Necessária</p>
+                        <p className="text-sm text-gray-600">
+                          Aumento de 12% nos casos de SpO2 baixa no departamento de TI
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                      <div>
+                        <p className="font-medium text-blue-900">Recomendação</p>
+                        <p className="text-sm text-gray-600">Implementar pausas ativas para melhorar oxigenação</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <Button className="w-full">Ver Relatório Completo</Button>
                   </div>
                 </div>
               </CardContent>
