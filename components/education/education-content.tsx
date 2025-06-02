@@ -129,6 +129,16 @@ export function EducationContent() {
             <TabsTrigger value="featured">Destaques</TabsTrigger>
             <TabsTrigger value="in-progress">Em Andamento</TabsTrigger>
             <TabsTrigger value="completed">Concluídos</TabsTrigger>
+            <TabsTrigger value="saude">Saúde</TabsTrigger>
+            <TabsTrigger value="mental">Mental</TabsTrigger>
+            <TabsTrigger value="nutricao">Nutrição</TabsTrigger>
+            <TabsTrigger value="fisica">Física</TabsTrigger>
+            <TabsTrigger value="sono">Sono</TabsTrigger>
+            <TabsTrigger value="roi">ROI em Saúde</TabsTrigger>
+            <TabsTrigger value="questionarios">Questionários</TabsTrigger>
+            <TabsTrigger value="dados">Dados de Saúde</TabsTrigger>
+            <TabsTrigger value="academy">Academy</TabsTrigger>
+            <TabsTrigger value="beneficios">Benefícios</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -330,6 +340,201 @@ export function EducationContent() {
             <CardFooter>
               <Button variant="outline" className="w-full">
                 Iniciar Trilha
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>ROI em Saúde</CardTitle>
+              <CardDescription>Análises financeiras detalhadas da empresa</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>100%</span>
+                </div>
+                <Progress value={100} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Análises Financeiras</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Calculadora Interativa</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Métricas de Impacto</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Comparações com Benchmarks</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Ver Análises
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Questionários</CardTitle>
+              <CardDescription>Questionários validados de saúde mental, bem-estar e liderança</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>50%</span>
+                </div>
+                <Progress value={50} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Aplicação de Questionários</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Acompanhamento</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Análise de Resultados</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Relatórios Personalizados</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Responder Questionários
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Dados de Saúde</CardTitle>
+              <CardDescription>Integração com planos de saúde e RH</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>75%</span>
+                </div>
+                <Progress value={75} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Integração com Planos de Saúde</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Conectores para Wearables</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Dashboard de Monitoramento</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Análises Preditivas</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Ver Dados
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Academy</CardTitle>
+              <CardDescription>Cursos especializados em saúde e bem-estar</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>60%</span>
+                </div>
+                <Progress value={60} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Cursos Especializados</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Trilhas de Aprendizagem</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Certificações</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Conteúdo Baseado em Evidências</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Acessar Academy
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Benefícios</CardTitle>
+              <CardDescription>Gestão completa de parceiros (Wellhub, Zenklub, etc.)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Progresso</span>
+                  <span>30%</span>
+                </div>
+                <Progress value={30} />
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Gestão de Parceiros</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <span className="text-sm">Análise de Custos</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-amber-500 mr-2" />
+                  <span className="text-sm">Métricas de Satisfação</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-gray-300 mr-2" />
+                  <span className="text-sm text-gray-500">Otimização de Investimentos</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Gerenciar Benefícios
               </Button>
             </CardFooter>
           </Card>
