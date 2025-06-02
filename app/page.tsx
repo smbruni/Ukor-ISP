@@ -48,6 +48,7 @@ import { DataContent } from "@/components/data/data-content"
 import { ISPContent } from "@/components/isp/isp-content"
 import { AcademyContent } from "@/components/academy/academy-content"
 import { BenefitsContent } from "@/components/benefits/benefits-content"
+import { SettingsContent } from "@/components/settings/settings-content"
 
 // Header Component
 function Header({ notifications, onClearNotifications }) {
@@ -1215,7 +1216,7 @@ export default function Home() {
           {activeSection === "data" && <DataContent />}
           {activeSection === "education" && <AcademyContent />}
           {activeSection === "benefits" && <BenefitsContent />}
-          {activeSection === "settings" && <div>Settings Content</div>}
+          {activeSection === "settings" && <SettingsContent />}
           {activeSection === "help" && <div>Help Content</div>}
         </main>
       </div>
