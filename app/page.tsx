@@ -46,6 +46,8 @@ import { ROIContent } from "@/components/roi/roi-content"
 import { QuestionnairesContent } from "@/components/questionnaires/questionnaires-content"
 import { DataContent } from "@/components/data/data-content"
 import { ISPContent } from "@/components/isp/isp-content"
+import { AcademyContent } from "@/components/academy/academy-content"
+import { BenefitsContent } from "@/components/benefits/benefits-content"
 
 // Header Component
 function Header({ notifications, onClearNotifications }) {
@@ -1211,8 +1213,8 @@ export default function Home() {
           {activeSection === "roi" && <ROIContent />}
           {activeSection === "questionnaires" && <QuestionnairesContent />}
           {activeSection === "data" && <DataContent />}
-          {activeSection === "education" && <div>Education Content</div>}
-          {activeSection === "benefits" && <div>Benefits Content</div>}
+          {activeSection === "education" && <AcademyContent />}
+          {activeSection === "benefits" && <BenefitsContent />}
           {activeSection === "settings" && <div>Settings Content</div>}
           {activeSection === "help" && <div>Help Content</div>}
         </main>
