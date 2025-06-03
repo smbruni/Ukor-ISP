@@ -25,6 +25,7 @@ import {
 
 export function BenefitsContent() {
   const [activeTab, setActiveTab] = useState("overview")
+  const [showAddPartnerModal, setShowAddPartnerModal] = useState(false)
 
   // Dados dos parceiros de bem-estar
   const wellnessPartners = [
@@ -79,6 +80,23 @@ export function BenefitsContent() {
       contract: "Anual",
       features: ["Terapia", "Coaching", "Meditação", "Autoconhecimento"],
     },
+    {
+      id: 4,
+      name: "TotalPass",
+      category: "Fitness & Academias",
+      logo: "💪",
+      description: "Rede de academias e estúdios em todo o Brasil",
+      users: 1823,
+      utilization: 81.3,
+      satisfaction: 4.5,
+      monthlyCost: 52870,
+      costPerUser: 29.0,
+      savings: 267000,
+      roi: 325,
+      status: "Ativo",
+      contract: "Anual",
+      features: ["Academias", "Natação", "Pilates", "Crossfit"],
+    },
   ]
 
   // Dados dos benefícios tradicionais
@@ -129,6 +147,39 @@ export function BenefitsContent() {
       satisfaction: 3.8,
     },
   ]
+
+  // Dados do plano de saúde (Unimed)
+  const healthPlanData = {
+    sinistrality: 110.04,
+    activeBeneficiaries: 987,
+    totalCost: 2803650.76,
+    utilizationRate: 97, // Porcentagem de pessoas que utilizam o plano
+    utilizationCount: 957,
+    products: ["UNIFÁCIL FLEX ESTADUAL", "UNIPART FLEX NACIONAL", "SEGUROS UNIMED"],
+    companyDistribution: {
+      Euroville: 250,
+      "Auto Japan Norte": 180,
+      "Delta Filmes": 120,
+      // Adicione as outras empresas aqui
+    },
+    demographics: {
+      holdersPercentage: 68.46,
+      dependentsPercentage: 31.54,
+    },
+    serviceUtilization: {
+      electiveConsultationsCost: 335914,
+      electiveConsultationsCount: 2990,
+      emergencyRoomCost: 120825,
+      emergencyRoomCount: 1568,
+      hospitalizationsCost: 1352894,
+      hospitalizationsCount: 123,
+      examsCost: 455764,
+      examsCount: 14066,
+    },
+    majorUsers: [
+      // Adicione dados sobre os maiores usuários e casos crônicos aqui
+    ],
+  }
 
   // Dados de custos por departamento
   const departmentCosts = [
@@ -234,6 +285,47 @@ export function BenefitsContent() {
     { name: "Vittude", value: 1.5, color: "#ef4444" },
     { name: "Zenklub", value: 0.5, color: "#8b5cf6" },
   ]
+
+  // Componente de modal para adicionar parceiro
+  const AddPartnerModal = () => {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6 w-full max-w-md">
+          <h3 className="text-xl font-bold mb-4">Adicionar Novo Parceiro</h3>
+          <form className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Nome</label>
+              <input type="text" className="w-full p-2 border rounded-md" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Categoria</label>
+              <select className="w-full p-2 border rounded-md">
+                <option>Fitness & Bem-estar</option>
+                <option>Saúde Mental</option>
+                <option>Nutrição</option>
+                <option>Academias</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Descrição</label>
+              <textarea className="w-full p-2 border rounded-md" rows={3}></textarea>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Custo Mensal (R$)</label>
+              <input type="number" className="w-full p-2 border rounded-md" />
+            </div>
+            <div className="flex gap-2 pt-2">
+              <Button onClick={() => setShowAddPartnerModal(false)} variant="outline" className="flex-1">
+                Cancelar
+              </Button>
+              <Button className="flex-1">Salvar</Button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -376,6 +468,31 @@ export function BenefitsContent() {
         </TabsContent>
 
         <TabsContent value="wellness" className="space-y-6">
+          {/* Botão de adicionar parceiro */}
+          <div className="flex justify-end">
+            <Button onClick={() => setShowAddPartnerModal(true)} className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-plus"
+              >
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+              Adicionar Parceiro
+            </Button>
+          </div>
+
+          {/* Modal de adicionar parceiro */}
+          {showAddPartnerModal && <AddPartnerModal />}
+
           {/* Parceiros de Bem-estar */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {wellnessPartners.map((partner) => (
