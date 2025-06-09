@@ -18,6 +18,7 @@ import {
   Cell,
   LineChart,
   Line,
+  Legend,
 } from "recharts"
 
 export function PredictiveAnalysis() {
@@ -602,19 +603,45 @@ export function PredictiveAnalysis() {
                 <Activity className="h-5 w-5" />
                 {costPrediction.name}
               </CardTitle>
-              <CardDescription>Projeção de custos por categoria com e sem intervenções</CardDescription>
+              <CardDescription>
+                Comparação entre custos atuais, projeção sem intervenção e custos esperados com gestão ativa
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-medium mb-3">Comparativo de Custos</h4>
+                  <div className="mb-2 flex flex-wrap gap-4">
+                    <div className="flex items-center gap-1">
+                      <div className="w-4 h-4 bg-[#ff7300]"></div>
+                      <span className="text-sm">Custo Atual</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-4 h-4 bg-[#ff4444]"></div>
+                      <span className="text-sm">Tendência sem Intervenção</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-4 h-4 bg-[#00c49f]"></div>
+                      <span className="text-sm">Custo com Gestão</span>
+                    </div>
+                  </div>
                   <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={costPrediction.categories}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="categoria" />
                         <YAxis />
-                        <Tooltip formatter={(value) => [`R$ ${(value / 1000).toFixed(0)}K`, ""]} />
+                        <Tooltip
+                          formatter={(value) => [`R$ ${(value / 1000).toFixed(0)}K`, ""]}
+                          labelFormatter={(label) => `Categoria: ${label}`}
+                        />
+                        <Legend
+                          payload={[
+                            { value: "Custo Atual", type: "square", color: "#ff7300" },
+                            { value: "Sem Intervenção", type: "square", color: "#ff4444" },
+                            { value: "Com Gestão", type: "square", color: "#00c49f" },
+                          ]}
+                        />
                         <Bar dataKey="custo_atual" fill="#ff7300" name="Custo Atual" />
                         <Bar dataKey="tendencia_sem_intervencao" fill="#ff4444" name="Sem Intervenção" />
                         <Bar dataKey="custo_com_gestao" fill="#00c49f" name="Com Gestão" />
