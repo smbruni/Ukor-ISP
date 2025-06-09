@@ -156,13 +156,6 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
       description: "Dados reais Grupo Fedla",
     },
     {
-      id: "predictive",
-      label: "IA Preditiva",
-      icon: Brain,
-      badge: "IA",
-      description: "Modelos preditivos avançados",
-    },
-    {
       id: "analytics",
       label: "Análises Preditivas",
       icon: TrendingUp,
@@ -631,7 +624,6 @@ export default function Home() {
           {activeSection === "benefits" && <BenefitsContent />}
           {activeSection === "settings" && <SettingsContent />}
           {activeSection === "help" && <div>Help Content</div>}
-          {activeSection === "predictive" && <PredictiveAnalysis />}
           {activeSection === "care-management" && <CareManagement />}
           {activeSection === "sinistralidade-reduction" && <SinistralidadeReductionProgram />}
           {activeSection === "pediatric-analysis" && <PediatricAnalysis />}
