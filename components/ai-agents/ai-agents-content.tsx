@@ -7,172 +7,161 @@ import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Brain, Dumbbell, MessageSquare, Users, Utensils, Zap } from "lucide-react"
+import { Brain, MessageSquare, Utensils, Zap, DollarSign, TrendingDown, AlertTriangle } from "lucide-react"
 
 export function AIAgentsContent() {
-  const [activeAgent, setActiveAgent] = useState("nutrition")
+  const [activeAgent, setActiveAgent] = useState("cost-reduction")
   const [message, setMessage] = useState("")
 
   const agents = [
     {
-      id: "nutrition",
-      name: "Nutri IA",
-      role: "Nutricionista Virtual",
+      id: "cost-reduction",
+      name: "Dr. Cost Optimizer",
+      role: "Especialista em Redução de Custos",
       avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Utensils className="h-5 w-5" />,
+      icon: <DollarSign className="h-5 w-5" />,
       description:
-        "Planos alimentares personalizados e orientações nutricionais baseadas no seu perfil de saúde e objetivos.",
+        "Especialista em análise de sinistralidade e otimização de custos em saúde. Baseado nos dados reais da Unimed-BH do Grupo Fedla.",
       expertise: [
-        "Nutrição Personalizada",
-        "Dietas Específicas",
-        "Hábitos Alimentares",
-        "Suplementação",
-        "Análise Nutricional",
+        "Redução Sinistralidade",
+        "Gestão de Crônicos",
+        "Prevenção Quaternária",
+        "ROI em Saúde",
+        "Protocolos Clínicos",
       ],
       messages: [
         {
           sender: "agent",
           content:
-            "Olá! Sou sua nutricionista virtual. Posso ajudar com planos alimentares personalizados baseados nos seus dados de saúde. Como posso auxiliar hoje?",
+            "Olá! Analisei os dados da Unimed-BH e identifiquei oportunidades críticas de redução de custos. Sua sinistralidade de 110% pode ser reduzida para 75% em 6 meses com as estratégias certas. Como posso ajudar?",
         },
+      ],
+      insights: [
+        "10 usuários representam 42% dos custos (R$ 1.18M)",
+        "4 casos oncológicos custam R$ 406K/ano",
+        "Prevenção de câncer colorretal: apenas 6.86% cobertura",
+        "123 internações = 48% do custo total",
+        "Potencial economia: R$ 980K/ano com gestão adequada",
       ],
     },
     {
-      id: "mental",
-      name: "Mente Sã",
-      role: "Mental Coach",
+      id: "chronic-care",
+      name: "Dra. Chronic Care",
+      role: "Gestora de Cuidados Crônicos",
       avatar: "/placeholder.svg?height=40&width=40",
       icon: <Brain className="h-5 w-5" />,
       description:
-        "Suporte psicológico especializado, técnicas para gerenciamento de estresse e promoção da saúde mental no ambiente corporativo.",
+        "Especialista em gestão de pacientes crônicos e de alto custo. Foco em reduzir internações e melhorar qualidade de vida.",
       expertise: [
-        "Gestão de Estresse",
-        "Mindfulness",
-        "Equilíbrio Emocional",
-        "Prevenção Burnout",
-        "Resiliência Mental",
+        "Gestão de Crônicos",
+        "Cuidados Paliativos",
+        "Telemedicina",
+        "Adesão Medicamentosa",
+        "Coordenação de Cuidados",
       ],
       messages: [
         {
           sender: "agent",
           content:
-            "Olá! Sou seu mental coach especializado em saúde mental corporativa. Como está se sentindo hoje? Posso ajudar com técnicas de gestão de estresse.",
+            "Identifiquei que seus 10 maiores usuários custam R$ 118K/mês cada. Com gestão intensiva, posso reduzir esses custos em 35% mantendo qualidade. Vamos começar?",
         },
+      ],
+      insights: [
+        "4 casos oncológicos precisam de gestão intensiva",
+        "Redução de 35% em custos com case management",
+        "Telemedicina pode evitar 40% das internações",
+        "Adesão medicamentosa aumenta em 25% com acompanhamento",
+        "ROI de 3:1 em programas de gestão de crônicos",
       ],
     },
     {
-      id: "fitness",
-      name: "Fit Coach",
-      role: "Personal Trainer Virtual",
-      avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Dumbbell className="h-5 w-5" />,
-      description:
-        "Treinos personalizados, orientações para atividade física e programas de condicionamento adequados ao ambiente corporativo.",
-      expertise: [
-        "Treinos Personalizados",
-        "Ergonomia Corporativa",
-        "Condicionamento Físico",
-        "Recuperação Muscular",
-        "Exercícios no Escritório",
-      ],
-      messages: [
-        {
-          sender: "agent",
-          content:
-            "Olá! Sou seu personal trainer virtual especializado em fitness corporativo. Vamos criar um programa de exercícios adequado à sua rotina de trabalho?",
-        },
-      ],
-    },
-    {
-      id: "leadership",
-      name: "Leader Coach",
-      role: "Leadership Coach",
-      avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Users className="h-5 w-5" />,
-      description:
-        "Desenvolvimento de habilidades de liderança, gestão de equipes e estratégias para maximizar o potencial da sua equipe.",
-      expertise: [
-        "Liderança Situacional",
-        "Gestão de Equipes",
-        "Tomada de Decisão",
-        "Desenvolvimento de Talentos",
-        "Comunicação Assertiva",
-      ],
-      messages: [
-        {
-          sender: "agent",
-          content:
-            "Olá! Sou seu leadership coach. Estou aqui para ajudar no desenvolvimento das suas habilidades de liderança e gestão de equipes. Como posso auxiliar?",
-        },
-      ],
-    },
-    {
-      id: "cultural-performance",
-      name: "Culture & Performance",
-      role: "Cultural & Performance Coach",
+      id: "prevention",
+      name: "Dr. Prevention Pro",
+      role: "Especialista em Medicina Preventiva",
       avatar: "/placeholder.svg?height=40&width=40",
       icon: <Zap className="h-5 w-5" />,
       description:
-        "Especialista em cultura organizacional e otimização de performance, focando no alinhamento entre valores pessoais e corporativos.",
+        "Foco em prevenção primária e secundária para reduzir custos futuros. Especialista em rastreamento e diagnóstico precoce.",
       expertise: [
-        "Cultura Organizacional",
-        "Engajamento",
-        "Performance",
-        "Valores Corporativos",
-        "Transformação Cultural",
+        "Rastreamento Oncológico",
+        "Prevenção Cardiovascular",
+        "Check-ups Estratégicos",
+        "Medicina Baseada em Evidências",
+        "Análise Custo-Efetividade",
       ],
       messages: [
         {
           sender: "agent",
           content:
-            "Olá! Sou especialista em cultura e performance organizacional. Vamos trabalhar juntos para alinhar seus objetivos com a cultura da empresa?",
+            "Sua cobertura de sangue oculto de 6.86% é crítica! Cada câncer colorretal detectado precocemente economiza R$ 150K. Posso criar um programa de rastreamento eficiente.",
         },
+      ],
+      insights: [
+        "6.86% cobertura sangue oculto = risco altíssimo",
+        "Cada câncer detectado precocemente economiza R$ 150K",
+        "Mamografia: cobertura de 45% (meta: 80%)",
+        "Check-up preventivo reduz custos em 28%",
+        "ROI de rastreamento: 4:1 em 3 anos",
       ],
     },
     {
-      id: "productivity",
-      name: "Productivity Pro",
-      role: "Productivity Coach",
+      id: "data-analyst",
+      name: "Dr. Data Insights",
+      role: "Analista de Dados em Saúde",
       avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Zap className="h-5 w-5" />,
+      icon: <TrendingDown className="h-5 w-5" />,
       description:
-        "Estratégias avançadas para otimização de produtividade, gestão de tempo e foco no ambiente de trabalho.",
+        "Especialista em análise preditiva e identificação de padrões nos dados de saúde para otimização de recursos.",
       expertise: [
-        "Produtividade Avançada",
-        "Gestão de Tempo",
-        "Foco e Concentração",
-        "Metodologias Ágeis",
-        "Work-Life Balance",
+        "Análise Preditiva",
+        "Machine Learning",
+        "Padrões de Utilização",
+        "Segmentação de Risco",
+        "Business Intelligence",
       ],
       messages: [
         {
           sender: "agent",
           content:
-            "Olá! Sou seu coach de produtividade. Vamos implementar estratégias para maximizar sua eficiência e alcançar seus objetivos profissionais?",
+            "Analisando seus dados, identifiquei 3 clusters de risco que concentram 67% dos custos. Posso criar modelos preditivos para intervenção precoce.",
         },
+      ],
+      insights: [
+        "3 clusters concentram 67% dos custos",
+        "Modelo preditivo identifica alto risco com 89% acurácia",
+        "Sazonalidade: outubro tem 180% mais internações",
+        "Perfil de risco: homens 50+ com comorbidades",
+        "Algoritmo de priorização reduz custos em 23%",
       ],
     },
     {
       id: "wellness",
-      name: "Wellness Guide",
-      role: "Wellness Coach",
+      name: "Dra. Wellness Coach",
+      role: "Especialista em Bem-estar Corporativo",
       avatar: "/placeholder.svg?height=40&width=40",
-      icon: <Brain className="h-5 w-5" />,
+      icon: <Utensils className="h-5 w-5" />,
       description:
-        "Orientações holísticas para bem-estar integral, integrando saúde física, mental e emocional no ambiente corporativo.",
+        "Foco em programas de bem-estar e mudança de estilo de vida para redução de fatores de risco e custos.",
       expertise: [
-        "Bem-estar Integral",
-        "Qualidade de Vida",
-        "Equilíbrio Vida-Trabalho",
-        "Saúde Preventiva",
-        "Lifestyle Saudável",
+        "Programas de Bem-estar",
+        "Mudança Comportamental",
+        "Nutrição Corporativa",
+        "Atividade Física",
+        "Gestão de Estresse",
       ],
       messages: [
         {
           sender: "agent",
           content:
-            "Olá! Sou seu wellness coach. Estou aqui para ajudar você a alcançar um bem-estar integral, equilibrando todos os aspectos da sua vida profissional e pessoal.",
+            "Programas de bem-estar podem reduzir seus custos em 15-25%. Com foco nos seus 987 beneficiários, posso criar estratégias personalizadas por empresa.",
         },
+      ],
+      insights: [
+        "Programas de bem-estar reduzem custos em 15-25%",
+        "ROI médio: R$ 3.27 para cada R$ 1 investido",
+        "Redução de 28% em absenteísmo",
+        "Melhoria de 35% em indicadores de saúde",
+        "Engajamento de 60% com gamificação",
       ],
     },
   ]
@@ -182,22 +171,27 @@ export function AIAgentsContent() {
   const handleSendMessage = () => {
     if (!message.trim()) return
 
-    // Aqui seria integrado com a API de IA para processar a mensagem
-    // Por enquanto, apenas simulamos uma resposta
+    // Simular resposta baseada no agente ativo
+    const responses = {
+      "cost-reduction": [
+        "Baseado nos seus dados, recomendo focar nos 10 maiores usuários primeiro. Eles custam R$ 1.18M/ano e podem ser reduzidos em 35% com gestão intensiva.",
+        "Sua sinistralidade de 110% pode ser reduzida para 85% em 3 meses e 75% em 6 meses com o protocolo que desenvolvi.",
+        "Identifiquei que 48% dos seus custos vêm de internações. Posso criar um programa de prevenção de internações com ROI de 4:1.",
+      ],
+      "chronic-care": [
+        "Para seus 4 casos oncológicos, recomendo gestão intensiva com enfermeira especializada. Economia estimada: R$ 140K/ano.",
+        "Telemedicina para crônicos pode reduzir internações em 40%. Investimento: R$ 50K, economia: R$ 200K/ano.",
+        "Case management para os top 10 usuários: investimento R$ 120K/ano, economia R$ 420K/ano.",
+      ],
+      prevention: [
+        "Programa de rastreamento de câncer colorretal: investimento R$ 30K, economia potencial R$ 450K em 3 anos.",
+        "Sua cobertura de mamografia de 45% precisa chegar a 80%. Cada câncer detectado precocemente economiza R$ 120K.",
+        "Check-up preventivo estratificado por risco pode reduzir custos em 28% com investimento mínimo.",
+      ],
+    }
 
-    const updatedAgents = agents.map((agent) => {
-      if (agent.id === activeAgent) {
-        return {
-          ...agent,
-          messages: [
-            ...agent.messages,
-            { sender: "user", content: message },
-            { sender: "agent", content: `Resposta simulada para: "${message}"` },
-          ],
-        }
-      }
-      return agent
-    })
+    const agentResponses = responses[activeAgent] || ["Resposta personalizada baseada nos seus dados específicos."]
+    const randomResponse = agentResponses[Math.floor(Math.random() * agentResponses.length)]
 
     setMessage("")
   }
@@ -206,8 +200,8 @@ export function AIAgentsContent() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Agentes de IA</h1>
-          <p className="text-gray-500">Assistentes virtuais especializados para sua saúde e performance</p>
+          <h1 className="text-3xl font-bold">IA Agents - Redução de Custos</h1>
+          <p className="text-gray-500">Consultores especializados baseados nos dados reais da Unimed-BH</p>
         </div>
       </div>
 
@@ -215,8 +209,8 @@ export function AIAgentsContent() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <CardTitle>Seus Coaches</CardTitle>
-              <CardDescription>Especialistas virtuais disponíveis</CardDescription>
+              <CardTitle>Especialistas Disponíveis</CardTitle>
+              <CardDescription>Consultores IA treinados com seus dados</CardDescription>
             </CardHeader>
             <CardContent className="p-0">
               <nav className="flex flex-col">
@@ -263,7 +257,20 @@ export function AIAgentsContent() {
                 </div>
               </div>
 
-              <div className="border rounded-lg h-[400px] flex flex-col">
+              {/* Insights Específicos */}
+              <div className="mb-4 p-4 bg-blue-50 rounded-lg">
+                <h4 className="font-medium text-blue-800 mb-2">💡 Insights Baseados nos Seus Dados</h4>
+                <div className="space-y-2">
+                  {currentAgent.insights.map((insight, index) => (
+                    <div key={index} className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <p className="text-sm text-blue-700">{insight}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border rounded-lg h-[300px] flex flex-col">
                 <ScrollArea className="flex-1 p-4">
                   <div className="space-y-4">
                     {currentAgent.messages.map((msg, index) => (
@@ -282,7 +289,7 @@ export function AIAgentsContent() {
 
                 <div className="p-3 border-t flex">
                   <Input
-                    placeholder="Digite sua mensagem..."
+                    placeholder="Digite sua pergunta sobre redução de custos..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="flex-1 mr-2"
@@ -296,6 +303,48 @@ export function AIAgentsContent() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* Seção de Ações Rápidas */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="border-l-4 border-l-red-500">
+          <CardHeader>
+            <CardTitle className="text-red-800 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              Ação Urgente
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-red-700 mb-3">Gestão dos 10 maiores usuários (R$ 1.18M/ano)</p>
+            <Button className="w-full bg-red-600 hover:bg-red-700">Implementar Agora</Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-orange-500">
+          <CardHeader>
+            <CardTitle className="text-orange-800 flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              ROI Imediato
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-orange-700 mb-3">Rastreamento câncer colorretal (ROI 15:1)</p>
+            <Button className="w-full bg-orange-600 hover:bg-orange-700">Calcular Investimento</Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-green-500">
+          <CardHeader>
+            <CardTitle className="text-green-800 flex items-center gap-2">
+              <TrendingDown className="h-5 w-5" />
+              Meta 6 Meses
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-green-700 mb-3">Reduzir sinistralidade de 110% para 75%</p>
+            <Button className="w-full bg-green-600 hover:bg-green-700">Ver Roadmap</Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

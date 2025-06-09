@@ -51,6 +51,8 @@ import { UnimedAnalysis } from "@/components/health-plans/unimed-analysis"
 import { PredictiveAnalysis } from "@/components/predictive/predictive-analysis"
 import { CareManagement } from "@/components/care/care-management"
 import { SinistralidadeReductionProgram } from "@/components/sinistralidade/reduction-program"
+import { PediatricAnalysis } from "@/components/pediatric/pediatric-analysis"
+import { AIAgentsContent } from "@/components/ai-agents/ai-agents-content"
 
 // Header Component
 function Header({ notifications, onClearNotifications }) {
@@ -229,6 +231,13 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
       icon: TrendingDown,
       badge: "URGENTE",
       description: "Programa 110% → 75% em 6 meses",
+    },
+    {
+      id: "pediatric-analysis",
+      label: "Análise Pediátrica",
+      icon: Heart,
+      badge: "NOVO",
+      description: "Análise detalhada de exames pediátricos",
     },
   ]
 
@@ -558,89 +567,6 @@ function DashboardContent() {
   )
 }
 
-// Analytics Content
-function AnalyticsContent() {
-  const [selectedModel, setSelectedModel] = useState("burnout")
-  const [timeRange, setTimeRange] = useState("3m")
-
-  const modelsData = {
-    burnout: {
-      title: "Modelo de Burnout",
-      description: "Previsão de risco de esgotamento profissional",
-      accuracy: 94.2,
-      alerts: 23,
-      prevented: 156,
-      savings: 890,
-      chartData: [
-        { month: "Jan", risco: 15, atual: 12 },
-        { month: "Fev", risco: 18, atual: 14 },
-        { month: "Mar", risco: 22, atual: 19 },
-        { month: "Abr", risco: 25, atual: 23 },
-        { month: "Mai", risco: 28, atual: 26 },
-        { month: "Jun", risco: 32, atual: 29 },
-      ],
-      factors: [
-        { name: "Sobrecarga de trabalho", value: 85, color: "bg-red-500" },
-        { name: "Qualidade do sono", value: 72, color: "bg-amber-500" },
-        { name: "Estresse percebido", value: 78, color: "bg-red-500" },
-        { name: "Suporte social", value: 45, color: "bg-green-500" },
-      ],
-      alerts_list: [
-        { name: "João Silva - Desenvolvimento", risk: 89, action: "Intervenção imediata", type: "danger" },
-        { name: "Maria Santos - Marketing", risk: 67, action: "Monitoramento", type: "warning" },
-        { name: "Carlos Oliveira - Vendas", risk: 45, action: "Prevenção", type: "info" },
-      ],
-    },
-  }
-
-  const currentModel = modelsData[selectedModel]
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Análises Preditivas</h2>
-        <p className="text-muted-foreground">Modelos de IA para previsão de riscos e tendências de saúde</p>
-      </div>
-      {/* Resto do conteúdo de analytics... */}
-    </div>
-  )
-}
-
-// AI Agents Content
-function AIAgentsContent() {
-  const [selectedAgent, setSelectedAgent] = useState(null)
-
-  const agents = [
-    {
-      id: 1,
-      name: "Nutri IA",
-      role: "Nutricionista Virtual",
-      description: "Especialista em nutrição corporativa e hábitos alimentares saudáveis",
-      avatar: "🥗",
-      specialties: [
-        "Planejamento nutricional",
-        "Análise de hábitos alimentares",
-        "Receitas saudáveis",
-        "Educação nutricional",
-      ],
-      status: "online",
-      conversations: 1247,
-      rating: 4.9,
-      lastMessage: "Olá! Como posso ajudar com sua alimentação hoje?",
-    },
-  ]
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">IA Agents</h2>
-        <p className="text-muted-foreground">Consultores virtuais especializados em saúde e bem-estar</p>
-      </div>
-      {/* Resto do conteúdo de AI agents... */}
-    </div>
-  )
-}
-
 export default function Home() {
   const [activeSection, setActiveSection] = useState("dashboard")
   const [collapsed, setCollapsed] = useState(false)
@@ -695,7 +621,7 @@ export default function Home() {
         <main className="p-6">
           {activeSection === "dashboard" && <DashboardContent />}
           {activeSection === "unimed" && <UnimedAnalysis />}
-          {activeSection === "analytics" && <AnalyticsContent />}
+          {activeSection === "analytics" && <PredictiveAnalysis />}
           {activeSection === "ai-agents" && <AIAgentsContent />}
           {activeSection === "isp" && <ISPContent />}
           {activeSection === "roi" && <ROIContent />}
@@ -708,6 +634,7 @@ export default function Home() {
           {activeSection === "predictive" && <PredictiveAnalysis />}
           {activeSection === "care-management" && <CareManagement />}
           {activeSection === "sinistralidade-reduction" && <SinistralidadeReductionProgram />}
+          {activeSection === "pediatric-analysis" && <PediatricAnalysis />}
         </main>
       </div>
     </div>
