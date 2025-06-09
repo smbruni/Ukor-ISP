@@ -26,6 +26,7 @@ import {
   Shield,
   HeartHandshake,
   TrendingDown,
+  Stethoscope,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -51,8 +52,8 @@ import { UnimedAnalysis } from "@/components/health-plans/unimed-analysis"
 import { PredictiveAnalysis } from "@/components/predictive/predictive-analysis"
 import { CareManagement } from "@/components/care/care-management"
 import { SinistralidadeReductionProgram } from "@/components/sinistralidade/reduction-program"
-import { PediatricAnalysis } from "@/components/pediatric/pediatric-analysis"
 import { AIAgentsContent } from "@/components/ai-agents/ai-agents-content"
+import { CareLinesContent } from "@/components/care-lines/care-lines-content"
 
 // Header Component
 function Header({ notifications, onClearNotifications }) {
@@ -156,6 +157,13 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
       description: "Dados reais Grupo Fedla",
     },
     {
+      id: "care-lines",
+      label: "Linhas de Cuidado",
+      icon: Stethoscope,
+      badge: "10",
+      description: "Protocolos estratégicos de saúde",
+    },
+    {
       id: "analytics",
       label: "Análises Preditivas",
       icon: TrendingUp,
@@ -224,13 +232,6 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
       icon: TrendingDown,
       badge: "URGENTE",
       description: "Programa 110% → 75% em 6 meses",
-    },
-    {
-      id: "pediatric-analysis",
-      label: "Análise Pediátrica",
-      icon: Heart,
-      badge: "NOVO",
-      description: "Análise detalhada de exames pediátricos",
     },
   ]
 
@@ -614,6 +615,7 @@ export default function Home() {
         <main className="p-6">
           {activeSection === "dashboard" && <DashboardContent />}
           {activeSection === "unimed" && <UnimedAnalysis />}
+          {activeSection === "care-lines" && <CareLinesContent />}
           {activeSection === "analytics" && <PredictiveAnalysis />}
           {activeSection === "ai-agents" && <AIAgentsContent />}
           {activeSection === "isp" && <ISPContent />}
@@ -626,7 +628,6 @@ export default function Home() {
           {activeSection === "help" && <div>Help Content</div>}
           {activeSection === "care-management" && <CareManagement />}
           {activeSection === "sinistralidade-reduction" && <SinistralidadeReductionProgram />}
-          {activeSection === "pediatric-analysis" && <PediatricAnalysis />}
         </main>
       </div>
     </div>
