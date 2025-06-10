@@ -286,7 +286,7 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
 
   return (
     <div
-      className={`fixed left-0 top-0 h-full bg-background/95 backdrop-blur-md border-r border-border shadow-lg transition-all duration-300 z-40 ${
+      className={`fixed left-0 top-0 h-screen bg-background/95 backdrop-blur-md border-r border-border shadow-lg transition-all duration-300 z-40 flex flex-col ${
         collapsed ? "w-16" : "w-64"
       }`}
     >
@@ -331,7 +331,8 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto py-4">
+      {/* Menu Items */}
+      <div className="flex-1 overflow-y-auto py-4 min-h-0">
         <nav className="space-y-1 px-3">
           {menuItems.map((item) => (
             <MenuItem key={item.id} item={item} />
@@ -339,7 +340,8 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
         </nav>
       </div>
 
-      <div className="border-t border-border p-3">
+      {/* Bottom Items */}
+      <div className="border-t border-border p-3 flex-shrink-0">
         <nav className="space-y-1">
           {bottomItems.map((item) => (
             <MenuItem key={item.id} item={item} isBottom />
