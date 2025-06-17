@@ -27,6 +27,7 @@ import {
   HeartHandshake,
   TrendingDown,
   Stethoscope,
+  Download,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -54,6 +55,7 @@ import { CareManagement } from "@/components/care/care-management"
 import { SinistralidadeReductionProgram } from "@/components/sinistralidade/reduction-program"
 import { AIAgentsContent } from "@/components/ai-agents/ai-agents-content"
 import { CareLinesContent } from "@/components/care-lines/care-lines-content"
+import { ExportData } from "@/components/export/export-data"
 
 // Header Component
 function Header({ notifications, onClearNotifications }) {
@@ -232,6 +234,13 @@ function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }
       icon: TrendingDown,
       badge: "URGENTE",
       description: "Programa 110% → 75% em 6 meses",
+    },
+    {
+      id: "export",
+      label: "Exportar Dados",
+      icon: Download,
+      badge: "Novo",
+      description: "Relatórios e exportação de dados",
     },
   ]
 
@@ -630,6 +639,7 @@ export default function Home() {
           {activeSection === "help" && <div>Help Content</div>}
           {activeSection === "care-management" && <CareManagement />}
           {activeSection === "sinistralidade-reduction" && <SinistralidadeReductionProgram />}
+          {activeSection === "export" && <ExportData />}
         </main>
       </div>
     </div>
