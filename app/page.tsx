@@ -435,11 +435,11 @@ function DashboardContent() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">68%</div>
+            <div className="text-2xl font-bold text-red-600">110.04%</div>
             <p className="text-xs text-muted-foreground">Meta: &lt;75%</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowDown className="h-3 w-3 mr-1" />
-              <span>-15% vs ano anterior</span>
+            <div className="mt-2 flex items-center text-xs text-red-500">
+              <ArrowUp className="h-3 w-3 mr-1" />
+              <span>+35% acima da meta</span>
             </div>
           </CardContent>
         </Card>
@@ -475,13 +475,13 @@ function DashboardContent() {
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Wellbeing Score</CardTitle>
-            <CardDescription>Escala 0-10</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Wellbeing Score</CardTitle>
+            <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">7.8</div>
-            <p className="text-xs text-muted-foreground">Meta: &gt;7.5</p>
+            <p className="text-xs text-muted-foreground">Escala 0-10</p>
             <div className="mt-2 flex items-center text-xs text-green-500">
               <ArrowUp className="h-3 w-3 mr-1" />
               <span>+1.2 vs ano anterior</span>
@@ -656,22 +656,22 @@ export default function Home() {
   const [notifications, setNotifications] = useState([
     {
       id: 1,
-      title: "Sinistralidade Crítica",
-      message: "Grupo Fedla atingiu 110% de sinistralidade. Ação imediata necessária.",
+      title: "Risco de Burnout",
+      message: "23 colaboradores com alto risco de burnout identificados pela IA.",
       timestamp: Date.now() - 60000,
       read: false,
     },
     {
       id: 2,
-      title: "Casos Oncológicos",
-      message: "4 novos casos oncológicos identificados. Gestão de crônicos recomendada.",
+      title: "Sinistralidade Crítica",
+      message: "Sinistralidade atingiu 110.04% - muito acima da meta de 75%.",
       timestamp: Date.now() - 3600000,
       read: false,
     },
     {
       id: 3,
-      title: "Prevenção Crítica",
-      message: "Cobertura de sangue oculto em 6.86% - risco de diagnósticos tardios.",
+      title: "Presenteísmo Elevado",
+      message: "18% dos colaboradores com produtividade reduzida por estresse.",
       timestamp: Date.now() - 86400000,
       read: true,
     },
