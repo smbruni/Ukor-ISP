@@ -38,12 +38,12 @@ import { BenefitsContent } from "@/components/benefits/benefits-content"
 import { SettingsContent } from "@/components/settings/settings-content"
 import { UnimedAnalysis } from "@/components/health-plans/unimed-analysis"
 import { PredictiveAnalysis } from "@/components/predictive/predictive-analysis"
-import { CareManagement } from "@/components/care/care-management"
 import { SinistralidadeReductionProgram } from "@/components/sinistralidade/reduction-program"
 import { AIAgentsContent } from "@/components/ai-agents/ai-agents-content"
 import { CareLinesContent } from "@/components/care-lines/care-lines-content"
 import { ExportData } from "@/components/export/export-data"
 import PerformanceEvaluation from "@/components/performance/performance-evaluation"
+import { WellnessProgramsContent } from "@/components/wellness/wellness-programs-content"
 
 import DashboardContent from "@/components/dashboard/dashboard-content" // moved out for brevity (keeps original dashboard code)
 
@@ -139,7 +139,7 @@ function Sidebar({ active, setActive, collapsed, toggle }) {
     { id: "ai-agents", label: "IA Agents", icon: Brain, badge: "5" },
     { id: "education", label: "Academy", icon: BookOpen },
     { id: "benefits", label: "Benefícios", icon: DollarSign, badge: "4" },
-    { id: "care-management", label: "Gestão de Cuidados", icon: HeartHandshake, badge: "47" },
+    { id: "wellness-programs", label: "Programas de Bem-Estar", icon: HeartHandshake, badge: "12" },
     { id: "sinistralidade-reduction", label: "Redução Sinistralidade", icon: TrendingDown, badge: "URGENTE" },
     { id: "export", label: "Exportar Dados", icon: Download, badge: "Novo" },
   ]
@@ -260,7 +260,7 @@ export default function Home() {
           {section === "benefits" && <BenefitsContent />}
           {section === "settings" && <SettingsContent />}
           {section === "help" && <div>Help Content</div>}
-          {section === "care-management" && <CareManagement />}
+          {section === "wellness-programs" && <WellnessProgramsContent />}
           {section === "sinistralidade-reduction" && <SinistralidadeReductionProgram />}
           {section === "export" && <ExportData />}
         </main>
