@@ -3,109 +3,144 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Database, FileText, Download, Upload, RefreshCw, AlertTriangle, CheckCircle, Clock } from "lucide-react"
+import { Progress } from "@/components/ui/progress"
+import { Database, Activity, AlertCircle, CheckCircle, Clock, Download, RefreshCw, FileText } from "lucide-react"
 
 export function DataContent() {
   const dataSources = [
     {
-      name: "Unimed-BH",
-      type: "Plano de Saúde",
-      status: "connected",
+      name: "Unimed-BH API",
+      status: "online",
       lastSync: "2 min atrás",
-      records: "2.847.392",
+      records: "1.2M",
       quality: 98,
     },
     {
       name: "Sistema RH",
-      type: "Recursos Humanos",
-      status: "connected",
+      status: "online",
       lastSync: "5 min atrás",
-      records: "1.247",
+      records: "45K",
       quality: 95,
     },
     {
-      name: "Folha de Pagamento",
-      type: "Financeiro",
+      name: "Plataforma Wellness",
       status: "warning",
-      lastSync: "2 horas atrás",
-      records: "1.247",
+      lastSync: "1h atrás",
+      records: "230K",
       quality: 87,
     },
     {
-      name: "Sistema de Ponto",
-      type: "Presença",
-      status: "connected",
+      name: "Telemedicina",
+      status: "online",
       lastSync: "1 min atrás",
-      records: "45.892",
+      records: "89K",
       quality: 99,
     },
     {
-      name: "Pesquisas Internas",
-      type: "Engajamento",
-      status: "error",
-      lastSync: "1 dia atrás",
-      records: "892",
-      quality: 72,
+      name: "Check-ups",
+      status: "offline",
+      lastSync: "3h atrás",
+      records: "156K",
+      quality: 92,
     },
   ]
 
-  const dataMetrics = [
+  const qualityMetrics = [
+    { metric: "Completude", value: 94, target: 95, status: "warning" },
+    { metric: "Consistência", value: 98, target: 95, status: "good" },
+    { metric: "Precisão", value: 96, target: 90, status: "good" },
+    { metric: "Atualidade", value: 89, target: 85, status: "good" },
+  ]
+
+  const reports = [
     {
-      title: "Total de Registros",
-      value: "2.9M",
-      change: "+12%",
-      trend: "up",
-      icon: Database,
+      name: "Relatório Executivo Mensal",
+      type: "PDF",
+      size: "2.3 MB",
+      generated: "Hoje, 08:30",
+      status: "ready",
     },
     {
-      title: "Qualidade Média",
-      value: "91%",
-      change: "+3%",
-      trend: "up",
-      icon: CheckCircle,
+      name: "Análise de Sinistralidade",
+      type: "Excel",
+      size: "5.1 MB",
+      generated: "Ontem, 18:45",
+      status: "ready",
     },
     {
-      title: "Fontes Ativas",
-      value: "5",
-      change: "0",
-      trend: "stable",
-      icon: RefreshCw,
+      name: "Dashboard Interativo",
+      type: "HTML",
+      size: "890 KB",
+      generated: "Hoje, 09:15",
+      status: "processing",
     },
     {
-      title: "Última Sincronização",
-      value: "1 min",
-      change: "-30s",
-      trend: "up",
-      icon: Clock,
+      name: "Dados Brutos - Q4",
+      type: "CSV",
+      size: "45.2 MB",
+      generated: "2 dias atrás",
+      status: "ready",
     },
   ]
+
+  const exportOptions = [
+    {
+      name: "Dados Completos",
+      description: "Todos os dados disponíveis",
+      format: "CSV/Excel",
+      size: "~120 MB",
+    },
+    {
+      name: "Relatório Executivo",
+      description: "Resumo executivo com KPIs",
+      format: "PDF",
+      size: "~2 MB",
+    },
+    {
+      name: "Dashboard Personalizado",
+      description: "Visualizações interativas",
+      format: "HTML",
+      size: "~1 MB",
+    },
+    {
+      name: "API Endpoints",
+      description: "Acesso programático aos dados",
+      format: "JSON",
+      size: "Variável",
+    },
+  ]
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "online":
+        return <CheckCircle className="h-4 w-4 text-green-500" />
+      case "warning":
+        return <AlertCircle className="h-4 w-4 text-yellow-500" />
+      case "offline":
+        return <AlertCircle className="h-4 w-4 text-red-500" />
+      default:
+        return <Clock className="h-4 w-4 text-gray-500" />
+    }
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "connected":
+      case "online":
         return "bg-green-100 text-green-800"
       case "warning":
         return "bg-yellow-100 text-yellow-800"
-      case "error":
+      case "offline":
         return "bg-red-100 text-red-800"
       default:
         return "bg-gray-100 text-gray-800"
     }
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "connected":
-        return <CheckCircle className="h-4 w-4 text-green-500" />
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />
-      case "error":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />
-      default:
-        return <Clock className="h-4 w-4 text-gray-500" />
-    }
+  const getQualityColor = (value: number, target: number) => {
+    if (value >= target) return "text-green-600"
+    if (value >= target - 5) return "text-yellow-600"
+    return "text-red-600"
   }
 
   return (
@@ -114,93 +149,51 @@ export function DataContent() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gestão de Dados</h1>
-          <p className="text-gray-600">Monitoramento e integração das fontes de dados de saúde</p>
+          <p className="text-gray-600">Monitoramento e controle de qualidade dos dados de saúde</p>
         </div>
         <div className="flex items-center space-x-2">
-          <Badge variant="secondary" className="bg-green-100 text-green-800">
-            5 Fontes Ativas
+          <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+            Última atualização: há 2 min
           </Badge>
           <Button>
-            <Upload className="h-4 w-4 mr-2" />
-            Importar Dados
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Sincronizar
           </Button>
         </div>
       </div>
 
-      {/* Data Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {dataMetrics.map((metric, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-2 rounded-lg bg-blue-100">
-                  <metric.icon className="h-5 w-5 text-blue-600" />
-                </div>
-                <div
-                  className={`flex items-center space-x-1 ${
-                    metric.trend === "up"
-                      ? "text-green-600"
-                      : metric.trend === "down"
-                        ? "text-red-600"
-                        : "text-gray-600"
-                  }`}
-                >
-                  <span className="text-sm font-medium">{metric.change}</span>
-                </div>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">{metric.title}</p>
-                <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Data Sources */}
+      {/* Data Sources Status */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Database className="h-5 w-5 text-blue-500" />
-            Fontes de Dados Integradas
+            Status das Fontes de Dados
           </CardTitle>
-          <CardDescription>Status em tempo real das conexões e qualidade dos dados</CardDescription>
+          <CardDescription>Monitoramento em tempo real das conexões e sincronizações</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {dataSources.map((source, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   {getStatusIcon(source.status)}
                   <div>
-                    <h4 className="font-semibold text-gray-900">{source.name}</h4>
-                    <p className="text-sm text-gray-600">{source.type}</p>
+                    <h3 className="font-semibold text-gray-900">{source.name}</h3>
+                    <p className="text-sm text-gray-600">Última sincronização: {source.lastSync}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-6">
                   <div className="text-center">
-                    <p className="text-sm font-medium text-gray-900">{source.records}</p>
-                    <p className="text-xs text-gray-500">registros</p>
+                    <p className="text-sm text-gray-600">Registros</p>
+                    <p className="font-semibold">{source.records}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm font-medium text-gray-900">{source.quality}%</p>
-                    <p className="text-xs text-gray-500">qualidade</p>
-                    <Progress value={source.quality} className="w-16 h-1 mt-1" />
+                    <p className="text-sm text-gray-600">Qualidade</p>
+                    <p className={`font-semibold ${getQualityColor(source.quality, 90)}`}>{source.quality}%</p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500">{source.lastSync}</p>
-                    <Badge className={getStatusColor(source.status)} variant="outline">
-                      {source.status === "connected" ? "Conectado" : source.status === "warning" ? "Atenção" : "Erro"}
-                    </Badge>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <RefreshCw className="h-3 w-3" />
-                    </Button>
-                    <Button size="sm" variant="outline">
-                      <Download className="h-3 w-3" />
-                    </Button>
-                  </div>
+                  <Badge className={getStatusColor(source.status)}>
+                    {source.status === "online" ? "Online" : source.status === "warning" ? "Atenção" : "Offline"}
+                  </Badge>
                 </div>
               </div>
             ))}
@@ -208,116 +201,45 @@ export function DataContent() {
         </CardContent>
       </Card>
 
-      {/* Data Quality and Reports */}
+      {/* Tabs for different sections */}
       <Tabs defaultValue="quality" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="quality">Qualidade dos Dados</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="quality">Qualidade</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="reports">Relatórios</TabsTrigger>
-          <TabsTrigger value="exports">Exportações</TabsTrigger>
+          <TabsTrigger value="export">Exportar</TabsTrigger>
         </TabsList>
 
         <TabsContent value="quality">
           <Card>
             <CardHeader>
-              <CardTitle>Análise de Qualidade dos Dados</CardTitle>
-              <CardDescription>Métricas de integridade, consistência e completude</CardDescription>
+              <CardTitle>Métricas de Qualidade dos Dados</CardTitle>
+              <CardDescription>Indicadores de qualidade e integridade dos dados coletados</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h4 className="font-semibold text-green-800 mb-2">Dados Completos</h4>
-                    <p className="text-2xl font-bold text-green-700">94.2%</p>
-                    <p className="text-sm text-green-600">Campos obrigatórios preenchidos</p>
-                  </div>
-                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h4 className="font-semibold text-blue-800 mb-2">Consistência</h4>
-                    <p className="text-2xl font-bold text-blue-700">91.8%</p>
-                    <p className="text-sm text-blue-600">Dados sem conflitos</p>
-                  </div>
-                  <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                    <h4 className="font-semibold text-yellow-800 mb-2">Atualização</h4>
-                    <p className="text-2xl font-bold text-yellow-700">87.5%</p>
-                    <p className="text-sm text-gray-600">Dados atualizados {"(< 24h)"}</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900">Problemas Identificados</h4>
-                  <div className="space-y-3">
-                    <div className="p-3 border-l-4 border-l-red-500 bg-red-50 rounded-lg">
-                      <h5 className="font-medium text-red-800">Dados Duplicados</h5>
-                      <p className="text-sm text-red-600">
-                        156 registros duplicados encontrados na base de colaboradores
-                      </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {qualityMetrics.map((metric, index) => (
+                  <div key={index} className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-gray-900">{metric.metric}</span>
+                      <span className={`font-bold ${getQualityColor(metric.value, metric.target)}`}>
+                        {metric.value}%
+                      </span>
                     </div>
-                    <div className="p-3 border-l-4 border-l-yellow-500 bg-yellow-50 rounded-lg">
-                      <h5 className="font-medium text-yellow-800">Campos Incompletos</h5>
-                      <p className="text-sm text-yellow-600">23% dos registros de saúde sem data de nascimento</p>
-                    </div>
-                    <div className="p-3 border-l-4 border-l-blue-500 bg-blue-50 rounded-lg">
-                      <h5 className="font-medium text-blue-800">Sincronização Atrasada</h5>
-                      <p className="text-sm text-blue-600">Sistema de pesquisas com 1 dia de atraso</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="reports">
-          <Card>
-            <CardHeader>
-              <CardTitle>Relatórios Disponíveis</CardTitle>
-              <CardDescription>Relatórios pré-configurados para análise de dados</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  {
-                    name: "Relatório de Sinistralidade",
-                    description: "Análise completa dos custos médicos por departamento",
-                    lastGenerated: "Hoje, 09:30",
-                    format: "PDF",
-                  },
-                  {
-                    name: "Dashboard Executivo",
-                    description: "KPIs principais para tomada de decisão da liderança",
-                    lastGenerated: "Hoje, 08:00",
-                    format: "Excel",
-                  },
-                  {
-                    name: "Análise de Absenteísmo",
-                    description: "Padrões de ausências correlacionados com saúde",
-                    lastGenerated: "Ontem, 17:45",
-                    format: "PDF",
-                  },
-                  {
-                    name: "Relatório de Bem-estar",
-                    description: "Métricas de efetividade dos programas de saúde",
-                    lastGenerated: "Ontem, 16:20",
-                    format: "Excel",
-                  },
-                ].map((report, index) => (
-                  <div key={index} className="p-4 border rounded-lg hover:bg-gray-50">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-gray-900">{report.name}</h4>
-                      <Badge variant="outline">{report.format}</Badge>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-3">{report.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Último: {report.lastGenerated}</span>
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
-                          <FileText className="h-3 w-3 mr-1" />
-                          Ver
-                        </Button>
-                        <Button size="sm">
-                          <Download className="h-3 w-3 mr-1" />
-                          Baixar
-                        </Button>
-                      </div>
+                    <Progress value={metric.value} className="h-2" />
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <span>Meta: {metric.target}%</span>
+                      <span
+                        className={
+                          metric.value >= metric.target
+                            ? "text-green-600"
+                            : metric.value >= metric.target - 5
+                              ? "text-yellow-600"
+                              : "text-red-600"
+                        }
+                      >
+                        {metric.value >= metric.target ? "✓ Atingida" : "⚠ Abaixo da meta"}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -326,70 +248,155 @@ export function DataContent() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="exports">
+        <TabsContent value="analytics">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total de Registros</p>
+                    <p className="text-2xl font-bold text-gray-900">2.1M</p>
+                  </div>
+                  <Database className="h-8 w-8 text-blue-500" />
+                </div>
+                <div className="mt-2">
+                  <div className="flex items-center text-sm">
+                    <Activity className="h-4 w-4 text-green-500 mr-1" />
+                    <span className="text-green-600">+12% este mês</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Processados Hoje</p>
+                    <p className="text-2xl font-bold text-gray-900">45.2K</p>
+                  </div>
+                  <Activity className="h-8 w-8 text-green-500" />
+                </div>
+                <div className="mt-2">
+                  <div className="flex items-center text-sm">
+                    <Clock className="h-4 w-4 text-blue-500 mr-1" />
+                    <span className="text-blue-600">{"< 24h"}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Taxa de Erro</p>
+                    <p className="text-2xl font-bold text-gray-900">0.3%</p>
+                  </div>
+                  <AlertCircle className="h-8 w-8 text-yellow-500" />
+                </div>
+                <div className="mt-2">
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
+                    <span className="text-green-600">-0.2% vs mês anterior</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Uptime</p>
+                    <p className="text-2xl font-bold text-gray-900">99.8%</p>
+                  </div>
+                  <CheckCircle className="h-8 w-8 text-green-500" />
+                </div>
+                <div className="mt-2">
+                  <div className="flex items-center text-sm">
+                    <Activity className="h-4 w-4 text-green-500 mr-1" />
+                    <span className="text-green-600">Excelente</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="reports">
           <Card>
             <CardHeader>
-              <CardTitle>Exportações de Dados</CardTitle>
-              <CardDescription>Histórico e configuração de exportações personalizadas</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-purple-500" />
+                Relatórios Disponíveis
+              </CardTitle>
+              <CardDescription>Relatórios gerados automaticamente e sob demanda</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div>
-                    <h4 className="font-semibold">Nova Exportação</h4>
-                    <p className="text-sm text-gray-600">Configure uma nova exportação personalizada de dados</p>
-                  </div>
-                  <Button>
-                    <Upload className="h-4 w-4 mr-2" />
-                    Configurar
-                  </Button>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-semibold">Exportações Recentes</h4>
-                  {[
-                    {
-                      name: "Dados Completos - Q1 2024",
-                      date: "15/04/2024",
-                      size: "2.3 GB",
-                      status: "Concluído",
-                    },
-                    {
-                      name: "Relatório Mensal - Março",
-                      date: "01/04/2024",
-                      size: "45 MB",
-                      status: "Concluído",
-                    },
-                    {
-                      name: "Análise Preditiva - Dados Históricos",
-                      date: "28/03/2024",
-                      size: "156 MB",
-                      status: "Processando",
-                    },
-                  ].map((exportItem, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                {reports.map((report, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center space-x-4">
+                      <FileText className="h-5 w-5 text-gray-500" />
                       <div>
-                        <h5 className="font-medium">{exportItem.name}</h5>
+                        <h3 className="font-semibold text-gray-900">{report.name}</h3>
                         <p className="text-sm text-gray-600">
-                          {exportItem.date} • {exportItem.size}
+                          {report.type} • {report.size} • Gerado: {report.generated}
                         </p>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge
-                          variant={exportItem.status === "Concluído" ? "default" : "secondary"}
-                          className={exportItem.status === "Concluído" ? "bg-green-100 text-green-800" : ""}
-                        >
-                          {exportItem.status}
-                        </Badge>
-                        {exportItem.status === "Concluído" && (
-                          <Button size="sm" variant="outline">
-                            <Download className="h-3 w-3" />
-                          </Button>
-                        )}
-                      </div>
                     </div>
-                  ))}
-                </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge
+                        className={
+                          report.status === "ready" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                        }
+                      >
+                        {report.status === "ready" ? "Pronto" : "Processando"}
+                      </Badge>
+                      {report.status === "ready" && (
+                        <Button size="sm" variant="outline">
+                          <Download className="h-4 w-4 mr-1" />
+                          Baixar
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="export">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Download className="h-5 w-5 text-green-500" />
+                Exportar Dados
+              </CardTitle>
+              <CardDescription>Diferentes opções de exportação para análises externas</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {exportOptions.map((option, index) => (
+                  <div key={index} className="p-4 border rounded-lg">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{option.name}</h3>
+                        <p className="text-sm text-gray-600 mt-1">{option.description}</p>
+                      </div>
+                      <Badge variant="outline">{option.format}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Tamanho: {option.size}</span>
+                      <Button size="sm">
+                        <Download className="h-4 w-4 mr-1" />
+                        Exportar
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

@@ -1,301 +1,492 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
-import { DollarSign, TrendingUp, Calculator, Target, BarChart3, PieChart } from "lucide-react"
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+} from "recharts"
+import { TrendingUp, DollarSign, Calculator, Clock, ArrowUp, ArrowDown, Download, Eye } from "lucide-react"
 
 export function ROIContent() {
-  const roiData = [
-    { month: "Jan", investimento: 280000, economia: 420000, roi: 150 },
-    { month: "Fev", investimento: 295000, economia: 465000, roi: 158 },
-    { month: "Mar", investimento: 310000, economia: 520000, roi: 168 },
-    { month: "Abr", investimento: 285000, economia: 485000, roi: 170 },
-    { month: "Mai", investimento: 320000, economia: 580000, roi: 181 },
-    { month: "Jun", investimento: 298000, economia: 545000, roi: 183 },
-    { month: "Jul", investimento: 315000, economia: 610000, roi: 194 },
-    { month: "Ago", investimento: 305000, economia: 595000, roi: 195 },
-    { month: "Set", investimento: 325000, economia: 650000, roi: 200 },
-    { month: "Out", investimento: 340000, economia: 720000, roi: 212 },
-    { month: "Nov", investimento: 355000, economia: 780000, roi: 220 },
-    { month: "Dez", investimento: 370000, economia: 850000, roi: 230 },
+  // Dados de evolução do ROI
+  const roiEvolutionData = [
+    { month: "Jan", roi: 180, investimento: 250000, economia: 450000 },
+    { month: "Fev", roi: 195, investimento: 280000, economia: 546000 },
+    { month: "Mar", roi: 210, investimento: 300000, economia: 630000 },
+    { month: "Abr", roi: 225, investimento: 320000, economia: 720000 },
+    { month: "Mai", roi: 240, investimento: 340000, economia: 816000 },
+    { month: "Jun", roi: 255, investimento: 360000, economia: 918000 },
+    { month: "Jul", roi: 270, investimento: 380000, economia: 1026000 },
+    { month: "Ago", roi: 285, investimento: 400000, economia: 1140000 },
+    { month: "Set", roi: 300, investimento: 420000, economia: 1260000 },
+    { month: "Out", roi: 315, investimento: 440000, economia: 1386000 },
+    { month: "Nov", roi: 330, investimento: 460000, economia: 1518000 },
+    { month: "Dez", roi: 347, investimento: 480000, economia: 1665600 },
   ]
 
+  // Dados de distribuição da economia
+  const economyDistributionData = [
+    { name: "Redução Absenteísmo", value: 35, color: "#3b82f6" },
+    { name: "Menor Turnover", value: 25, color: "#10b981" },
+    { name: "Produtividade", value: 20, color: "#f59e0b" },
+    { name: "Plano de Saúde", value: 15, color: "#ef4444" },
+    { name: "Outros", value: 5, color: "#8b5cf6" },
+  ]
+
+  // Dados de projeção
+  const projectionData = [
+    { year: "2024", roi: 347, investimento: 2800000, economia: 9716000 },
+    { year: "2025", roi: 385, investimento: 3200000, economia: 12320000 },
+    { year: "2026", roi: 420, investimento: 3600000, economia: 15120000 },
+    { year: "2027", roi: 450, investimento: 4000000, economia: 18000000 },
+  ]
+
+  // Dados de investimento por área
   const investmentAreas = [
     {
-      area: "Programas de Prevenção",
-      investimento: 1200000,
-      economia: 2800000,
-      roi: 233,
-      impacto: "Redução de 35% em internações evitáveis",
+      area: "Programas de Bem-Estar",
+      investimento: 850000,
+      economia: 2975000,
+      roi: 350,
       status: "excellent",
+      description: "Ginástica laboral, mindfulness, nutrição",
     },
     {
-      area: "Gestão de Crônicos",
-      investimento: 800000,
-      economia: 1600000,
-      roi: 200,
-      impacto: "Controle de 89% dos casos de diabetes",
-      status: "good",
+      area: "Prevenção de Doenças",
+      investimento: 650000,
+      economia: 2275000,
+      roi: 350,
+      status: "excellent",
+      description: "Check-ups, vacinas, exames preventivos",
     },
     {
       area: "Saúde Mental",
-      investimento: 600000,
-      economia: 1080000,
-      roi: 180,
-      impacto: "Redução de 42% em afastamentos por estresse",
+      investimento: 480000,
+      economia: 1440000,
+      roi: 300,
       status: "good",
+      description: "Terapia, apoio psicológico, workshops",
     },
     {
-      area: "Telemedicina",
-      investimento: 400000,
-      economia: 640000,
-      roi: 160,
-      impacto: "28% das consultas realizadas remotamente",
-      status: "attention",
+      area: "Ergonomia e Segurança",
+      investimento: 320000,
+      economia: 896000,
+      roi: 280,
+      status: "good",
+      description: "Equipamentos, treinamentos, adequações",
     },
     {
-      area: "Programas de Bem-estar",
-      investimento: 500000,
-      economia: 750000,
-      roi: 150,
-      impacto: "Melhoria de 25% no engajamento",
-      status: "attention",
+      area: "Tecnologia em Saúde",
+      investimento: 280000,
+      economia: 756000,
+      roi: 270,
+      status: "good",
+      description: "Apps, wearables, telemedicina",
     },
-  ]
-
-  const projectedROI = [
-    { year: "2024", atual: 195, projetado: 195 },
-    { year: "2025", atual: null, projetado: 245 },
-    { year: "2026", atual: null, projetado: 280 },
-    { year: "2027", atual: null, projetado: 320 },
+    {
+      area: "Comunicação e Engajamento",
+      investimento: 220000,
+      economia: 374000,
+      roi: 170,
+      status: "attention",
+      description: "Campanhas, eventos, materiais educativos",
+    },
   ]
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "excellent":
-        return "border-l-green-500 bg-green-50"
+        return "bg-green-100 text-green-800 border-green-200"
       case "good":
-        return "border-l-blue-500 bg-blue-50"
+        return "bg-blue-100 text-blue-800 border-blue-200"
       case "attention":
-        return "border-l-yellow-500 bg-yellow-50"
+        return "bg-yellow-100 text-yellow-800 border-yellow-200"
       default:
-        return "border-l-gray-500 bg-gray-50"
+        return "bg-gray-100 text-gray-800 border-gray-200"
     }
   }
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value)
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "excellent":
+        return "Excelente"
+      case "good":
+        return "Bom"
+      case "attention":
+        return "Atenção"
+      default:
+        return "N/A"
+    }
   }
 
   return (
-    <div className="space-y-6">
+    <div className="h-full flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">ROI em Saúde</h1>
-          <p className="text-gray-600">Análise do retorno sobre investimento em programas de saúde corporativa</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Badge variant="secondary" className="bg-green-100 text-green-800">
-            ROI Atual: 195%
-          </Badge>
-          <Button>
-            <Calculator className="h-4 w-4 mr-2" />
-            Calculadora ROI
-          </Button>
-        </div>
-      </div>
-
-      {/* ROI Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="border-l-4 border-l-green-500">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">ROI Total</p>
-                <p className="text-2xl font-bold text-green-600">195%</p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-green-500" />
-            </div>
-            <div className="mt-2">
-              <div className="flex items-center text-sm">
-                <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-                <span className="text-green-600">+15% vs ano anterior</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-l-4 border-l-blue-500">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Investimento Total</p>
-                <p className="text-2xl font-bold text-gray-900">R$ 3.5M</p>
-              </div>
-              <DollarSign className="h-8 w-8 text-blue-500" />
-            </div>
-            <div className="mt-2">
-              <div className="flex items-center text-sm">
-                <TrendingUp className="h-4 w-4 text-blue-500 mr-1" />
-                <span className="text-blue-600">+8% vs planejado</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-l-4 border-l-purple-500">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Economia Gerada</p>
-                <p className="text-2xl font-bold text-purple-600">R$ 6.8M</p>
-              </div>
-              <Target className="h-8 w-8 text-purple-500" />
-            </div>
-            <div className="mt-2">
-              <div className="flex items-center text-sm">
-                <TrendingUp className="h-4 w-4 text-purple-500 mr-1" />
-                <span className="text-purple-600">+22% vs meta</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-l-4 border-l-orange-500">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Payback Period</p>
-                <p className="text-2xl font-bold text-orange-600">8.2 meses</p>
-              </div>
-              <BarChart3 className="h-8 w-8 text-orange-500" />
-            </div>
-            <div className="mt-2">
-              <div className="flex items-center text-sm">
-                <TrendingUp className="h-4 w-4 text-orange-500 mr-1" />
-                <span className="text-orange-600">-2.1 meses vs meta</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Investment Areas Analysis */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Análise por Área de Investimento</h2>
+      <header className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">ROI & Análise Econômica</h1>
+            <p className="text-gray-600 mt-1">Retorno sobre investimento em saúde e bem-estar corporativo</p>
+          </div>
+          <div className="flex items-center space-x-3">
             <Button variant="outline" size="sm">
-              <PieChart className="h-4 w-4 mr-2" />
-              Ver Gráfico
+              <Download className="h-4 w-4 mr-2" />
+              Exportar Relatório
+            </Button>
+            <Button size="sm">
+              <Eye className="h-4 w-4 mr-2" />
+              Análise Detalhada
             </Button>
           </div>
-          <div className="space-y-4">
-            {investmentAreas.map((area, index) => (
-              <div key={index} className={`p-4 rounded-lg border-l-4 ${getStatusColor(area.status)}`}>
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{area.area}</h3>
-                    <p className="text-sm text-gray-600">{area.impacto}</p>
+        </div>
+      </header>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-6 space-y-6 max-w-7xl mx-auto">
+          {/* KPI Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="border-l-4 border-l-green-500 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <TrendingUp className="h-6 w-6 text-green-600" />
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Investimento</p>
-                    <p className="font-semibold">{formatCurrency(area.investimento)}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Economia</p>
-                    <p className="font-semibold text-green-600">{formatCurrency(area.economia)}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">ROI</p>
-                    <p className="font-semibold text-blue-600">{area.roi}%</p>
-                  </div>
-                  <div className="text-center">
-                    <Badge
-                      variant={
-                        area.status === "excellent" ? "default" : area.status === "good" ? "secondary" : "outline"
-                      }
-                      className={
-                        area.status === "excellent"
-                          ? "bg-green-100 text-green-800"
-                          : area.status === "good"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-yellow-100 text-yellow-800"
-                      }
-                    >
-                      {area.status === "excellent" ? "Excelente" : area.status === "good" ? "Bom" : "Atenção"}
-                    </Badge>
+                  <Badge className="bg-green-100 text-green-800">+23%</Badge>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-600">ROI Total</p>
+                  <p className="text-3xl font-bold text-gray-900">347%</p>
+                  <div className="flex items-center text-sm text-green-600">
+                    <ArrowUp className="h-4 w-4 mr-1" />
+                    <span>+23% vs ano anterior</span>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              </CardContent>
+            </Card>
 
-      {/* ROI Projection */}
-      <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Projeção de ROI</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {projectedROI.map((item, index) => (
-              <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-600 mb-2">{item.year}</p>
-                {item.atual ? (
-                  <div>
-                    <p className="text-2xl font-bold text-green-600">{item.atual}%</p>
-                    <p className="text-xs text-gray-500">Atual</p>
+            <Card className="border-l-4 border-l-blue-500 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <DollarSign className="h-6 w-6 text-blue-600" />
                   </div>
-                ) : (
-                  <div>
-                    <p className="text-2xl font-bold text-blue-600">{item.projetado}%</p>
-                    <p className="text-xs text-gray-500">Projetado</p>
+                  <Badge className="bg-blue-100 text-blue-800">+12%</Badge>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-600">Investimento Total</p>
+                  <p className="text-3xl font-bold text-gray-900">R$ 2.8M</p>
+                  <div className="flex items-center text-sm text-blue-600">
+                    <ArrowUp className="h-4 w-4 mr-1" />
+                    <span>+12% vs planejado</span>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                </div>
+              </CardContent>
+            </Card>
 
-      {/* Monthly ROI Trend */}
-      <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Evolução Mensal do ROI</h2>
-          <div className="space-y-3">
-            {roiData.map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <span className="font-medium text-gray-900 w-12">{item.month}</span>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-4">
-                      <div>
-                        <span className="text-sm text-gray-600">Investimento: </span>
-                        <span className="font-medium">{formatCurrency(item.investimento)}</span>
+            <Card className="border-l-4 border-l-emerald-500 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-2 bg-emerald-100 rounded-lg">
+                    <Calculator className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <Badge className="bg-emerald-100 text-emerald-800">+34%</Badge>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-600">Economia Gerada</p>
+                  <p className="text-3xl font-bold text-gray-900">R$ 9.7M</p>
+                  <div className="flex items-center text-sm text-emerald-600">
+                    <ArrowUp className="h-4 w-4 mr-1" />
+                    <span>+34% vs projeção</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-l-4 border-l-orange-500 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-2 bg-orange-100 rounded-lg">
+                    <Clock className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <Badge className="bg-orange-100 text-orange-800">-2.1 meses</Badge>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-600">Payback Period</p>
+                  <p className="text-3xl font-bold text-gray-900">8.2 meses</p>
+                  <div className="flex items-center text-sm text-orange-600">
+                    <ArrowDown className="h-4 w-4 mr-1" />
+                    <span>-2.1 meses vs meta</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Tabs Section */}
+          <Tabs defaultValue="areas" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4 bg-white border shadow-sm">
+              <TabsTrigger value="areas" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700">
+                Por Área de Investimento
+              </TabsTrigger>
+              <TabsTrigger
+                value="evolution"
+                className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700"
+              >
+                Evolução Mensal
+              </TabsTrigger>
+              <TabsTrigger
+                value="projections"
+                className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700"
+              >
+                Projeções
+              </TabsTrigger>
+              <TabsTrigger
+                value="benchmarks"
+                className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700"
+              >
+                Benchmarks
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="areas" className="space-y-6">
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>Análise por Área de Investimento</CardTitle>
+                  <CardDescription>ROI detalhado por categoria de investimento em saúde e bem-estar</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {investmentAreas.map((area, index) => (
+                      <div key={index} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-3">
+                            <h3 className="font-semibold text-gray-900">{area.area}</h3>
+                            <Badge className={getStatusColor(area.status)}>{getStatusText(area.status)}</Badge>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold text-gray-900">{area.roi}%</p>
+                            <p className="text-sm text-gray-500">ROI</p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-3">{area.description}</p>
+                        <div className="grid grid-cols-2 gap-4 mb-3">
+                          <div>
+                            <p className="text-sm text-gray-500">Investimento</p>
+                            <p className="font-semibold">
+                              {new Intl.NumberFormat("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              }).format(area.investimento)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">Economia Gerada</p>
+                            <p className="font-semibold text-green-600">
+                              {new Intl.NumberFormat("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              }).format(area.economia)}
+                            </p>
+                          </div>
+                        </div>
+                        <Progress value={(area.roi / 400) * 100} className="h-2" />
                       </div>
-                      <div>
-                        <span className="text-sm text-gray-600">Economia: </span>
-                        <span className="font-medium text-green-600">{formatCurrency(item.economia)}</span>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="evolution" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card className="shadow-lg">
+                  <CardHeader>
+                    <CardTitle>Evolução do ROI</CardTitle>
+                    <CardDescription>Crescimento mensal do retorno sobre investimento</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-80">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={roiEvolutionData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="month" />
+                          <YAxis />
+                          <Tooltip
+                            formatter={(value, name) => [
+                              name === "roi" ? `${value}%` : `R$ ${value.toLocaleString()}`,
+                              name === "roi" ? "ROI" : name === "investimento" ? "Investimento" : "Economia",
+                            ]}
+                          />
+                          <Area type="monotone" dataKey="roi" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="shadow-lg">
+                  <CardHeader>
+                    <CardTitle>Distribuição da Economia</CardTitle>
+                    <CardDescription>Origem dos benefícios econômicos por categoria</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-80">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={economyDistributionData}
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                            label={({ name, value }) => `${name}: ${value}%`}
+                          >
+                            {economyDistributionData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="projections" className="space-y-6">
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>Projeções de ROI</CardTitle>
+                  <CardDescription>Estimativas de crescimento para os próximos anos</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80 mb-6">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={projectionData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="year" />
+                        <YAxis />
+                        <Tooltip
+                          formatter={(value, name) => [
+                            name === "roi" ? `${value}%` : `R$ ${value.toLocaleString()}`,
+                            name === "roi" ? "ROI" : name === "investimento" ? "Investimento" : "Economia",
+                          ]}
+                        />
+                        <Legend />
+                        <Bar dataKey="roi" fill="#3b82f6" name="ROI (%)" />
+                        <Bar dataKey="investimento" fill="#10b981" name="Investimento" />
+                        <Bar dataKey="economia" fill="#f59e0b" name="Economia" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    {projectionData.map((year, index) => (
+                      <div key={index} className="p-4 border rounded-lg text-center">
+                        <h3 className="font-semibold text-lg text-gray-900">{year.year}</h3>
+                        <p className="text-2xl font-bold text-blue-600 mt-2">{year.roi}%</p>
+                        <p className="text-sm text-gray-500 mt-1">ROI Projetado</p>
+                        <div className="mt-3 space-y-1">
+                          <p className="text-xs text-gray-600">
+                            Investimento:{" "}
+                            {new Intl.NumberFormat("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                              notation: "compact",
+                            }).format(year.investimento)}
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            Economia:{" "}
+                            {new Intl.NumberFormat("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                              notation: "compact",
+                            }).format(year.economia)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="benchmarks" className="space-y-6">
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>Benchmarks do Mercado</CardTitle>
+                  <CardDescription>Comparação com padrões da indústria e oportunidades de melhoria</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="p-4 border rounded-lg text-center">
+                        <h3 className="font-semibold text-gray-900">Nossa Performance</h3>
+                        <p className="text-3xl font-bold text-blue-600 mt-2">347%</p>
+                        <p className="text-sm text-gray-500">ROI Atual</p>
+                      </div>
+                      <div className="p-4 border rounded-lg text-center">
+                        <h3 className="font-semibold text-gray-900">Média do Setor</h3>
+                        <p className="text-3xl font-bold text-gray-600 mt-2">280%</p>
+                        <p className="text-sm text-gray-500">ROI Médio</p>
+                      </div>
+                      <div className="p-4 border rounded-lg text-center">
+                        <h3 className="font-semibold text-gray-900">Top 10% do Mercado</h3>
+                        <p className="text-3xl font-bold text-green-600 mt-2">420%</p>
+                        <p className="text-sm text-gray-500">ROI Excelência</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-gray-900">Oportunidades de Melhoria</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                          <div>
+                            <h5 className="font-medium text-blue-900">Expansão de Programas Preventivos</h5>
+                            <p className="text-sm text-blue-700">Potencial de +15% no ROI</p>
+                          </div>
+                          <Badge className="bg-blue-100 text-blue-800">Oportunidade</Badge>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                          <div>
+                            <h5 className="font-medium text-green-900">Otimização de Custos Operacionais</h5>
+                            <p className="text-sm text-green-700">Potencial de +8% no ROI</p>
+                          </div>
+                          <Badge className="bg-green-100 text-green-800">Implementável</Badge>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                          <div>
+                            <h5 className="font-medium text-yellow-900">Tecnologia e Automação</h5>
+                            <p className="text-sm text-yellow-700">Potencial de +12% no ROI</p>
+                          </div>
+                          <Badge className="bg-yellow-100 text-yellow-800">Médio Prazo</Badge>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-lg text-blue-600">{item.roi}%</p>
-                  <p className="text-xs text-gray-500">ROI</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
     </div>
   )
 }
