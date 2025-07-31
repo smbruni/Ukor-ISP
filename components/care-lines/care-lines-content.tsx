@@ -1,545 +1,496 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts"
-import {
-  Heart,
   Brain,
-  Bone,
-  Eye,
-  Stethoscope,
+  Heart,
+  Moon,
+  Briefcase,
+  Users,
+  Shield,
   Activity,
-  Calendar,
-  Clock,
+  Stethoscope,
+  Apple,
+  Zap,
+  TrendingUp,
+  DollarSign,
   AlertTriangle,
   CheckCircle,
-  Phone,
-  FileText,
-  BarChart3,
-  Shield,
+  Target,
 } from "lucide-react"
 
 export function CareLinesContent() {
-  const [selectedCareLine, setSelectedCareLine] = useState("cardiology")
-  const [selectedPeriod, setSelectedPeriod] = useState("6m")
+  const [activeLine, setActiveLine] = useState("mental-health")
 
-  // Linhas de cuidado disponíveis
+  // Dados baseados na Unimed-BH
   const careLines = [
-    {
-      id: "cardiology",
-      name: "Cardiologia",
-      icon: Heart,
-      color: "red",
-      patients: 342,
-      risk: "Alto",
-      cost: "R$ 245k",
-      satisfaction: 4.2,
-      protocols: 8,
-    },
-    {
-      id: "diabetes",
-      name: "Diabetes",
-      icon: Activity,
-      color: "blue",
-      patients: 198,
-      risk: "Alto",
-      cost: "R$ 189k",
-      satisfaction: 4.5,
-      protocols: 6,
-    },
     {
       id: "mental-health",
       name: "Saúde Mental",
-      icon: Brain,
-      color: "purple",
-      patients: 156,
-      risk: "Crítico",
-      cost: "R$ 167k",
-      satisfaction: 4.1,
-      protocols: 5,
+      icon: <Brain className="h-6 w-6" />,
+      color: "bg-purple-500",
+      priority: "ALTA",
+      conditions: ["Depressão", "Ansiedade", "Estresse", "Burnout"],
+      interventions: ["Psicoterapia", "Psiquiatria", "Mindfulness", "Coaching"],
+      programs: ["Bem-estar emocional", "Prevenção suicídio"],
+      current_cost: 180000,
+      affected_users: 156,
+      potential_savings: 120000,
+      roi: 167,
+      impact_absenteeism: -35,
+      impact_productivity: 28,
+      implementation_time: "2-3 meses",
+      protocols: [
+        "Triagem psicológica anual",
+        "Programa anti-burnout",
+        "Suporte 24h psicológico",
+        "Workshops mindfulness",
+      ],
     },
     {
-      id: "orthopedics",
-      name: "Ortopedia",
-      icon: Bone,
-      color: "orange",
-      patients: 234,
-      risk: "Médio",
-      cost: "R$ 134k",
-      satisfaction: 4.3,
-      protocols: 7,
+      id: "chronic-diseases",
+      name: "Doenças Crônicas (DCNTs)",
+      icon: <Heart className="h-6 w-6" />,
+      color: "bg-red-500",
+      priority: "CRÍTICA",
+      conditions: ["Hipertensão", "Diabetes", "Obesidade", "Dislipidemia"],
+      interventions: ["Monitoramento contínuo", "Educação em saúde", "Protocolos clínicos"],
+      programs: ["Controle fatores de risco", "Alimentação", "Exercícios"],
+      current_cost: 420000,
+      affected_users: 234,
+      potential_savings: 280000,
+      roi: 267,
+      impact_absenteeism: -45,
+      impact_productivity: 32,
+      implementation_time: "1-2 meses",
+      protocols: [
+        "Monitoramento glicemia/PA",
+        "Consultas trimestrais",
+        "Programa nutricional",
+        "Exercícios supervisionados",
+      ],
+    },
+    {
+      id: "sleep-health",
+      name: "Saúde do Sono",
+      icon: <Moon className="h-6 w-6" />,
+      color: "bg-indigo-500",
+      priority: "ALTA",
+      conditions: ["Insônia", "Apneia do sono", "Má qualidade do sono"],
+      interventions: ["Polissonografia", "Reeducação do sono", "Higiene do sono"],
+      programs: ["Intervenção cognitivo-comportamental"],
+      current_cost: 95000,
+      affected_users: 187,
+      potential_savings: 85000,
+      roi: 189,
+      impact_absenteeism: -25,
+      impact_productivity: 35,
+      implementation_time: "1-2 meses",
+      protocols: [
+        "Questionário qualidade sono",
+        "Polissonografia seletiva",
+        "Programa higiene do sono",
+        "CPAP quando necessário",
+      ],
+    },
+    {
+      id: "occupational-health",
+      name: "Saúde do Trabalhador",
+      icon: <Briefcase className="h-6 w-6" />,
+      color: "bg-orange-500",
+      priority: "ALTA",
+      conditions: ["LER/DORT", "Ergonomia", "Acidentes trabalho"],
+      interventions: ["Avaliações periódicas", "Ergonomia", "Prevenção LER/DORT"],
+      programs: ["Monitoramento absenteísmo", "Segurança corporativa"],
+      current_cost: 145000,
+      affected_users: 89,
+      potential_savings: 95000,
+      roi: 165,
+      impact_absenteeism: -40,
+      impact_productivity: 25,
+      implementation_time: "2-4 meses",
+      protocols: ["Avaliação ergonômica", "Ginástica laboral", "Exames periódicos", "Treinamento segurança"],
+    },
+    {
+      id: "womens-health",
+      name: "Saúde da Mulher",
+      icon: <Users className="h-6 w-6" />,
+      color: "bg-pink-500",
+      priority: "MÉDIA",
+      conditions: ["Ginecologia", "Saúde reprodutiva", "Gestação", "Menopausa"],
+      interventions: ["Papanicolau", "Mamografia", "Pré-natal"],
+      programs: ["Atenção saúde mental feminina"],
+      current_cost: 125000,
+      affected_users: 456,
+      potential_savings: 75000,
+      roi: 160,
+      impact_absenteeism: -20,
+      impact_productivity: 15,
+      implementation_time: "1-3 meses",
+      protocols: ["Papanicolau anual", "Mamografia 40+", "Acompanhamento gestacional", "Suporte menopausa"],
+    },
+    {
+      id: "mens-health",
+      name: "Saúde do Homem",
+      icon: <Shield className="h-6 w-6" />,
+      color: "bg-blue-500",
+      priority: "MÉDIA",
+      conditions: ["Câncer próstata", "Disfunções metabólicas", "Cardiovascular"],
+      interventions: ["PSA", "Incentivo adesão", "Enfrentamento negligência"],
+      programs: ["Conscientização masculina"],
+      current_cost: 98000,
+      affected_users: 531,
+      potential_savings: 65000,
+      roi: 166,
+      impact_absenteeism: -15,
+      impact_productivity: 12,
+      implementation_time: "2-4 meses",
+      protocols: ["PSA anual 45+", "Campanha conscientização", "Check-up masculino", "Prevenção cardiovascular"],
     },
     {
       id: "oncology",
       name: "Oncologia",
-      icon: Shield,
-      color: "pink",
-      patients: 23,
-      risk: "Crítico",
-      cost: "R$ 298k",
-      satisfaction: 4.7,
-      protocols: 12,
+      icon: <Activity className="h-6 w-6" />,
+      color: "bg-red-600",
+      priority: "CRÍTICA",
+      conditions: ["Rastreamento", "Diagnóstico precoce", "Tratamento", "Reabilitação"],
+      interventions: ["Navegação paciente", "Apoio psicológico", "Cuidados paliativos"],
+      programs: ["Detecção precoce", "Suporte integral"],
+      current_cost: 406000,
+      affected_users: 4,
+      potential_savings: 230000,
+      roi: 157,
+      impact_absenteeism: -60,
+      impact_productivity: 45,
+      implementation_time: "Imediato",
+      protocols: [
+        "Rastreamento sistemático",
+        "Fast-track diagnóstico",
+        "Navegador oncológico",
+        "Suporte psico-oncológico",
+      ],
     },
     {
-      id: "ophthalmology",
-      name: "Oftalmologia",
-      icon: Eye,
-      color: "green",
-      patients: 445,
-      risk: "Baixo",
-      cost: "R$ 98k",
-      satisfaction: 4.0,
-      protocols: 4,
+      id: "cardiovascular",
+      name: "Saúde Cardiovascular",
+      icon: <Stethoscope className="h-6 w-6" />,
+      color: "bg-red-500",
+      priority: "ALTA",
+      conditions: ["Infarto", "AVC", "Hipertensão", "Insuficiência cardíaca"],
+      interventions: ["Acompanhamento clínico", "Reabilitação cardíaca"],
+      programs: ["Prevenção primária e secundária"],
+      current_cost: 285000,
+      affected_users: 167,
+      potential_savings: 185000,
+      roi: 165,
+      impact_absenteeism: -35,
+      impact_productivity: 28,
+      implementation_time: "1-3 meses",
+      protocols: ["Estratificação risco", "Reabilitação cardíaca", "Controle pressórico", "Prevenção secundária"],
+    },
+    {
+      id: "nutrition",
+      name: "Saúde Nutricional",
+      icon: <Apple className="h-6 w-6" />,
+      color: "bg-green-500",
+      priority: "MÉDIA",
+      conditions: ["Transtornos alimentares", "Obesidade", "Desnutrição", "Síndrome metabólica"],
+      interventions: ["Intervenção nutricional", "Educação alimentar", "Coaching nutricional"],
+      programs: ["Alimentação personalizada"],
+      current_cost: 78000,
+      affected_users: 298,
+      potential_savings: 65000,
+      roi: 183,
+      impact_absenteeism: -20,
+      impact_productivity: 22,
+      implementation_time: "1-2 meses",
+      protocols: [
+        "Avaliação nutricional",
+        "Plano alimentar personalizado",
+        "Acompanhamento mensal",
+        "Educação nutricional",
+      ],
+    },
+    {
+      id: "rehabilitation",
+      name: "Reabilitação e Dor",
+      icon: <Zap className="h-6 w-6" />,
+      color: "bg-yellow-500",
+      priority: "MÉDIA",
+      conditions: ["Dores musculoesqueléticas", "Fibromialgia", "Pós-operatório"],
+      interventions: ["Fisioterapia", "Reabilitação funcional", "Analgesia"],
+      programs: ["Controle dor crônica"],
+      current_cost: 156000,
+      affected_users: 123,
+      potential_savings: 89000,
+      roi: 157,
+      impact_absenteeism: -30,
+      impact_productivity: 25,
+      implementation_time: "2-3 meses",
+      protocols: [
+        "Avaliação funcional",
+        "Fisioterapia direcionada",
+        "Controle dor multimodal",
+        "Reabilitação ocupacional",
+      ],
     },
   ]
 
-  // Dados detalhados da linha de cardiologia
-  const cardiologyData = {
-    overview: {
-      totalPatients: 342,
-      activeProtocols: 8,
-      monthlyConsultations: 156,
-      emergencyRate: "2.3%",
-      adherenceRate: "87%",
-      avgRiskScore: 6.8,
-    },
-    riskDistribution: [
-      { risk: "Baixo", count: 89, percentage: 26, color: "#10b981" },
-      { risk: "Médio", count: 156, percentage: 46, color: "#f59e0b" },
-      { risk: "Alto", count: 78, percentage: 23, color: "#ef4444" },
-      { risk: "Crítico", count: 19, percentage: 5, color: "#dc2626" },
-    ],
-    monthlyTrend: [
-      { month: "Jan", patients: 298, consultations: 134, emergencies: 8, costs: 198000 },
-      { month: "Fev", patients: 312, consultations: 142, emergencies: 6, costs: 212000 },
-      { month: "Mar", patients: 325, consultations: 148, emergencies: 9, costs: 225000 },
-      { month: "Abr", patients: 334, consultations: 152, emergencies: 7, costs: 234000 },
-      { month: "Mai", patients: 339, consultations: 154, emergencies: 8, costs: 241000 },
-      { month: "Jun", patients: 342, consultations: 156, emergencies: 8, costs: 245000 },
-    ],
-    protocols: [
-      {
-        name: "Hipertensão Arterial",
-        patients: 156,
-        adherence: 89,
-        effectiveness: 92,
-        cost: "R$ 89k",
-        status: "active",
-      },
-      {
-        name: "Insuficiência Cardíaca",
-        patients: 67,
-        adherence: 85,
-        effectiveness: 88,
-        cost: "R$ 67k",
-        status: "active",
-      },
-      {
-        name: "Arritmias",
-        patients: 45,
-        adherence: 91,
-        effectiveness: 85,
-        cost: "R$ 45k",
-        status: "active",
-      },
-      {
-        name: "Prevenção Primária",
-        patients: 74,
-        adherence: 76,
-        effectiveness: 94,
-        cost: "R$ 34k",
-        status: "expanding",
-      },
-    ],
-    specialists: [
-      {
-        name: "Dr. Carlos Mendes",
-        specialty: "Cardiologia Clínica",
-        patients: 89,
-        satisfaction: 4.6,
-        availability: "95%",
-        nextSlot: "Hoje 14:30",
-      },
-      {
-        name: "Dra. Ana Rodrigues",
-        specialty: "Cardiologia Intervencionista",
-        patients: 67,
-        satisfaction: 4.8,
-        availability: "87%",
-        nextSlot: "Amanhã 09:00",
-      },
-      {
-        name: "Dr. Roberto Silva",
-        specialty: "Eletrofisiologia",
-        patients: 45,
-        satisfaction: 4.5,
-        availability: "92%",
-        nextSlot: "Hoje 16:00",
-      },
-    ],
-    alerts: [
-      {
-        type: "critical",
-        message: "3 pacientes com risco crítico necessitam avaliação urgente",
-        time: "há 15 min",
-        action: "Agendar consulta",
-      },
-      {
-        type: "warning",
-        message: "Taxa de adesão ao protocolo de hipertensão abaixo de 90%",
-        time: "há 2h",
-        action: "Revisar protocolo",
-      },
-      {
-        type: "info",
-        message: "Nova diretriz de prevenção cardiovascular disponível",
-        time: "há 1 dia",
-        action: "Atualizar protocolos",
-      },
-    ],
-  }
+  const currentLine = careLines.find((line) => line.id === activeLine) || careLines[0]
 
-  const getRiskColor = (risk: string) => {
-    switch (risk) {
-      case "Crítico":
-        return "bg-red-100 text-red-800"
-      case "Alto":
-        return "bg-orange-100 text-orange-800"
-      case "Médio":
-        return "bg-yellow-100 text-yellow-800"
-      default:
-        return "bg-green-100 text-green-800"
-    }
-  }
-
-  const getAlertIcon = (type: string) => {
-    switch (type) {
-      case "critical":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />
-      case "warning":
-        return <Clock className="h-4 w-4 text-yellow-500" />
-      default:
-        return <CheckCircle className="h-4 w-4 text-blue-500" />
-    }
-  }
-
-  const getAlertBorderColor = (type: string) => {
-    switch (type) {
-      case "critical":
-        return "border-l-red-500 bg-red-50"
-      case "warning":
-        return "border-l-yellow-500 bg-yellow-50"
-      default:
-        return "border-l-blue-500 bg-blue-50"
-    }
-  }
+  // Cálculos consolidados
+  const totalCurrentCost = careLines.reduce((sum, line) => sum + line.current_cost, 0)
+  const totalPotentialSavings = careLines.reduce((sum, line) => sum + line.potential_savings, 0)
+  const totalAffectedUsers = careLines.reduce((sum, line) => sum + line.affected_users, 0)
+  const averageROI = Math.round(careLines.reduce((sum, line) => sum + line.roi, 0) / careLines.length)
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Linhas de Cuidado</h1>
-          <p className="text-gray-600 mt-1">Gestão especializada por condição de saúde • 12 protocolos ativos</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm">
-            <FileText className="h-4 w-4 mr-2" />
-            Protocolos
-          </Button>
-          <Button size="sm">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Relatório Geral
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Linhas de Cuidado Estratégicas</h2>
+        <p className="text-muted-foreground">
+          Protocolos baseados nos dados reais da Unimed-BH para reduzir custos e melhorar indicadores
+        </p>
       </div>
 
-      {/* Overview das Linhas de Cuidado */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Resumo Executivo */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Custo Atual Total</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">R$ {(totalCurrentCost / 1000000).toFixed(1)}M</div>
+            <p className="text-xs text-muted-foreground">Todas as linhas de cuidado</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Economia Potencial</CardTitle>
+            <TrendingUp className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">R$ {(totalPotentialSavings / 1000000).toFixed(1)}M</div>
+            <p className="text-xs text-muted-foreground">Com implementação completa</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Usuários Impactados</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalAffectedUsers}</div>
+            <p className="text-xs text-muted-foreground">
+              {Math.round((totalAffectedUsers / 987) * 100)}% dos beneficiários
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">ROI Médio</CardTitle>
+            <Target className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">{averageROI}%</div>
+            <p className="text-xs text-muted-foreground">Retorno sobre investimento</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Seletor de Linhas de Cuidado */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {careLines.map((line) => (
-          <Card
+          <Button
             key={line.id}
-            className={`cursor-pointer transition-all hover:shadow-lg ${
-              selectedCareLine === line.id ? "ring-2 ring-blue-500 bg-blue-50" : ""
-            }`}
-            onClick={() => setSelectedCareLine(line.id)}
+            variant={activeLine === line.id ? "default" : "outline"}
+            onClick={() => setActiveLine(line.id)}
+            className="h-auto p-3 flex flex-col items-center gap-2"
           >
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg bg-${line.color}-100`}>
-                    <line.icon className={`h-5 w-5 text-${line.color}-600`} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{line.name}</h3>
-                    <p className="text-sm text-gray-600">{line.patients} pacientes</p>
-                  </div>
-                </div>
-                <Badge className={getRiskColor(line.risk)}>{line.risk}</Badge>
-              </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-gray-600">Custo Mensal:</span>
-                  <div className="font-medium">{line.cost}</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Satisfação:</span>
-                  <div className="font-medium">{line.satisfaction}/5.0</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Protocolos:</span>
-                  <div className="font-medium">{line.protocols} ativos</div>
-                </div>
-                <div>
-                  <span className="text-gray-600">Status:</span>
-                  <div className="font-medium text-green-600">Ativo</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            <div className={`p-2 rounded-full ${line.color} text-white`}>{line.icon}</div>
+            <span className="text-xs text-center font-medium">{line.name}</span>
+            <Badge
+              variant={line.priority === "CRÍTICA" ? "destructive" : line.priority === "ALTA" ? "secondary" : "outline"}
+              className="text-xs"
+            >
+              {line.priority}
+            </Badge>
+          </Button>
         ))}
       </div>
 
-      {/* Detalhamento da Linha Selecionada */}
+      {/* Detalhes da Linha Selecionada */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className={`p-3 rounded-full ${currentLine.color} text-white`}>{currentLine.icon}</div>
+              <div>
+                <CardTitle>{currentLine.name}</CardTitle>
+                <CardDescription>
+                  {currentLine.affected_users} usuários impactados • Implementação: {currentLine.implementation_time}
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Indicadores Financeiros */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <span className="text-sm text-muted-foreground">Custo Atual</span>
+                <div className="text-lg font-bold text-red-600">R$ {(currentLine.current_cost / 1000).toFixed(0)}K</div>
+              </div>
+              <div>
+                <span className="text-sm text-muted-foreground">Economia Potencial</span>
+                <div className="text-lg font-bold text-green-600">
+                  R$ {(currentLine.potential_savings / 1000).toFixed(0)}K
+                </div>
+              </div>
+              <div>
+                <span className="text-sm text-muted-foreground">ROI</span>
+                <div className="text-lg font-bold text-blue-600">{currentLine.roi}%</div>
+              </div>
+              <div>
+                <span className="text-sm text-muted-foreground">Usuários</span>
+                <div className="text-lg font-bold">{currentLine.affected_users}</div>
+              </div>
+            </div>
+
+            {/* Impacto nos Indicadores */}
+            <div>
+              <h4 className="font-medium mb-3">Impacto nos Indicadores Estratégicos</h4>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm">Redução Absenteísmo</span>
+                    <span className="text-sm font-medium text-green-600">
+                      {Math.abs(currentLine.impact_absenteeism)}%
+                    </span>
+                  </div>
+                  <Progress value={Math.abs(currentLine.impact_absenteeism)} className="h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm">Aumento Produtividade</span>
+                    <span className="text-sm font-medium text-blue-600">{currentLine.impact_productivity}%</span>
+                  </div>
+                  <Progress value={currentLine.impact_productivity} className="h-2" />
+                </div>
+              </div>
+            </div>
+
+            {/* Condições e Intervenções */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h5 className="font-medium text-sm mb-2">Condições Principais:</h5>
+                <div className="flex flex-wrap gap-1">
+                  {currentLine.conditions.map((condition, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {condition}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h5 className="font-medium text-sm mb-2">Intervenções:</h5>
+                <div className="flex flex-wrap gap-1">
+                  {currentLine.interventions.map((intervention, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs">
+                      {intervention}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Protocolos e Ações */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Protocolos de Implementação</CardTitle>
+            <CardDescription>Ações práticas para {currentLine.name}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {currentLine.protocols.map((protocol, index) => (
+                <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{protocol}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 space-y-3">
+              <h5 className="font-medium">Programas Complementares:</h5>
+              {currentLine.programs.map((program, index) => (
+                <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  {program}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Priorização por Impacto */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Heart className="h-5 w-5 text-red-600" />
-            Cardiologia - Gestão Detalhada
-          </CardTitle>
-          <CardDescription>Monitoramento completo da linha de cuidado cardiovascular</CardDescription>
+          <CardTitle>Priorização por Impacto vs Investimento</CardTitle>
+          <CardDescription>Linhas de cuidado ordenadas por potencial de retorno</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-              <TabsTrigger value="patients">Pacientes</TabsTrigger>
-              <TabsTrigger value="protocols">Protocolos</TabsTrigger>
-              <TabsTrigger value="specialists">Especialistas</TabsTrigger>
-              <TabsTrigger value="alerts">Alertas</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="overview" className="space-y-6">
-              {/* Métricas Principais */}
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{cardiologyData.overview.totalPatients}</div>
-                  <div className="text-sm text-blue-700">Pacientes Ativos</div>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">{cardiologyData.overview.activeProtocols}</div>
-                  <div className="text-sm text-green-700">Protocolos</div>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">
-                    {cardiologyData.overview.monthlyConsultations}
-                  </div>
-                  <div className="text-sm text-purple-700">Consultas/Mês</div>
-                </div>
-                <div className="text-center p-4 bg-red-50 rounded-lg">
-                  <div className="text-2xl font-bold text-red-600">{cardiologyData.overview.emergencyRate}</div>
-                  <div className="text-sm text-red-700">Taxa Emergência</div>
-                </div>
-                <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                  <div className="text-2xl font-bold text-yellow-600">{cardiologyData.overview.adherenceRate}</div>
-                  <div className="text-sm text-yellow-700">Adesão</div>
-                </div>
-                <div className="text-center p-4 bg-orange-50 rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">{cardiologyData.overview.avgRiskScore}</div>
-                  <div className="text-sm text-orange-700">Score Risco</div>
-                </div>
-              </div>
-
-              {/* Gráficos */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Tendência Mensal</CardTitle>
-                    <CardDescription>Evolução de pacientes e consultas</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={cardiologyData.monthlyTrend}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="month" />
-                          <YAxis />
-                          <Tooltip />
-                          <Line type="monotone" dataKey="patients" stroke="#3b82f6" strokeWidth={2} name="Pacientes" />
-                          <Line
-                            type="monotone"
-                            dataKey="consultations"
-                            stroke="#10b981"
-                            strokeWidth={2}
-                            name="Consultas"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Distribuição de Risco</CardTitle>
-                    <CardDescription>Estratificação dos pacientes por nível de risco</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={cardiologyData.riskDistribution}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={false}
-                            label={({ risk, percentage }) => `${risk}: ${percentage}%`}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="count"
-                          >
-                            {cardiologyData.riskDistribution.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="protocols" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {cardiologyData.protocols.map((protocol, index) => (
-                  <Card key={index}>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-lg">{protocol.name}</CardTitle>
-                          <CardDescription>{protocol.patients} pacientes ativos</CardDescription>
-                        </div>
-                        <Badge variant={protocol.status === "active" ? "default" : "secondary"} className="text-xs">
-                          {protocol.status === "active" ? "Ativo" : "Expandindo"}
-                        </Badge>
+          <div className="space-y-3">
+            {careLines
+              .sort((a, b) => b.roi - a.roi)
+              .slice(0, 5)
+              .map((line, index) => (
+                <div key={line.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-full ${line.color} text-white`}>{line.icon}</div>
+                    <div>
+                      <span className="font-medium">{line.name}</span>
+                      <div className="text-sm text-muted-foreground">
+                        {line.affected_users} usuários • {line.implementation_time}
                       </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <span className="text-sm text-gray-600">Adesão:</span>
-                          <div className="font-medium">{protocol.adherence}%</div>
-                          <Progress value={protocol.adherence} className="h-2 mt-1" />
-                        </div>
-                        <div>
-                          <span className="text-sm text-gray-600">Efetividade:</span>
-                          <div className="font-medium">{protocol.effectiveness}%</div>
-                          <Progress value={protocol.effectiveness} className="h-2 mt-1" />
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center pt-2 border-t">
-                        <span className="text-sm font-medium">Custo Mensal: {protocol.cost}</span>
-                        <Button size="sm" variant="outline">
-                          Ver Detalhes
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="specialists" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {cardiologyData.specialists.map((specialist, index) => (
-                  <Card key={index}>
-                    <CardContent className="p-6">
-                      <div className="text-center mb-4">
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <Stethoscope className="h-8 w-8 text-blue-600" />
-                        </div>
-                        <h3 className="font-semibold">{specialist.name}</h3>
-                        <p className="text-sm text-gray-600">{specialist.specialty}</p>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Pacientes:</span>
-                          <span className="font-medium">{specialist.patients}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Satisfação:</span>
-                          <span className="font-medium">{specialist.satisfaction}/5.0</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Disponibilidade:</span>
-                          <span className="font-medium text-green-600">{specialist.availability}</span>
-                        </div>
-                        <div className="pt-2 border-t">
-                          <div className="text-xs text-gray-500 mb-2">Próximo horário:</div>
-                          <div className="text-sm font-medium">{specialist.nextSlot}</div>
-                        </div>
-                        <div className="flex gap-2 pt-2">
-                          <Button size="sm" className="flex-1">
-                            <Calendar className="h-3 w-3 mr-1" />
-                            Agendar
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Phone className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="alerts" className="space-y-6">
-              <div className="space-y-4">
-                {cardiologyData.alerts.map((alert, index) => (
-                  <div key={index} className={`p-4 border-l-4 rounded-lg ${getAlertBorderColor(alert.type)}`}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start space-x-3">
-                        {getAlertIcon(alert.type)}
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-900">{alert.message}</p>
-                          <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500">
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {alert.time}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        {alert.action}
-                      </Button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
+                  <div className="text-right">
+                    <div className="font-bold text-green-600">ROI {line.roi}%</div>
+                    <div className="text-sm text-muted-foreground">
+                      R$ {(line.potential_savings / 1000).toFixed(0)}K economia
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
         </CardContent>
       </Card>
+
+      {/* Botões de Ação */}
+      <div className="flex gap-4">
+        <Button className="gap-2">
+          <Target className="h-4 w-4" />
+          Implementar Linha Prioritária
+        </Button>
+        <Button variant="outline" className="gap-2">
+          <TrendingUp className="h-4 w-4" />
+          Calcular ROI Personalizado
+        </Button>
+        <Button variant="outline" className="gap-2">
+          <AlertTriangle className="h-4 w-4" />
+          Definir Protocolos
+        </Button>
+      </div>
     </div>
   )
 }

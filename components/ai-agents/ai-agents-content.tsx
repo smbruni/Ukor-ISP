@@ -197,8 +197,8 @@ export function AIAgentsContent() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">IA Agents - Redução de Custos</h1>
           <p className="text-gray-500">Consultores especializados baseados nos dados reais da Unimed-BH</p>
@@ -306,7 +306,7 @@ export function AIAgentsContent() {
       </div>
 
       {/* Seção de Ações Rápidas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-l-4 border-l-red-500">
           <CardHeader>
             <CardTitle className="text-red-800 flex items-center gap-2">

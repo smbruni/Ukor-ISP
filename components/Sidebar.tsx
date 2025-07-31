@@ -1,201 +1,244 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
-  LayoutDashboard,
+  BarChart3,
   TrendingUp,
-  Activity,
-  UserCheck,
-  Shield,
-  DollarSign,
   FileText,
-  Database,
   Bot,
-  GraduationCap,
-  Heart,
-  Gift,
-  AlertTriangle,
-  Download,
+  BookOpen,
+  Target,
   Settings,
-  HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Stethoscope,
+  Activity,
+  Users,
+  HelpCircle,
+  Database,
+  DollarSign,
+  Calculator,
 } from "lucide-react"
 
 interface SidebarProps {
   activeSection: string
-  setActiveSection: (section: string) => void
+  onSectionChange: (section: string) => void
+  collapsed: boolean
+  onToggleCollapse: () => void
 }
 
-export function Sidebar({ activeSection, setActiveSection }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(false)
-
+export default function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }: SidebarProps) {
   const menuItems = [
     {
       id: "dashboard",
       label: "Dashboard",
-      icon: LayoutDashboard,
+      icon: BarChart3,
       badge: null,
+      description: "Visão geral executiva",
     },
     {
-      id: "unimed",
-      label: "Análise Unimed",
-      icon: Activity,
-      badge: "Novo",
-    },
-    {
-      id: "care-lines",
-      label: "Linhas de Cuidado",
-      icon: Stethoscope,
-      badge: "10",
-    },
-    {
-      id: "predictive",
+      id: "analytics",
       label: "Análises Preditivas",
       icon: TrendingUp,
       badge: "3",
-    },
-    {
-      id: "performance",
-      label: "Avaliação de Desempenho",
-      icon: UserCheck,
-      badge: "Novo",
+      description: "Modelos de IA e previsões",
     },
     {
       id: "isp",
       label: "ISP Diagnóstico",
-      icon: Shield,
+      icon: Target,
       badge: null,
+      description: "Índice de Saúde e Performance",
     },
     {
       id: "roi",
       label: "ROI em Saúde",
       icon: DollarSign,
+      badge: "Novo",
+      description: "Retorno sobre investimento em saúde",
+    },
+    {
+      id: "performance",
+      label: "Performance",
+      icon: Activity,
       badge: null,
+      description: "Análise de performance por departamento",
+    },
+    {
+      id: "investment-simulator",
+      label: "Simulador ROI",
+      icon: Calculator,
+      badge: null,
+      description: "Simulador de cenários de investimento",
     },
     {
       id: "questionnaires",
       label: "Questionários",
       icon: FileText,
       badge: "12",
+      description: "Avaliações e formulários",
     },
     {
       id: "data",
       label: "Dados de Saúde",
       icon: Database,
       badge: "7",
+      description: "Integração de dados",
     },
     {
       id: "ai-agents",
       label: "IA Agents",
       icon: Bot,
       badge: "5",
+      description: "Consultores virtuais especializados",
     },
     {
-      id: "academy",
-      label: "Academy",
-      icon: GraduationCap,
+      id: "education",
+      label: "Educação",
+      icon: BookOpen,
       badge: null,
+      description: "Cursos e trilhas de aprendizado",
     },
     {
       id: "benefits",
       label: "Benefícios",
-      icon: Gift,
+      icon: DollarSign,
       badge: "4",
+      description: "Analytics de benefícios corporativos",
     },
-    {
-      id: "wellness",
-      label: "Programas de Bem-Estar",
-      icon: Heart,
-      badge: "12",
-    },
-    {
-      id: "sinistralidade",
-      label: "Redução Sinistralidade",
-      icon: AlertTriangle,
-      badge: "URGENTE",
-    },
-    {
-      id: "export",
-      label: "Exportar Dados",
-      icon: Download,
-      badge: "Novo",
-    },
+  ]
+
+  const bottomItems = [
     {
       id: "settings",
       label: "Configurações",
       icon: Settings,
-      badge: null,
+      description: "Configurações do sistema",
     },
     {
       id: "help",
       label: "Ajuda",
       icon: HelpCircle,
-      badge: null,
+      description: "Suporte e documentação",
     },
   ]
 
-  return (
-    <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${collapsed ? "w-16" : "w-64"}`}>
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+  const MenuItem = ({ item, isBottom = false }) => {
+    const isActive = activeSection === item.id
+
+    const button = (
+      <Button
+        variant={isActive ? "default" : "ghost"}
+        className={`w-full justify-start h-12 ${collapsed ? "px-3" : "px-4"} ${
+          isActive
+            ? "bg-primary text-primary-foreground shadow-lg"
+            : "text-foreground hover:bg-muted hover:text-foreground"
+        } transition-all duration-200`}
+        onClick={() => onSectionChange(item.id)}
+      >
+        <item.icon className={`h-5 w-5 ${collapsed ? "" : "mr-3"} flex-shrink-0`} />
         {!collapsed && (
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">U</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">UHealth</h1>
-              <p className="text-xs text-gray-500">v2.1.0</p>
-            </div>
-          </div>
+          <>
+            <span className="flex-1 text-left font-medium">{item.label}</span>
+            {item.badge && (
+              <Badge
+                variant={isActive ? "secondary" : "outline"}
+                className={`ml-2 ${isActive ? "bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30" : ""} ${
+                  item.badge === "Novo" ? "bg-green-100 text-green-800 border-green-200" : ""
+                }`}
+              >
+                {item.badge}
+              </Badge>
+            )}
+          </>
         )}
-        <Button variant="ghost" size="sm" onClick={() => setCollapsed(!collapsed)} className="p-1">
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </Button>
+      </Button>
+    )
+
+    if (collapsed) {
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>{button}</TooltipTrigger>
+            <TooltipContent side="right" className="ml-2">
+              <p className="font-medium">{item.label}</p>
+              <p className="text-xs text-muted-foreground">{item.description}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )
+    }
+
+    return button
+  }
+
+  return (
+    <div
+      className={`fixed left-0 top-0 h-full bg-background/95 backdrop-blur-md border-r border-border shadow-lg transition-all duration-300 z-40 ${
+        collapsed ? "w-16" : "w-64"
+      }`}
+    >
+      {/* Header */}
+      <div className="p-4 border-b border-border">
+        <div className="flex items-center justify-between">
+          {!collapsed && (
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
+                <img src="/ukor-logo.svg" alt="Ukor" className="w-6 h-6" />
+              </div>
+              <div>
+                <h1 className="text-xl font-heading font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                  UHealth
+                </h1>
+                <p className="text-xs text-muted-foreground">v2.1.0</p>
+              </div>
+            </div>
+          )}
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleCollapse}
+            className="text-muted-foreground hover:text-primary"
+          >
+            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </Button>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
-        <nav className="space-y-1">
-          {menuItems.map((item) => {
-            const Icon = item.icon
-            const isActive = activeSection === item.id
+      {/* Status */}
+      {!collapsed && (
+        <div className="p-4 border-b border-border">
+          <div className="flex items-center space-x-2 text-sm">
+            <Activity className="h-4 w-4 text-primary animate-pulse" />
+            <span className="text-foreground">Sistema Ativo</span>
+            <Badge className="bg-primary/20 text-primary border-primary/20 text-xs">Online</Badge>
+          </div>
+          <div className="flex items-center space-x-2 text-sm mt-2">
+            <Users className="h-4 w-4 text-muted-foreground" />
+            <span className="text-muted-foreground">1,247 usuários conectados</span>
+          </div>
+        </div>
+      )}
 
-            return (
-              <Button
-                key={item.id}
-                variant={isActive ? "default" : "ghost"}
-                className={`w-full justify-start text-left ${collapsed ? "px-2" : "px-3"} ${
-                  isActive ? "bg-blue-600 text-white hover:bg-blue-700" : "text-gray-700 hover:bg-gray-100"
-                }`}
-                onClick={() => setActiveSection(item.id)}
-              >
-                <Icon className={`h-4 w-4 ${collapsed ? "" : "mr-3"} flex-shrink-0`} />
-                {!collapsed && (
-                  <>
-                    <span className="flex-1 truncate text-sm">{item.label}</span>
-                    {item.badge && (
-                      <Badge
-                        variant={
-                          item.badge === "URGENTE" ? "destructive" : item.badge === "Novo" ? "default" : "secondary"
-                        }
-                        className="ml-2 text-xs px-1.5 py-0.5"
-                      >
-                        {item.badge}
-                      </Badge>
-                    )}
-                  </>
-                )}
-              </Button>
-            )
-          })}
+      {/* Menu Items */}
+      <div className="flex-1 overflow-y-auto py-4">
+        <nav className="space-y-1 px-3">
+          {menuItems.map((item) => (
+            <MenuItem key={item.id} item={item} />
+          ))}
         </nav>
-      </ScrollArea>
+      </div>
+
+      {/* Bottom Items */}
+      <div className="border-t border-border p-3">
+        <nav className="space-y-1">
+          {bottomItems.map((item) => (
+            <MenuItem key={item.id} item={item} isBottom />
+          ))}
+        </nav>
+      </div>
     </div>
   )
 }
