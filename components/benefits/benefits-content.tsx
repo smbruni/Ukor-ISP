@@ -1,1021 +1,253 @@
 "use client"
 
-import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DollarSign, TrendingUp, Activity, Heart, AlertTriangle, CheckCircle, Target, Zap } from "lucide-react"
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  AreaChart,
-  Area,
-} from "recharts"
+import { Heart, Car, Utensils, DollarSign } from "lucide-react"
 
 export function BenefitsContent() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [showAddPartnerModal, setShowAddPartnerModal] = useState(false)
-
-  // Dados dos parceiros de bem-estar
-  const wellnessPartners = [
-    {
-      id: 1,
-      name: "Wellhub",
-      category: "Fitness & Bem-estar",
-      logo: "🏃‍♂️",
-      description: "Plataforma de atividades físicas e bem-estar",
-      users: 1247,
-      utilization: 78.5,
-      satisfaction: 4.6,
-      monthlyCost: 45890,
-      costPerUser: 36.8,
-      savings: 234000,
-      roi: 340,
-      status: "Ativo",
-      contract: "Anual",
-      features: ["Academias", "Apps fitness", "Meditação", "Nutrição"],
-    },
-    {
-      id: 2,
-      name: "Vittude",
-      category: "Saúde Mental",
-      logo: "🧠",
-      description: "Plataforma de psicologia e terapia online",
-      users: 892,
-      utilization: 65.2,
-      satisfaction: 4.8,
-      monthlyCost: 28450,
-      costPerUser: 31.9,
-      savings: 156000,
-      roi: 280,
-      status: "Ativo",
-      contract: "Anual",
-      features: ["Psicoterapia", "Psiquiatria", "Orientação", "Grupos"],
-    },
-    {
-      id: 3,
-      name: "Zenklub",
-      category: "Saúde Mental",
-      logo: "🧘‍♀️",
-      description: "Cuidado emocional e desenvolvimento pessoal",
-      users: 1456,
-      utilization: 72.8,
-      satisfaction: 4.7,
-      monthlyCost: 35670,
-      costPerUser: 24.5,
-      savings: 189000,
-      roi: 310,
-      status: "Ativo",
-      contract: "Anual",
-      features: ["Terapia", "Coaching", "Meditação", "Autoconhecimento"],
-    },
-    {
-      id: 4,
-      name: "TotalPass",
-      category: "Fitness & Academias",
-      logo: "💪",
-      description: "Rede de academias e estúdios em todo o Brasil",
-      users: 1823,
-      utilization: 81.3,
-      satisfaction: 4.5,
-      monthlyCost: 52870,
-      costPerUser: 29.0,
-      savings: 267000,
-      roi: 325,
-      status: "Ativo",
-      contract: "Anual",
-      features: ["Academias", "Natação", "Pilates", "Crossfit"],
-    },
-  ]
-
-  // Dados dos benefícios tradicionais
-  const traditionalBenefits = [
-    {
-      id: 1,
-      name: "Vale Refeição",
-      type: "VR",
-      icon: "🍽️",
-      totalUsers: 2340,
-      activeUsers: 2298,
-      utilization: 98.2,
-      monthlyBudget: 468000,
-      avgTicket: 28.5,
-      totalSpent: 459870,
-      savings: 8130,
-      trend: "stable",
-      satisfaction: 4.2,
-    },
-    {
-      id: 2,
-      name: "Vale Alimentação",
-      type: "VA",
-      icon: "🛒",
-      totalUsers: 2340,
-      activeUsers: 2156,
-      utilization: 92.1,
-      monthlyBudget: 351000,
-      avgTicket: 22.8,
-      totalSpent: 342340,
-      savings: 8660,
-      trend: "up",
-      satisfaction: 4.4,
-    },
-    {
-      id: 3,
-      name: "Vale Transporte",
-      type: "VT",
-      icon: "🚌",
-      totalUsers: 1890,
-      activeUsers: 1734,
-      utilization: 91.7,
-      monthlyBudget: 189000,
-      avgTicket: 15.6,
-      totalSpent: 178450,
-      savings: 10550,
-      trend: "down",
-      satisfaction: 3.8,
-    },
-  ]
-
-  // Dados do plano de saúde (Unimed)
-  const healthPlanData = {
-    sinistrality: 110.04,
-    activeBeneficiaries: 987,
-    totalCost: 2803650.76,
-    utilizationRate: 97, // Porcentagem de pessoas que utilizam o plano
-    utilizationCount: 957,
-    products: ["UNIFÁCIL FLEX ESTADUAL", "UNIPART FLEX NACIONAL", "SEGUROS UNIMED"],
-    companyDistribution: {
-      Euroville: 250,
-      "Auto Japan Norte": 180,
-      "Delta Filmes": 120,
-      // Adicione as outras empresas aqui
-    },
-    demographics: {
-      holdersPercentage: 68.46,
-      dependentsPercentage: 31.54,
-    },
-    serviceUtilization: {
-      electiveConsultationsCost: 335914,
-      electiveConsultationsCount: 2990,
-      emergencyRoomCost: 120825,
-      emergencyRoomCount: 1568,
-      hospitalizationsCost: 1352894,
-      hospitalizationsCount: 123,
-      examsCost: 455764,
-      examsCount: 14066,
-    },
-    majorUsers: [
-      // Adicione dados sobre os maiores usuários e casos crônicos aqui
-    ],
-  }
-
-  // Dados de custos por departamento
-  const departmentCosts = [
-    {
-      department: "TI",
-      employees: 145,
-      wellhub: 5335,
-      vittude: 2465,
-      zenklub: 3550,
-      vr: 41325,
-      va: 31900,
-      vt: 18270,
-      total: 102845,
-      perEmployee: 709,
-    },
-    {
-      department: "Marketing",
-      employees: 67,
-      wellhub: 2467,
-      vittude: 1138,
-      zenklub: 1642,
-      vr: 19095,
-      va: 14746,
-      vt: 8442,
-      total: 47530,
-      perEmployee: 709,
-    },
-    {
-      department: "Vendas",
-      employees: 89,
-      wellhub: 3278,
-      vittude: 1512,
-      zenklub: 2180,
-      vr: 25365,
-      va: 19594,
-      vt: 11214,
-      total: 63143,
-      perEmployee: 709,
-    },
-    {
-      department: "RH",
-      employees: 23,
-      wellhub: 847,
-      vittude: 391,
-      zenklub: 564,
-      vr: 6555,
-      va: 5062,
-      vt: 2898,
-      total: 16317,
-      perEmployee: 709,
-    },
-    {
-      department: "Financeiro",
-      employees: 34,
-      wellhub: 1252,
-      vittude: 578,
-      zenklub: 833,
-      vr: 9690,
-      va: 7482,
-      vt: 4284,
-      total: 24119,
-      perEmployee: 709,
-    },
-    {
-      department: "Operações",
-      employees: 156,
-      wellhub: 5743,
-      vittude: 2651,
-      zenklub: 3822,
-      vr: 44460,
-      va: 34332,
-      vt: 19656,
-      total: 110664,
-      perEmployee: 709,
-    },
-  ]
-
-  // Dados de utilização mensal
-  const monthlyUtilization = [
-    { month: "Jul", wellhub: 72, vittude: 58, zenklub: 65, vr: 96, va: 89, vt: 88 },
-    { month: "Ago", wellhub: 75, vittude: 61, zenklub: 68, vr: 97, va: 91, vt: 89 },
-    { month: "Set", wellhub: 78, vittude: 63, zenklub: 70, vr: 98, va: 92, vt: 91 },
-    { month: "Out", wellhub: 79, vittude: 65, zenklub: 72, vr: 98, va: 92, vt: 92 },
-    { month: "Nov", wellhub: 78, vittude: 65, zenklub: 73, vr: 98, va: 92, vt: 92 },
-    { month: "Dez", wellhub: 79, vittude: 65, zenklub: 73, vr: 98, va: 92, vt: 92 },
-  ]
-
-  // Análise preditiva
-  const predictiveAnalysis = [
-    { month: "Jan", atual: 364520, previsto: 368000, economia: 3480 },
-    { month: "Fev", atual: 364520, previsto: 372000, economia: 7480 },
-    { month: "Mar", atual: 364520, previsto: 375000, economia: 10480 },
-    { month: "Abr", atual: 364520, previsto: 378000, economia: 13480 },
-    { month: "Mai", atual: 364520, previsto: 382000, economia: 17480 },
-    { month: "Jun", atual: 364520, previsto: 385000, economia: 20480 },
-  ]
-
-  const costDistribution = [
-    { name: "Vale Refeição", value: 45, color: "#8b5cf6" },
-    { name: "Vale Alimentação", value: 32, color: "#06b6d4" },
-    { name: "Vale Transporte", value: 18, color: "#10b981" },
-    { name: "Wellhub", value: 3, color: "#f59e0b" },
-    { name: "Vittude", value: 1.5, color: "#ef4444" },
-    { name: "Zenklub", value: 0.5, color: "#8b5cf6" },
-  ]
-
-  // Componente de modal para adicionar parceiro
-  const AddPartnerModal = () => {
-    return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6 w-full max-w-md">
-          <h3 className="text-xl font-bold mb-4">Adicionar Novo Parceiro</h3>
-          <form className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Nome</label>
-              <input type="text" className="w-full p-2 border rounded-md" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Categoria</label>
-              <select className="w-full p-2 border rounded-md">
-                <option>Fitness & Bem-estar</option>
-                <option>Saúde Mental</option>
-                <option>Nutrição</option>
-                <option>Academias</option>
-                <option>Outro</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Descrição</label>
-              <textarea className="w-full p-2 border rounded-md" rows={3}></textarea>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Custo Mensal (R$)</label>
-              <input type="number" className="w-full p-2 border rounded-md" />
-            </div>
-            <div className="flex gap-2 pt-2">
-              <Button onClick={() => setShowAddPartnerModal(false)} variant="outline" className="flex-1">
-                Cancelar
-              </Button>
-              <Button className="flex-1">Salvar</Button>
-            </div>
-          </form>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Benefícios Corporativos</h2>
-        <p className="text-muted-foreground">Analytics completo de benefícios e parceiros de bem-estar</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Gestão de Benefícios</h1>
+          <p className="text-gray-600">
+            Análise completa dos benefícios oferecidos e sua correlação com saúde e performance
+          </p>
+        </div>
+        <Badge variant="outline" className="text-sm">
+          987 Beneficiários Ativos
+        </Badge>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="wellness">Bem-estar</TabsTrigger>
-          <TabsTrigger value="traditional">Tradicionais</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="predictive">Preditiva</TabsTrigger>
+      {/* Visão Geral dos Benefícios */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="border-l-4 border-l-blue-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Plano de Saúde</CardTitle>
+            <Heart className="h-4 w-4 text-blue-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">R$ 2.8M</div>
+            <p className="text-xs text-blue-500">Custo anual total</p>
+            <Progress value={110} className="mt-2" />
+            <p className="text-xs text-red-500 mt-1">Sinistralidade: 110%</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-green-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Vale Refeição</CardTitle>
+            <Utensils className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">R$ 420K</div>
+            <p className="text-xs text-green-500">R$ 35/dia por colaborador</p>
+            <Progress value={95} className="mt-2" />
+            <p className="text-xs text-green-500 mt-1">95% de utilização</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-purple-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Vale Transporte</CardTitle>
+            <Car className="h-4 w-4 text-purple-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">R$ 180K</div>
+            <p className="text-xs text-purple-500">Custo anual</p>
+            <Progress value={78} className="mt-2" />
+            <p className="text-xs text-purple-500 mt-1">78% dos colaboradores</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-orange-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Benefícios Totais</CardTitle>
+            <DollarSign className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">R$ 3.4M</div>
+            <p className="text-xs text-orange-500">Investimento total anual</p>
+            <Progress value={85} className="mt-2" />
+            <p className="text-xs text-orange-500 mt-1">ROI: 2.3:1</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Análise Detalhada por Tabs */}
+      <Tabs defaultValue="saude" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="saude">Plano de Saúde</TabsTrigger>
+          <TabsTrigger value="tradicionais">Benefícios Tradicionais</TabsTrigger>
+          <TabsTrigger value="correlacao">Correlação Performance</TabsTrigger>
+          <TabsTrigger value="otimizacao">Otimização</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-6">
-          {/* KPIs Principais */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Custo Total Mensal</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">R$ 1.02M</div>
-                <p className="text-xs text-muted-foreground">-2.3% vs mês anterior</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Utilização Média</CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">87.2%</div>
-                <p className="text-xs text-muted-foreground">+1.8% vs mês anterior</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">ROI Bem-estar</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">310%</div>
-                <p className="text-xs text-muted-foreground">Retorno médio</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Satisfação</CardTitle>
-                <Heart className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">4.5</div>
-                <p className="text-xs text-muted-foreground">Avaliação média</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Distribuição de Custos */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <TabsContent value="saude">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Distribuição de Custos</CardTitle>
-                <CardDescription>Participação de cada benefício no orçamento total</CardDescription>
+                <CardTitle>Análise de Custos por Departamento</CardTitle>
+                <CardDescription>Distribuição dos custos de saúde por área</CardDescription>
               </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={costDistribution}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, value }) => `${name}: ${value}%`}
-                    >
-                      {costDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Tecnologia (120 colaboradores)</span>
+                    <span className="font-semibold">R$ 890K</span>
+                  </div>
+                  <Progress value={32} className="h-2" />
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Operações (200 colaboradores)</span>
+                    <span className="font-semibold">R$ 680K</span>
+                  </div>
+                  <Progress value={24} className="h-2" />
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Vendas (150 colaboradores)</span>
+                    <span className="font-semibold">R$ 520K</span>
+                  </div>
+                  <Progress value={19} className="h-2" />
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Administrativo (100 colaboradores)</span>
+                    <span className="font-semibold">R$ 380K</span>
+                  </div>
+                  <Progress value={14} className="h-2" />
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">RH/Financeiro (80 colaboradores)</span>
+                    <span className="font-semibold">R$ 330K</span>
+                  </div>
+                  <Progress value={11} className="h-2" />
+                </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Utilização por Benefício</CardTitle>
-                <CardDescription>Taxa de utilização mensal dos benefícios</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyUtilization}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="vr" stroke="#8b5cf6" name="Vale Refeição" />
-                    <Line type="monotone" dataKey="va" stroke="#06b6d4" name="Vale Alimentação" />
-                    <Line type="monotone" dataKey="vt" stroke="#10b981" name="Vale Transporte" />
-                    <Line type="monotone" dataKey="wellhub" stroke="#f59e0b" name="Wellhub" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Custos por Departamento */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Custos por Departamento</CardTitle>
-              <CardDescription>Distribuição de gastos com benefícios por área</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={departmentCosts}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="department" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => [`R$ ${value.toLocaleString()}`, ""]} />
-                  <Bar dataKey="vr" stackId="a" fill="#8b5cf6" name="Vale Refeição" />
-                  <Bar dataKey="va" stackId="a" fill="#06b6d4" name="Vale Alimentação" />
-                  <Bar dataKey="vt" stackId="a" fill="#10b981" name="Vale Transporte" />
-                  <Bar dataKey="wellhub" stackId="a" fill="#f59e0b" name="Wellhub" />
-                  <Bar dataKey="vittude" stackId="a" fill="#ef4444" name="Vittude" />
-                  <Bar dataKey="zenklub" stackId="a" fill="#8b5cf6" name="Zenklub" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="wellness" className="space-y-6">
-          {/* Botão de adicionar parceiro */}
-          <div className="flex justify-end">
-            <Button onClick={() => setShowAddPartnerModal(true)} className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-plus"
-              >
-                <path d="M5 12h14"></path>
-                <path d="M12 5v14"></path>
-              </svg>
-              Adicionar Parceiro
-            </Button>
-          </div>
-
-          {/* Modal de adicionar parceiro */}
-          {showAddPartnerModal && <AddPartnerModal />}
-
-          {/* Parceiros de Bem-estar */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {wellnessPartners.map((partner) => (
-              <Card key={partner.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-3xl">{partner.logo}</div>
-                      <div>
-                        <CardTitle className="text-lg">{partner.name}</CardTitle>
-                        <CardDescription>{partner.category}</CardDescription>
-                      </div>
-                    </div>
-                    <Badge variant={partner.status === "Ativo" ? "default" : "secondary"}>{partner.status}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <p className="text-sm text-muted-foreground">{partner.description}</p>
-
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Usuários:</span>
-                        <div className="font-medium">{partner.users.toLocaleString()}</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Utilização:</span>
-                        <div className="font-medium">{partner.utilization}%</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Satisfação:</span>
-                        <div className="font-medium">{partner.satisfaction} ⭐</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">ROI:</span>
-                        <div className="font-medium text-green-600">{partner.roi}%</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Custo Mensal:</span>
-                        <span className="font-medium">R$ {partner.monthlyCost.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Custo por Usuário:</span>
-                        <span className="font-medium">R$ {partner.costPerUser}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Economia Anual:</span>
-                        <span className="font-medium text-green-600">R$ {partner.savings.toLocaleString()}</span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="text-sm text-muted-foreground">Recursos:</span>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {partner.features.map((feature, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
-                            {feature}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        Ver Detalhes
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Relatório
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Métricas Consolidadas */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Total de Usuários</CardTitle>
+                <CardTitle>Top 10 Usuários por Custo</CardTitle>
+                <CardDescription>Colaboradores com maior utilização</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">3,595</div>
-                <p className="text-xs text-muted-foreground">Usuários únicos ativos</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Investimento Mensal</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">R$ 110K</div>
-                <p className="text-xs text-muted-foreground">Custo total dos parceiros</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Economia Total</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">R$ 579K</div>
-                <p className="text-xs text-muted-foreground">Economia anual estimada</p>
+                <div className="space-y-3">
+                  {[
+                    { nome: "Colaborador A", dept: "Tecnologia", custo: "R$ 145K", status: "Oncológico" },
+                    { nome: "Colaborador B", dept: "Operações", custo: "R$ 132K", status: "Crônico" },
+                    { nome: "Colaborador C", dept: "Vendas", custo: "R$ 128K", status: "Oncológico" },
+                    { nome: "Colaborador D", dept: "Tecnologia", custo: "R$ 115K", status: "Crônico" },
+                    { nome: "Colaborador E", dept: "Administrativo", custo: "R$ 98K", status: "Oncológico" },
+                  ].map((user, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">{user.nome}</p>
+                        <p className="text-sm text-gray-600">{user.dept}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold">{user.custo}</p>
+                        <Badge variant={user.status === "Oncológico" ? "destructive" : "secondary"} className="text-xs">
+                          {user.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        <TabsContent value="traditional" className="space-y-6">
-          {/* Benefícios Tradicionais */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {traditionalBenefits.map((benefit) => (
-              <Card key={benefit.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-3xl">{benefit.icon}</div>
-                      <div>
-                        <CardTitle className="text-lg">{benefit.name}</CardTitle>
-                        <CardDescription>{benefit.type}</CardDescription>
-                      </div>
-                    </div>
-                    <Badge
-                      variant={
-                        benefit.trend === "up" ? "default" : benefit.trend === "down" ? "destructive" : "secondary"
-                      }
-                    >
-                      {benefit.trend === "up" ? "↗️" : benefit.trend === "down" ? "↘️" : "→"}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Usuários Totais:</span>
-                        <div className="font-medium">{benefit.totalUsers.toLocaleString()}</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Usuários Ativos:</span>
-                        <div className="font-medium">{benefit.activeUsers.toLocaleString()}</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Utilização:</span>
-                        <div className="font-medium">{benefit.utilization}%</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Ticket Médio:</span>
-                        <div className="font-medium">R$ {benefit.avgTicket}</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Orçamento Mensal:</span>
-                        <span className="font-medium">R$ {benefit.monthlyBudget.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Gasto Atual:</span>
-                        <span className="font-medium">R$ {benefit.totalSpent.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Economia:</span>
-                        <span className="font-medium text-green-600">R$ {benefit.savings.toLocaleString()}</span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Satisfação</span>
-                        <span>{benefit.satisfaction}/5.0</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-primary h-2 rounded-full"
-                          style={{ width: `${(benefit.satisfaction / 5) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        Gerenciar
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Relatório
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Resumo Financeiro */}
+        <TabsContent value="tradicionais">
           <Card>
             <CardHeader>
-              <CardTitle>Resumo Financeiro - Benefícios Tradicionais</CardTitle>
-              <CardDescription>Consolidado mensal dos principais indicadores</CardDescription>
+              <CardTitle>Benefícios Tradicionais (VA, VR, VT)</CardTitle>
+              <CardDescription>Análise consolidada dos benefícios básicos</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">R$ 1.01M</div>
-                  <p className="text-sm text-muted-foreground">Orçamento Total</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-semibold mb-2">Vale Alimentação</h4>
+                  <p className="text-2xl font-bold text-green-600">R$ 420K</p>
+                  <p className="text-sm text-gray-600">95% utilização</p>
+                  <Progress value={95} className="mt-2" />
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">R$ 980K</div>
-                  <p className="text-sm text-muted-foreground">Gasto Efetivo</p>
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-semibold mb-2">Vale Refeição</h4>
+                  <p className="text-2xl font-bold text-blue-600">R$ 280K</p>
+                  <p className="text-sm text-gray-600">87% utilização</p>
+                  <Progress value={87} className="mt-2" />
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-600">R$ 27K</div>
-                  <p className="text-sm text-muted-foreground">Economia</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">94.0%</div>
-                  <p className="text-sm text-muted-foreground">Utilização Média</p>
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-semibold mb-2">Vale Transporte</h4>
+                  <p className="text-2xl font-bold text-purple-600">R$ 180K</p>
+                  <p className="text-sm text-gray-600">78% utilização</p>
+                  <Progress value={78} className="mt-2" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="analytics" className="space-y-6">
-          {/* Análise Detalhada por Departamento */}
+        <TabsContent value="correlacao">
           <Card>
             <CardHeader>
-              <CardTitle>Análise por Departamento</CardTitle>
-              <CardDescription>Custos detalhados e métricas por área da empresa</CardDescription>
+              <CardTitle>Correlação com Performance</CardTitle>
+              <CardDescription>Impacto dos benefícios na produtividade e saúde</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left p-2">Departamento</th>
-                      <th className="text-right p-2">Funcionários</th>
-                      <th className="text-right p-2">Wellhub</th>
-                      <th className="text-right p-2">Vittude</th>
-                      <th className="text-right p-2">Zenklub</th>
-                      <th className="text-right p-2">VR</th>
-                      <th className="text-right p-2">VA</th>
-                      <th className="text-right p-2">VT</th>
-                      <th className="text-right p-2">Total</th>
-                      <th className="text-right p-2">Por Funcionário</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {departmentCosts.map((dept, index) => (
-                      <tr key={index} className="border-b hover:bg-muted">
-                        <td className="p-2 font-medium">{dept.department}</td>
-                        <td className="p-2 text-right">{dept.employees}</td>
-                        <td className="p-2 text-right">R$ {dept.wellhub.toLocaleString()}</td>
-                        <td className="p-2 text-right">R$ {dept.vittude.toLocaleString()}</td>
-                        <td className="p-2 text-right">R$ {dept.zenklub.toLocaleString()}</td>
-                        <td className="p-2 text-right">R$ {dept.vr.toLocaleString()}</td>
-                        <td className="p-2 text-right">R$ {dept.va.toLocaleString()}</td>
-                        <td className="p-2 text-right">R$ {dept.vt.toLocaleString()}</td>
-                        <td className="p-2 text-right font-bold">R$ {dept.total.toLocaleString()}</td>
-                        <td className="p-2 text-right">R$ {dept.perEmployee}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="space-y-6">
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold text-green-800 mb-2">Impacto Positivo</h4>
+                  <ul className="space-y-2 text-sm text-green-700">
+                    <li>• Plano de saúde reduz absenteísmo em 23%</li>
+                    <li>• Vale refeição melhora satisfação em 18%</li>
+                    <li>• Benefícios completos reduzem turnover em 31%</li>
+                  </ul>
+                </div>
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <h4 className="font-semibold text-blue-800 mb-2">ROI Financeiro</h4>
+                  <ul className="space-y-2 text-sm text-blue-700">
+                    <li>• Cada R$ 1 investido retorna R$ 2.3</li>
+                    <li>• Economia de R$ 1.2M em custos evitados</li>
+                    <li>• Redução de 15% em custos de recrutamento</li>
+                  </ul>
+                </div>
               </div>
             </CardContent>
           </Card>
-
-          {/* Tendências de Utilização */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Tendências de Utilização</CardTitle>
-              <CardDescription>Evolução da utilização dos benefícios ao longo do tempo</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={monthlyUtilization}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="vr" stackId="1" stroke="#8b5cf6" fill="#8b5cf6" name="Vale Refeição" />
-                  <Area
-                    type="monotone"
-                    dataKey="va"
-                    stackId="1"
-                    stroke="#06b6d4"
-                    fill="#06b6d4"
-                    name="Vale Alimentação"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="vt"
-                    stackId="1"
-                    stroke="#10b981"
-                    fill="#10b981"
-                    name="Vale Transporte"
-                  />
-                  <Area type="monotone" dataKey="wellhub" stackId="1" stroke="#f59e0b" fill="#f59e0b" name="Wellhub" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Insights e Recomendações */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Insights Principais</CardTitle>
-                <CardDescription>Descobertas baseadas nos dados</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Alta Adesão aos Vales</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Benefícios tradicionais mantêm utilização acima de 90%
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3">
-                    <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Oportunidade no Wellhub</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Utilização pode aumentar 15% com campanhas direcionadas
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3">
-                    <TrendingUp className="h-5 w-5 text-blue-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">ROI Positivo</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Parceiros de bem-estar geram economia de R$ 579K/ano
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Recomendações</CardTitle>
-                <CardDescription>Ações sugeridas para otimização</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <Target className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Campanha de Engajamento</h4>
-                      <p className="text-sm text-muted-foreground">Foco no departamento de Operações para Wellhub</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3">
-                    <Zap className="h-5 w-5 text-yellow-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Otimização de Custos</h4>
-                      <p className="text-sm text-muted-foreground">Renegociar contratos com base na utilização real</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3">
-                    <Heart className="h-5 w-5 text-red-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Pesquisa de Satisfação</h4>
-                      <p className="text-sm text-muted-foreground">Avaliar satisfação com Vale Transporte (3.8/5)</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </TabsContent>
 
-        <TabsContent value="predictive" className="space-y-6">
-          {/* Análise Preditiva */}
+        <TabsContent value="otimizacao">
           <Card>
             <CardHeader>
-              <CardTitle>Projeção de Custos</CardTitle>
-              <CardDescription>Previsão de gastos e economia para os próximos 6 meses</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={predictiveAnalysis}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => [`R$ ${value.toLocaleString()}`, ""]} />
-                  <Line type="monotone" dataKey="atual" stroke="#8884d8" strokeDasharray="5 5" name="Custo Atual" />
-                  <Line type="monotone" dataKey="previsto" stroke="#82ca9d" name="Projeção sem Otimização" />
-                  <Line type="monotone" dataKey="economia" stroke="#ffc658" name="Economia Potencial" />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Cenários de Otimização */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Cenário Conservador</CardTitle>
-                <CardDescription>Otimizações básicas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-green-600">R$ 45K</div>
-                  <p className="text-sm text-muted-foreground">Economia anual estimada</p>
-                  <div className="text-xs text-muted-foreground">
-                    • Renegociação de contratos
-                    <br />• Otimização de utilização
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Cenário Moderado</CardTitle>
-                <CardDescription>Implementação de melhorias</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-blue-600">R$ 78K</div>
-                  <p className="text-sm text-muted-foreground">Economia anual estimada</p>
-                  <div className="text-xs text-muted-foreground">
-                    • Campanhas de engajamento
-                    <br />• Novos parceiros estratégicos
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Cenário Otimista</CardTitle>
-                <CardDescription>Transformação completa</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="text-2xl font-bold text-purple-600">R$ 125K</div>
-                  <p className="text-sm text-muted-foreground">Economia anual estimada</p>
-                  <div className="text-xs text-muted-foreground">
-                    • Digitalização completa
-                    <br />• Analytics avançado
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Fatores de Risco */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Fatores de Risco e Oportunidades</CardTitle>
-              <CardDescription>Análise de cenários e variáveis que podem impactar os resultados</CardDescription>
+              <CardTitle>Oportunidades de Otimização</CardTitle>
+              <CardDescription>Sugestões para melhorar eficiência dos benefícios</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-medium text-red-600 mb-3">Riscos Identificados</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-start space-x-2">
-                      <AlertTriangle className="h-4 w-4 text-red-500 mt-0.5" />
-                      <div className="text-sm">
-                        <div className="font-medium">Inflação de Benefícios</div>
-                        <div className="text-muted-foreground">Aumento de 8-12% nos custos anuais</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <AlertTriangle className="h-4 w-4 text-red-500 mt-0.5" />
-                      <div className="text-sm">
-                        <div className="font-medium">Mudanças Regulatórias</div>
-                        <div className="text-muted-foreground">Novos benefícios obrigatórios</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <AlertTriangle className="h-4 w-4 text-red-500 mt-0.5" />
-                      <div className="text-sm">
-                        <div className="font-medium">Baixa Adesão</div>
-                        <div className="text-muted-foreground">ROI reduzido em novos benefícios</div>
-                      </div>
-                    </div>
-                  </div>
+              <div className="space-y-4">
+                <div className="p-4 border-l-4 border-l-yellow-500 bg-yellow-50 rounded-lg">
+                  <h4 className="font-semibold text-yellow-800">Renegociação Plano de Saúde</h4>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    Sinistralidade de 110% indica necessidade de renegociação ou mudança de operadora
+                  </p>
+                  <p className="text-xs text-yellow-600 mt-2">Economia potencial: R$ 420K/ano</p>
                 </div>
-
-                <div>
-                  <h4 className="font-medium text-green-600 mb-3">Oportunidades</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="h-4 w-4 text-green-500 mt-0.5" />
-                      <div className="text-sm">
-                        <div className="font-medium">Parcerias Estratégicas</div>
-                        <div className="text-muted-foreground">Descontos por volume e exclusividade</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="h-4 w-4 text-green-500 mt-0.5" />
-                      <div className="text-sm">
-                        <div className="font-medium">Digitalização</div>
-                        <div className="text-muted-foreground">Redução de custos operacionais</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="h-4 w-4 text-green-500 mt-0.5" />
-                      <div className="text-sm">
-                        <div className="font-medium">Analytics Avançado</div>
-                        <div className="text-muted-foreground">Otimização baseada em dados</div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="p-4 border-l-4 border-l-blue-500 bg-blue-50 rounded-lg">
+                  <h4 className="font-semibold text-blue-800">Flexibilização de Benefícios</h4>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Implementar sistema de benefícios flexíveis para melhor adequação às necessidades
+                  </p>
+                  <p className="text-xs text-blue-600 mt-2">Melhoria esperada: +15% satisfação</p>
+                </div>
+                <div className="p-4 border-l-4 border-l-green-500 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold text-green-800">Programas de Wellness</h4>
+                  <p className="text-sm text-green-700 mt-1">
+                    Adicionar benefícios de bem-estar pode reduzir custos médicos em 25%
+                  </p>
+                  <p className="text-xs text-green-600 mt-2">ROI esperado: 3.5:1</p>
                 </div>
               </div>
             </CardContent>

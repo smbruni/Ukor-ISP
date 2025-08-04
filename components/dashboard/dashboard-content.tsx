@@ -1,300 +1,408 @@
 "use client"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  ResponsiveContainer,
-  LineChart as RechartsLineChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Line,
-} from "recharts"
-import { ArrowUp, ArrowDown, AlertTriangle, Heart, Shield, Activity, DollarSign, FileText, Users } from "lucide-react"
+  Users,
+  TrendingUp,
+  DollarSign,
+  Heart,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  BarChart3,
+  PieChart,
+  ArrowUpRight,
+} from "lucide-react"
 
-export default function DashboardContent() {
-  const healthPerformanceData = [
-    { month: "Abr/24", absenteismo: 4.2, produtividade: 78, engajamento: 65 },
-    { month: "Mai/24", absenteismo: 3.8, produtividade: 82, engajamento: 68 },
-    { month: "Jun/24", absenteismo: 3.5, produtividade: 85, engajamento: 72 },
-    { month: "Jul/24", absenteismo: 4.1, produtividade: 79, engajamento: 69 },
-    { month: "Ago/24", absenteismo: 3.2, produtividade: 88, engajamento: 74 },
-    { month: "Set/24", absenteismo: 2.9, produtividade: 91, engajamento: 78 },
-    { month: "Out/24", absenteismo: 3.7, produtividade: 83, engajamento: 71 },
-    { month: "Nov/24", absenteismo: 3.4, produtividade: 86, engajamento: 75 },
-    { month: "Dez/24", absenteismo: 3.1, produtividade: 89, engajamento: 77 },
-    { month: "Jan/25", absenteismo: 2.8, produtividade: 92, engajamento: 81 },
-    { month: "Fev/25", absenteismo: 3.0, produtividade: 90, engajamento: 79 },
-    { month: "Mar/25", absenteismo: 2.6, produtividade: 94, engajamento: 83 },
-  ]
-
+export function DashboardContent() {
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Dashboard Executivo - Saúde e Performance Corporativa</h2>
-        <p className="text-muted-foreground">Indicadores integrados de bem-estar, produtividade e impacto financeiro</p>
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard Executivo</h1>
+          <p className="text-gray-600 mt-1">Visão geral da saúde corporativa e performance</p>
+        </div>
+        <div className="flex gap-2">
+          <Badge variant="secondary" className="bg-green-100 text-green-700">
+            Sistema Online
+          </Badge>
+          <Badge variant="outline">Atualizado há 5min</Badge>
+        </div>
       </div>
 
-      {/* Alerta de Burnout Preditivo */}
-      <Card className="border-l-4 border-l-amber-500 bg-amber-50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-amber-800">
-            <AlertTriangle className="h-5 w-5" />
-            Alerta Preditivo - Risco de Burnout Elevado
-          </CardTitle>
-          <CardDescription className="text-amber-700">
-            23 colaboradores com alto risco de burnout identificados pela IA - Intervenção recomendada
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Absenteísmo</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-amber-600">2.6%</div>
-            <p className="text-xs text-muted-foreground">Meta: &lt;2.5%</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowDown className="h-3 w-3 mr-1" />
-              <span>-38% vs ano anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Presenteísmo</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">18%</div>
-            <p className="text-xs text-muted-foreground">Produtividade reduzida</p>
-            <div className="mt-2 flex items-center text-xs text-red-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>Estresse e dores</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Sinistralidade</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">110.04%</div>
-            <p className="text-xs text-muted-foreground">Meta: &lt;75%</p>
-            <div className="mt-2 flex items-center text-xs text-red-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+35% acima da meta</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Turnover</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Colaboradores Ativos</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">8.4%</div>
-            <p className="text-xs text-muted-foreground">Meta: &lt;10%</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowDown className="h-3 w-3 mr-1" />
-              <span>Dentro da meta</span>
-            </div>
+            <div className="text-2xl font-bold">12,847</div>
+            <p className="text-xs text-muted-foreground">
+              <span className="text-green-600 flex items-center gap-1">
+                <ArrowUpRight className="h-3 w-3" />
+                +2.5%
+              </span>{" "}
+              vs mês anterior
+            </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Engajamento</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Índice de Saúde</CardTitle>
+            <Heart className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">83%</div>
-            <p className="text-xs text-muted-foreground">eNPS: +45</p>
-            <div className="mt-2 flex items-center text-xs text-blue-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+18% vs ano anterior</span>
-            </div>
+            <div className="text-2xl font-bold text-green-600">87.3%</div>
+            <p className="text-xs text-muted-foreground">
+              <span className="text-green-600 flex items-center gap-1">
+                <ArrowUpRight className="h-3 w-3" />
+                +1.2%
+              </span>{" "}
+              vs trimestre anterior
+            </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Wellbeing Score</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Economia Gerada</CardTitle>
+            <DollarSign className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">7.8</div>
-            <p className="text-xs text-muted-foreground">Escala 0-10</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>+1.2 vs ano anterior</span>
-            </div>
+            <div className="text-2xl font-bold text-green-600">R$ 2.1M</div>
+            <p className="text-xs text-muted-foreground">
+              <span className="text-green-600 flex items-center gap-1">
+                <ArrowUpRight className="h-3 w-3" />
+                +18.7%
+              </span>{" "}
+              vs projeção
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">ROI Programas</CardTitle>
+            <TrendingUp className="h-4 w-4 text-blue-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">195%</div>
+            <p className="text-xs text-muted-foreground">
+              <span className="text-green-600 flex items-center gap-1">
+                <ArrowUpRight className="h-3 w-3" />
+                +15%
+              </span>{" "}
+              vs meta anual
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Evolução: Absenteísmo vs Produtividade vs Engajamento</CardTitle>
-            <CardDescription>Correlação entre indicadores de saúde e performance organizacional</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <RechartsLineChart data={healthPerformanceData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
-                <Tooltip />
-                <Line
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="absenteismo"
-                  stroke="#ef4444"
-                  strokeWidth={2}
-                  name="Absenteísmo %"
-                />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="produtividade"
-                  stroke="#22c55e"
-                  strokeWidth={2}
-                  name="Produtividade %"
-                />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="engajamento"
-                  stroke="#3b82f6"
-                  strokeWidth={2}
-                  name="Engajamento %"
-                />
-              </RechartsLineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+      {/* Main Content Tabs */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+          <TabsTrigger value="health">Saúde</TabsTrigger>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="alerts">Alertas</TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Alertas e Insights</CardTitle>
-            <CardDescription>Situações que requerem atenção imediata</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="bg-red-100 p-2 rounded-full mr-3">
-                  <AlertTriangle className="h-4 w-4 text-red-500" />
+        <TabsContent value="overview" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5" />
+                  Distribuição por Faixa Etária
+                </CardTitle>
+                <CardDescription>Perfil demográfico dos colaboradores</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">18-25 anos</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: "15%" }}></div>
+                      </div>
+                      <span className="text-sm font-medium">1,927</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">26-35 anos</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div className="bg-green-500 h-2 rounded-full" style={{ width: "35%" }}></div>
+                      </div>
+                      <span className="text-sm font-medium">4,496</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">36-45 anos</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div className="bg-orange-500 h-2 rounded-full" style={{ width: "30%" }}></div>
+                      </div>
+                      <span className="text-sm font-medium">3,854</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">46-55 anos</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div className="bg-purple-500 h-2 rounded-full" style={{ width: "15%" }}></div>
+                      </div>
+                      <span className="text-sm font-medium">1,927</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">55+ anos</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div className="bg-red-500 h-2 rounded-full" style={{ width: "5%" }}></div>
+                      </div>
+                      <span className="text-sm font-medium">643</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-sm">Risco de Burnout</h4>
-                  <p className="text-xs text-muted-foreground">23 colaboradores em risco alto</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <PieChart className="h-5 w-5" />
+                  Status de Saúde Geral
+                </CardTitle>
+                <CardDescription>Classificação por risco</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm flex items-center gap-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      Baixo Risco
+                    </span>
+                    <span className="text-sm font-medium">8,462 (65.9%)</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm flex items-center gap-2">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      Risco Moderado
+                    </span>
+                    <span className="text-sm font-medium">3,213 (25.0%)</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm flex items-center gap-2">
+                      <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                      Alto Risco
+                    </span>
+                    <span className="text-sm font-medium">899 (7.0%)</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm flex items-center gap-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      Risco Crítico
+                    </span>
+                    <span className="text-sm font-medium">273 (2.1%)</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Principais Indicadores de Performance</CardTitle>
+              <CardDescription>Métricas chave do último trimestre</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Adesão Check-ups</span>
+                    <span className="font-medium text-green-600">78%</span>
+                  </div>
+                  <Progress value={78} className="h-2" />
+                  <p className="text-xs text-muted-foreground">Meta: 75%</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Participação Programas</span>
+                    <span className="font-medium text-blue-600">65%</span>
+                  </div>
+                  <Progress value={65} className="h-2" />
+                  <p className="text-xs text-muted-foreground">Meta: 60%</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Satisfação Geral</span>
+                    <span className="font-medium text-purple-600">4.2/5</span>
+                  </div>
+                  <Progress value={84} className="h-2" />
+                  <p className="text-xs text-muted-foreground">Meta: 4.0/5</p>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-              <div className="flex items-start">
-                <div className="bg-amber-100 p-2 rounded-full mr-3">
-                  <Heart className="h-4 w-4 text-amber-500" />
+        <TabsContent value="health" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Condições Crônicas Prevalentes</CardTitle>
+                <CardDescription>Top 5 condições identificadas</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="font-medium">Hipertensão</span>
+                    <Badge variant="outline">1,247 casos</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="font-medium">Diabetes Tipo 2</span>
+                    <Badge variant="outline">892 casos</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="font-medium">Obesidade</span>
+                    <Badge variant="outline">1,156 casos</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="font-medium">Ansiedade/Depressão</span>
+                    <Badge variant="outline">743 casos</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="font-medium">Dislipidemia</span>
+                    <Badge variant="outline">634 casos</Badge>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-sm">Doenças Crônicas</h4>
-                  <p className="text-xs text-muted-foreground">34% com hipertensão/diabetes</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Programas de Prevenção Ativos</CardTitle>
+                <CardDescription>Status e participação</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div>
+                      <span className="font-medium">Programa Cardiovascular</span>
+                      <p className="text-sm text-muted-foreground">2,341 participantes</p>
+                    </div>
+                    <Badge className="bg-green-100 text-green-700">Ativo</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div>
+                      <span className="font-medium">Controle de Diabetes</span>
+                      <p className="text-sm text-muted-foreground">892 participantes</p>
+                    </div>
+                    <Badge className="bg-blue-100 text-blue-700">Ativo</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    <div>
+                      <span className="font-medium">Saúde Mental</span>
+                      <p className="text-sm text-muted-foreground">1,567 participantes</p>
+                    </div>
+                    <Badge className="bg-purple-100 text-purple-700">Ativo</Badge>
+                  </div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
 
-              <div className="flex items-start">
-                <div className="bg-blue-100 p-2 rounded-full mr-3">
-                  <Activity className="h-4 w-4 text-blue-500" />
+        <TabsContent value="performance" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center">Produtividade</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-3xl font-bold text-green-600 mb-2">+12.5%</div>
+                <p className="text-sm text-muted-foreground">vs período anterior</p>
+                <Progress value={85} className="mt-4" />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center">Absenteísmo</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-3xl font-bold text-green-600 mb-2">-8.3%</div>
+                <p className="text-sm text-muted-foreground">redução significativa</p>
+                <Progress value={75} className="mt-4" />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-center">Engajamento</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-3xl font-bold text-blue-600 mb-2">87.2%</div>
+                <p className="text-sm text-muted-foreground">índice de satisfação</p>
+                <Progress value={87} className="mt-4" />
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="alerts" className="space-y-4">
+          <div className="grid grid-cols-1 gap-4">
+            <Card className="border-l-4 border-l-red-500">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-red-900">Alto Risco Cardiovascular</h4>
+                    <p className="text-sm text-red-700 mt-1">
+                      127 colaboradores identificados com risco elevado. Intervenção imediata recomendada.
+                    </p>
+                    <p className="text-xs text-red-600 mt-2">Há 2 horas</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-sm">Presenteísmo Elevado</h4>
-                  <p className="text-xs text-muted-foreground">18% com produtividade reduzida</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-l-4 border-l-yellow-500">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <Clock className="h-5 w-5 text-yellow-500 mt-0.5" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-yellow-900">Check-ups Pendentes</h4>
+                    <p className="text-sm text-yellow-700 mt-1">1,247 colaboradores com check-ups anuais em atraso.</p>
+                    <p className="text-xs text-yellow-600 mt-2">Há 4 horas</p>
+                  </div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <div className="flex items-start">
-                <div className="bg-green-100 p-2 rounded-full mr-3">
-                  <DollarSign className="h-4 w-4 text-green-500" />
+            <Card className="border-l-4 border-l-green-500">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-green-900">Meta Atingida</h4>
+                    <p className="text-sm text-green-700 mt-1">Programa de vacinação atingiu 95% de cobertura.</p>
+                    <p className="text-xs text-green-600 mt-2">Há 6 horas</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-sm">ROI Positivo</h4>
-                  <p className="text-xs text-muted-foreground">R$ 2.4M economia em bem-estar</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Nova seção com indicadores financeiros */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Custo Afastamentos</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 340K</div>
-            <p className="text-xs text-muted-foreground">INSS + Plano de saúde</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowDown className="h-3 w-3 mr-1" />
-              <span>-22% vs ano anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">ROI Bem-Estar</CardTitle>
-            <ArrowUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">340%</div>
-            <p className="text-xs text-muted-foreground">Retorno sobre investimento</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowUp className="h-3 w-3 mr-1" />
-              <span>R$ 3.40 para cada R$ 1</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Atestados/Colaborador</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">2.1</div>
-            <p className="text-xs text-muted-foreground">Por ano</p>
-            <div className="mt-2 flex items-center text-xs text-green-500">
-              <ArrowDown className="h-3 w-3 mr-1" />
-              <span>-0.8 vs ano anterior</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Horas Extras</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-amber-600">12%</div>
-            <p className="text-xs text-muted-foreground">Acima da carga normal</p>
-            <div className="mt-2 flex items-center text-xs text-amber-500">
-              <AlertTriangle className="h-3 w-3 mr-1" />
-              <span>Risco de sobrecarga</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

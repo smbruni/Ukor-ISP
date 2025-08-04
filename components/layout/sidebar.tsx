@@ -1,24 +1,29 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
-  BarChart3,
-  TrendingUp,
-  FileText,
-  Bot,
-  BookOpen,
-  Target,
+  LayoutDashboard,
+  Activity,
+  Database,
+  Gift,
+  Dumbbell,
+  TrendingDown,
+  Download,
   Settings,
+  HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Activity,
-  Users,
-  HelpCircle,
-  Database,
-  DollarSign,
+  Shield,
+  Target,
+  Brain,
+  Stethoscope,
   Calculator,
+  ClipboardList,
+  GraduationCap,
+  Users,
+  Bot,
 } from "lucide-react"
 
 interface SidebarProps {
@@ -32,80 +37,88 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
   const menuItems = [
     {
       id: "dashboard",
-      label: "Dashboard",
-      icon: BarChart3,
-      badge: null,
-      description: "Visão geral executiva",
+      label: "Dashboard Executivo",
+      icon: LayoutDashboard,
+    },
+    {
+      id: "unimed-analysis",
+      label: "Análise Unimed-BH",
+      icon: Shield,
+    },
+    {
+      id: "care-lines",
+      label: "Linhas de Cuidado",
+      icon: Stethoscope,
     },
     {
       id: "analytics",
       label: "Análises Preditivas",
-      icon: TrendingUp,
-      badge: "3",
-      description: "Modelos de IA e previsões",
-    },
-    {
-      id: "isp",
-      label: "ISP Diagnóstico",
-      icon: Target,
-      badge: null,
-      description: "Índice de Saúde e Performance",
-    },
-    {
-      id: "roi",
-      label: "ROI em Saúde",
-      icon: DollarSign,
-      badge: "Novo",
-      description: "Retorno sobre investimento em saúde",
+      icon: Brain,
     },
     {
       id: "performance",
-      label: "Performance",
-      icon: Activity,
-      badge: null,
-      description: "Análise de performance por departamento",
+      label: "Avaliação Performance",
+      icon: Target,
     },
     {
-      id: "investment-simulator",
-      label: "Simulador ROI",
+      id: "isp",
+      label: "ISP - Indicadores",
+      icon: Activity,
+    },
+    {
+      id: "roi",
+      label: "ROI & Economia",
       icon: Calculator,
-      badge: null,
-      description: "Simulador de cenários de investimento",
     },
     {
       id: "questionnaires",
       label: "Questionários",
-      icon: FileText,
-      badge: "12",
-      description: "Avaliações e formulários",
+      icon: ClipboardList,
     },
     {
       id: "data",
-      label: "Dados de Saúde",
+      label: "Gestão de Dados",
       icon: Database,
-      badge: "7",
-      description: "Integração de dados",
-    },
-    {
-      id: "ai-agents",
-      label: "IA Agents",
-      icon: Bot,
-      badge: "5",
-      description: "Consultores virtuais especializados",
-    },
-    {
-      id: "education",
-      label: "Educação",
-      icon: BookOpen,
-      badge: null,
-      description: "Cursos e trilhas de aprendizado",
     },
     {
       id: "benefits",
-      label: "Benefícios",
-      icon: DollarSign,
-      badge: "4",
-      description: "Analytics de benefícios corporativos",
+      label: "Benefícios Corporativos",
+      icon: Gift,
+    },
+    {
+      id: "wellness",
+      label: "Programas Wellness",
+      icon: Dumbbell,
+    },
+    {
+      id: "sinistralidade",
+      label: "Redução Sinistralidade",
+      icon: TrendingDown,
+    },
+    {
+      id: "care",
+      label: "Gestão de Cuidados",
+      icon: Users,
+    },
+    {
+      id: "education",
+      label: "Educação em Saúde",
+      icon: GraduationCap,
+    },
+    {
+      id: "academy",
+      label: "Academia Ukor",
+      icon: GraduationCap,
+    },
+    {
+      id: "ai-agents",
+      label: "Agentes de IA",
+      icon: Bot,
+    },
+    {
+      id: "export",
+      label: "Exportar Dados",
+      icon: Download,
     },
   ]
 
@@ -114,130 +127,74 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
       id: "settings",
       label: "Configurações",
       icon: Settings,
-      description: "Configurações do sistema",
     },
     {
       id: "help",
-      label: "Ajuda",
+      label: "Ajuda & Suporte",
       icon: HelpCircle,
-      description: "Suporte e documentação",
     },
   ]
 
-  const MenuItem = ({ item, isBottom = false }) => {
-    const isActive = activeSection === item.id
-
-    const button = (
-      <Button
-        variant={isActive ? "default" : "ghost"}
-        className={`w-full justify-start h-12 ${collapsed ? "px-3" : "px-4"} ${
-          isActive
-            ? "bg-primary text-primary-foreground shadow-lg"
-            : "text-foreground hover:bg-muted hover:text-foreground"
-        } transition-all duration-200`}
-        onClick={() => onSectionChange(item.id)}
-      >
-        <item.icon className={`h-5 w-5 ${collapsed ? "" : "mr-3"} flex-shrink-0`} />
-        {!collapsed && (
-          <>
-            <span className="flex-1 text-left font-medium">{item.label}</span>
-            {item.badge && (
-              <Badge
-                variant={isActive ? "secondary" : "outline"}
-                className={`ml-2 ${isActive ? "bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30" : ""} ${
-                  item.badge === "Novo" ? "bg-green-100 text-green-800 border-green-200" : ""
-                }`}
-              >
-                {item.badge}
-              </Badge>
-            )}
-          </>
-        )}
-      </Button>
-    )
-
-    if (collapsed) {
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>{button}</TooltipTrigger>
-            <TooltipContent side="right" className="ml-2">
-              <p className="font-medium">{item.label}</p>
-              <p className="text-xs text-muted-foreground">{item.description}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )
-    }
-
-    return button
-  }
-
   return (
     <div
-      className={`fixed left-0 top-0 h-full bg-background/95 backdrop-blur-md border-r border-border shadow-lg transition-all duration-300 z-40 ${
-        collapsed ? "w-16" : "w-64"
-      }`}
+      className={cn(
+        "fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 transition-all duration-300 flex flex-col",
+        collapsed ? "w-16" : "w-64",
+      )}
     >
       {/* Header */}
-      <div className="p-4 border-b border-border">
+      <div className="flex-shrink-0 p-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           {!collapsed && (
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
-                <img src="/ukor-logo.svg" alt="Ukor" className="w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="text-xl font-heading font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                  UHealth
-                </h1>
-                <p className="text-xs text-muted-foreground">v2.1.0</p>
-              </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">Ukor Health Analytics</h1>
+              <p className="text-xs text-red-600 font-medium">v168 - Dados Reais Unimed-BH</p>
             </div>
           )}
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggleCollapse}
-            className="text-muted-foreground hover:text-primary"
-          >
+          <Button variant="ghost" size="sm" onClick={onToggleCollapse} className="p-2 hover:bg-gray-100">
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </Button>
         </div>
       </div>
 
-      {/* Status */}
-      {!collapsed && (
-        <div className="p-4 border-b border-border">
-          <div className="flex items-center space-x-2 text-sm">
-            <Activity className="h-4 w-4 text-primary animate-pulse" />
-            <span className="text-foreground">Sistema Ativo</span>
-            <Badge className="bg-primary/20 text-primary border-primary/20 text-xs">Online</Badge>
-          </div>
-          <div className="flex items-center space-x-2 text-sm mt-2">
-            <Users className="h-4 w-4 text-muted-foreground" />
-            <span className="text-muted-foreground">1,247 usuários conectados</span>
-          </div>
-        </div>
-      )}
-
-      {/* Menu Items */}
-      <div className="flex-1 overflow-y-auto py-4">
-        <nav className="space-y-1 px-3">
+      {/* Scrollable Menu Area */}
+      <ScrollArea className="flex-1">
+        <div className="p-2 space-y-1">
           {menuItems.map((item) => (
-            <MenuItem key={item.id} item={item} />
+            <Button
+              key={item.id}
+              variant={activeSection === item.id ? "secondary" : "ghost"}
+              className={cn(
+                "w-full justify-start gap-3 h-10 px-3",
+                collapsed && "justify-center px-2",
+                activeSection === item.id && "bg-blue-50 text-blue-700 border-blue-200",
+              )}
+              onClick={() => onSectionChange(item.id)}
+            >
+              <item.icon className="h-4 w-4 flex-shrink-0" />
+              {!collapsed && <span className="flex-1 text-left text-sm">{item.label}</span>}
+            </Button>
           ))}
-        </nav>
-      </div>
+        </div>
+      </ScrollArea>
 
-      {/* Bottom Items */}
-      <div className="border-t border-border p-3">
-        <nav className="space-y-1">
-          {bottomItems.map((item) => (
-            <MenuItem key={item.id} item={item} isBottom />
-          ))}
-        </nav>
+      {/* Footer */}
+      <div className="flex-shrink-0 p-2 border-t border-gray-200 space-y-1">
+        {bottomItems.map((item) => (
+          <Button
+            key={item.id}
+            variant={activeSection === item.id ? "secondary" : "ghost"}
+            className={cn(
+              "w-full justify-start gap-3 h-10 px-3",
+              collapsed && "justify-center px-2",
+              activeSection === item.id && "bg-blue-50 text-blue-700",
+            )}
+            onClick={() => onSectionChange(item.id)}
+          >
+            <item.icon className="h-4 w-4 flex-shrink-0" />
+            {!collapsed && <span className="flex-1 text-left text-sm">{item.label}</span>}
+          </Button>
+        ))}
       </div>
     </div>
   )
