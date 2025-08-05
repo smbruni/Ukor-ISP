@@ -2,385 +2,353 @@
 
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Brain, TrendingUp, AlertTriangle, Target, DollarSign, Zap } from "lucide-react"
-import {
-  ResponsiveContainer,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  BarChart,
-  Bar,
-  ScatterChart,
-  Scatter,
-  Area,
-  AreaChart,
-} from "recharts"
+import { Badge } from "@/components/ui/badge"
+import { DetailedROIAnalysis } from "./detailed-roi-analysis"
+import { Brain, TrendingUp, Target, AlertTriangle, ArrowDown, DollarSign } from "lucide-react"
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts"
 
 export function PredictiveAnalysis() {
-  const [activeTab, setActiveTab] = useState("risk-prediction")
+  const [selectedModel, setSelectedModel] = useState("sinistralidade")
+  const [timeframe, setTimeframe] = useState("12months")
 
-  const riskPredictionData = [
-    { name: "João Silva", age: 45, riskScore: 85, predictedCost: 45000, currentCost: 12000 },
-    { name: "Maria Santos", age: 52, riskScore: 78, predictedCost: 38000, currentCost: 8000 },
-    { name: "Pedro Costa", age: 38, riskScore: 72, predictedCost: 32000, currentCost: 5000 },
-    { name: "Ana Oliveira", age: 61, riskScore: 91, predictedCost: 67000, currentCost: 18000 },
-    { name: "Carlos Lima", age: 49, riskScore: 68, predictedCost: 28000, currentCost: 7000 },
+  // Dados de projeção de sinistralidade
+  const sinistralidadeProjection = [
+    { month: "Jun/25", baseline: 110.04, withIntervention: 110.04, target: 75 },
+    { month: "Jul/25", baseline: 112.5, withIntervention: 105.8, target: 75 },
+    { month: "Ago/25", baseline: 115.2, withIntervention: 98.4, target: 75 },
+    { month: "Set/25", baseline: 118.1, withIntervention: 92.7, target: 75 },
+    { month: "Out/25", baseline: 120.5, withIntervention: 88.3, target: 75 },
+    { month: "Nov/25", baseline: 123.2, withIntervention: 84.5, target: 75 },
+    { month: "Dez/25", baseline: 125.8, withIntervention: 81.2, target: 75 },
+    { month: "Jan/26", baseline: 128.4, withIntervention: 78.6, target: 75 },
+    { month: "Fev/26", baseline: 131.2, withIntervention: 76.4, target: 75 },
+    { month: "Mar/26", baseline: 134.1, withIntervention: 75.0, target: 75 },
+    { month: "Abr/26", baseline: 137.2, withIntervention: 74.2, target: 75 },
+    { month: "Mai/26", baseline: 140.5, withIntervention: 73.8, target: 75 },
   ]
 
+  // Dados de projeção de custos
   const costProjection = [
-    { month: "Jul", atual: 2800000, projetado: 2950000, otimizado: 2450000 },
-    { month: "Ago", atual: 2800000, projetado: 3100000, otimizado: 2500000 },
-    { month: "Set", atual: 2800000, projetado: 3250000, otimizado: 2550000 },
-    { month: "Out", atual: 2800000, projetado: 3400000, otimizado: 2600000 },
-    { month: "Nov", atual: 2800000, projetado: 3550000, otimizado: 2650000 },
-    { month: "Dez", atual: 2800000, projetado: 3700000, otimizado: 2700000 },
+    { month: "Jun/25", baseline: 2803651, withIntervention: 2803651 },
+    { month: "Jul/25", baseline: 2950000, withIntervention: 2750000 },
+    { month: "Ago/25", baseline: 3100000, withIntervention: 2650000 },
+    { month: "Set/25", baseline: 3250000, withIntervention: 2580000 },
+    { month: "Out/25", baseline: 3400000, withIntervention: 2520000 },
+    { month: "Nov/25", baseline: 3550000, withIntervention: 2470000 },
+    { month: "Dez/25", baseline: 3700000, withIntervention: 2430000 },
+    { month: "Jan/26", baseline: 3850000, withIntervention: 2400000 },
+    { month: "Fev/26", baseline: 4000000, withIntervention: 2380000 },
+    { month: "Mar/26", baseline: 4150000, withIntervention: 2365000 },
+    { month: "Abr/26", baseline: 4300000, withIntervention: 2355000 },
+    { month: "Mai/26", baseline: 4450000, withIntervention: 2350000 },
   ]
 
-  const interventionImpact = [
-    { intervention: "Gestão de Crônicos", investment: 120000, savings: 420000, roi: 3.5 },
-    { intervention: "Telemedicina", investment: 80000, savings: 280000, roi: 3.5 },
-    { intervention: "Prevenção Oncológica", investment: 50000, savings: 750000, roi: 15.0 },
-    { intervention: "Programa Diabetes", investment: 90000, savings: 315000, roi: 3.5 },
-  ]
-
-  const mlInsights = [
+  // Cenários de intervenção
+  const interventionScenarios = [
     {
-      title: "Padrão de Internação",
-      description: "Modelo identifica 89% de precisão para internações não programadas",
-      impact: "Redução de 23% em internações evitáveis",
-      confidence: 89,
+      name: "Cenário Conservador",
+      description: "Implementação gradual com foco em casos críticos",
+      investment: 250000,
+      savings: 850000,
+      roi: 240,
+      probability: 85,
+      timeframe: "12 meses",
     },
     {
-      title: "Progressão de Crônicos",
-      description: "Algoritmo prevê agravamento de condições crônicas com 6 meses de antecedência",
-      impact: "Intervenção precoce em 67 casos identificados",
-      confidence: 84,
+      name: "Cenário Otimista",
+      description: "Implementação completa de todas as intervenções",
+      investment: 440000,
+      savings: 1642000,
+      roi: 273,
+      probability: 65,
+      timeframe: "12 meses",
     },
     {
-      title: "Adesão Medicamentosa",
-      description: "Predição de abandono de tratamento com 76% de acurácia",
-      impact: "Programa de adesão para 134 pacientes de risco",
-      confidence: 76,
+      name: "Cenário Agressivo",
+      description: "Implementação acelerada com recursos adicionais",
+      investment: 650000,
+      savings: 2100000,
+      roi: 223,
+      probability: 45,
+      timeframe: "8 meses",
     },
   ]
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Análises Preditivas</h2>
-          <p className="text-muted-foreground">Inteligência artificial aplicada à gestão de saúde</p>
-        </div>
-        <Button>
-          <Brain className="mr-2 h-4 w-4" />
-          Novo Modelo
-        </Button>
+      <div>
+        <h2 className="text-2xl font-bold mb-2">Análises Preditivas</h2>
+        <p className="text-muted-foreground">
+          Modelos de IA para previsão de sinistralidade e otimização de investimentos em saúde
+        </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="risk-prediction">Predição de Risco</TabsTrigger>
-          <TabsTrigger value="cost-projection">Projeção de Custos</TabsTrigger>
-          <TabsTrigger value="interventions">Intervenções</TabsTrigger>
-          <TabsTrigger value="ml-insights">Insights IA</TabsTrigger>
+      <Tabs defaultValue="projections" className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="projections">Projeções</TabsTrigger>
+          <TabsTrigger value="scenarios">Cenários</TabsTrigger>
+          <TabsTrigger value="roi-analysis">Análise ROI</TabsTrigger>
+          <TabsTrigger value="recommendations">Recomendações</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="risk-prediction" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Alto Risco</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-red-600">23</div>
-                <p className="text-xs text-muted-foreground">pacientes identificados</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Custo Projetado</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">R$ 3.7M</div>
-                <p className="text-xs text-red-600">+32% vs atual</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Precisão do Modelo</CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">89%</div>
-                <p className="text-xs text-muted-foreground">acurácia validada</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Economia Potencial</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">R$ 980K</div>
-                <p className="text-xs text-muted-foreground">com intervenções</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
+        <TabsContent value="projections" className="space-y-6">
+          {/* Alerta de Tendência */}
+          <Card className="border-l-4 border-l-red-500 bg-red-50">
             <CardHeader>
-              <CardTitle>Pacientes de Alto Risco Identificados</CardTitle>
-              <CardDescription>Modelo preditivo baseado em histórico clínico e padrões de utilização</CardDescription>
+              <CardTitle className="text-red-800 flex items-center">
+                <AlertTriangle className="h-5 w-5 mr-2" />
+                Alerta: Tendência Crítica Identificada
+              </CardTitle>
+              <CardDescription className="text-red-700">
+                Sem intervenção, a sinistralidade pode atingir 140.5% em 12 meses, resultando em custos de R$ 4.45M
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {riskPredictionData.map((patient, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <span className="text-sm font-bold text-red-600">{patient.riskScore}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium">{patient.name}</h4>
-                        <p className="text-sm text-gray-500">{patient.age} anos</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-6">
-                      <div className="text-right">
-                        <div className="text-sm text-gray-500">Custo Atual</div>
-                        <div className="font-medium">R$ {patient.currentCost.toLocaleString()}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm text-gray-500">Projeção 12m</div>
-                        <div className="font-bold text-red-600">R$ {patient.predictedCost.toLocaleString()}</div>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        Intervir
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
           </Card>
 
+          {/* Projeção de Sinistralidade */}
           <Card>
             <CardHeader>
-              <CardTitle>Análise de Risco por Idade e Custo</CardTitle>
+              <CardTitle className="flex items-center">
+                <TrendingUp className="h-5 w-5 mr-2 text-primary" />
+                Projeção de Sinistralidade - Próximos 12 Meses
+              </CardTitle>
+              <CardDescription>
+                Comparação entre cenário sem intervenção vs com programa de gestão de saúde
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <ScatterChart data={riskPredictionData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="age" name="Idade" />
-                  <YAxis dataKey="riskScore" name="Score de Risco" />
-                  <Tooltip
-                    formatter={(value, name) => [
-                      name === "riskScore" ? `${value}%` : value,
-                      name === "riskScore" ? "Score de Risco" : name,
-                    ]}
-                  />
-                  <Scatter dataKey="riskScore" fill="#ef4444" />
-                </ScatterChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="cost-projection" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Projeção de Custos - Próximos 6 Meses</CardTitle>
-              <CardDescription>Comparação entre cenário atual, projetado e otimizado</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={costProjection}>
+            <CardContent className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={sinistralidadeProjection}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => [`R$ ${(Number(value) / 1000000).toFixed(2)}M`, "Custo"]} />
-                  <Area
+                  <YAxis domain={[70, 150]} />
+                  <Tooltip formatter={(value) => [`${value}%`, ""]} />
+                  <Legend />
+                  <Line
                     type="monotone"
-                    dataKey="projetado"
-                    stackId="1"
+                    dataKey="baseline"
                     stroke="#ef4444"
-                    fill="#ef4444"
-                    fillOpacity={0.6}
-                    name="Projetado"
+                    strokeWidth={3}
+                    name="Sem Intervenção"
+                    strokeDasharray="5 5"
                   />
-                  <Area
+                  <Line
                     type="monotone"
-                    dataKey="otimizado"
-                    stackId="2"
-                    stroke="#10b981"
-                    fill="#10b981"
-                    fillOpacity={0.6}
-                    name="Otimizado"
+                    dataKey="withIntervention"
+                    stroke="#22c55e"
+                    strokeWidth={3}
+                    name="Com Programa de Gestão"
                   />
-                  <Line type="monotone" dataKey="atual" stroke="#3b82f6" strokeWidth={2} name="Atual" />
-                </AreaChart>
+                  <Line
+                    type="monotone"
+                    dataKey="target"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
+                    strokeDasharray="3 3"
+                    name="Meta (75%)"
+                  />
+                </LineChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card className="border-l-4 border-l-red-500">
-              <CardHeader>
-                <CardTitle className="text-red-800">Cenário Sem Intervenção</CardTitle>
+          {/* Projeção de Custos */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <DollarSign className="h-5 w-5 mr-2 text-primary" />
+                Projeção de Custos Anuais
+              </CardTitle>
+              <CardDescription>Impacto financeiro das intervenções propostas</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={costProjection}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis tickFormatter={(value) => `R$ ${(value / 1000000).toFixed(1)}M`} />
+                  <Tooltip formatter={(value) => [`R$ ${(value / 1000000).toFixed(2)}M`, ""]} />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="baseline"
+                    stroke="#ef4444"
+                    strokeWidth={3}
+                    name="Sem Intervenção"
+                    strokeDasharray="5 5"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="withIntervention"
+                    stroke="#22c55e"
+                    strokeWidth={3}
+                    name="Com Intervenções"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* KPIs de Projeção */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Economia Projetada</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-red-600">R$ 3.7M</div>
-                <p className="text-sm text-red-700 mt-2">
-                  Crescimento de 32% nos próximos 6 meses baseado na tendência atual
-                </p>
+                <div className="text-2xl font-bold text-green-600">R$ 2.1M</div>
+                <div className="flex items-center text-xs text-green-500 mt-1">
+                  <ArrowDown className="h-3 w-3 mr-1" />
+                  <span>47% redução de custos</span>
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="border-l-4 border-l-blue-500">
-              <CardHeader>
-                <CardTitle className="text-blue-800">Cenário Atual</CardTitle>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Redução Sinistralidade</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">R$ 2.8M</div>
-                <p className="text-sm text-blue-700 mt-2">Custo mensal atual mantido constante para comparação</p>
+                <div className="text-2xl font-bold text-blue-600">-36.2%</div>
+                <div className="flex items-center text-xs text-blue-500 mt-1">
+                  <ArrowDown className="h-3 w-3 mr-1" />
+                  <span>De 110% para 73.8%</span>
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="border-l-4 border-l-green-500">
-              <CardHeader>
-                <CardTitle className="text-green-800">Cenário Otimizado</CardTitle>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Tempo para Meta</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">R$ 2.7M</div>
-                <p className="text-sm text-green-700 mt-2">Com implementação de intervenções baseadas em IA</p>
+                <div className="text-2xl font-bold">9 meses</div>
+                <div className="flex items-center text-xs text-muted-foreground mt-1">
+                  <Target className="h-3 w-3 mr-1" />
+                  <span>Para atingir 75%</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Confiabilidade</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">87%</div>
+                <div className="flex items-center text-xs text-muted-foreground mt-1">
+                  <Brain className="h-3 w-3 mr-1" />
+                  <span>Modelo IA validado</span>
+                </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        <TabsContent value="interventions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Intervenções Recomendadas por IA</CardTitle>
-              <CardDescription>Análise de ROI para diferentes estratégias de intervenção</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {interventionImpact.map((intervention, index) => (
-                  <div key={index} className="p-4 border rounded-lg">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h4 className="font-medium">{intervention.intervention}</h4>
-                        <p className="text-sm text-gray-500">
-                          Investimento: R$ {(intervention.investment / 1000).toFixed(0)}K
-                        </p>
-                      </div>
+        <TabsContent value="scenarios" className="space-y-6">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Cenários de Implementação</h3>
+            <div className="space-y-4">
+              {interventionScenarios.map((scenario, index) => (
+                <Card key={index}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-base">{scenario.name}</CardTitle>
                       <Badge
-                        variant={intervention.roi >= 10 ? "default" : intervention.roi >= 3 ? "secondary" : "outline"}
+                        variant={
+                          scenario.probability >= 80 ? "default" : scenario.probability >= 60 ? "secondary" : "outline"
+                        }
                       >
-                        ROI: {intervention.roi}x
+                        {scenario.probability}% probabilidade
                       </Badge>
                     </div>
-                    <div className="grid grid-cols-3 gap-4 text-sm">
+                    <CardDescription>{scenario.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div>
-                        <span className="text-gray-500">Economia Anual</span>
-                        <div className="font-bold text-green-600">R$ {(intervention.savings / 1000).toFixed(0)}K</div>
+                        <span className="text-sm text-muted-foreground">Investimento</span>
+                        <div className="font-bold">R$ {(scenario.investment / 1000).toFixed(0)}K</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">Payback</span>
-                        <div className="font-medium">
-                          {(intervention.investment / (intervention.savings / 12)).toFixed(1)} meses
-                        </div>
+                        <span className="text-sm text-muted-foreground">Economia</span>
+                        <div className="font-bold text-green-600">R$ {(scenario.savings / 1000).toFixed(0)}K</div>
                       </div>
-                      <div className="flex justify-end">
-                        <Button size="sm" variant={intervention.roi >= 10 ? "default" : "outline"}>
-                          {intervention.roi >= 10 ? "Implementar" : "Avaliar"}
-                        </Button>
+                      <div>
+                        <span className="text-sm text-muted-foreground">ROI</span>
+                        <div className="font-bold">{scenario.roi}%</div>
+                      </div>
+                      <div>
+                        <span className="text-sm text-muted-foreground">Prazo</span>
+                        <div className="font-bold">{scenario.timeframe}</div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>ROI das Intervenções</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={interventionImpact}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="intervention" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => [`${value}x`, "ROI"]} />
-                  <Bar dataKey="roi" fill="#10b981" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </TabsContent>
 
-        <TabsContent value="ml-insights" className="space-y-4">
-          <div className="grid gap-4">
-            {mlInsights.map((insight, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        <Zap className="h-5 w-5 text-purple-600" />
-                        {insight.title}
-                      </CardTitle>
-                      <CardDescription className="mt-2">{insight.description}</CardDescription>
-                    </div>
-                    <Badge variant="secondary">{insight.confidence}% confiança</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm font-medium text-green-700">{insight.impact}</p>
-                      <Progress value={insight.confidence} className="w-64 mt-2" />
-                    </div>
-                    <Button variant="outline">Ver Detalhes</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <TabsContent value="roi-analysis" className="space-y-6">
+          <DetailedROIAnalysis />
+        </TabsContent>
 
+        <TabsContent value="recommendations" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Performance dos Modelos de IA</CardTitle>
-              <CardDescription>Métricas de acurácia e confiabilidade</CardDescription>
+              <CardTitle className="flex items-center">
+                <Target className="h-5 w-5 mr-2 text-primary" />
+                Recomendações Estratégicas
+              </CardTitle>
+              <CardDescription>Baseadas em análise preditiva e benchmarking de mercado</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">89%</div>
-                  <p className="text-sm text-purple-700">Acurácia Média</p>
+              <div className="space-y-6">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <h4 className="font-medium text-red-800 mb-2">🚨 Ação Imediata (0-30 dias)</h4>
+                  <ul className="space-y-2 text-sm text-red-700">
+                    <li>• Implementar gestão de casos para os 10 principais utilizadores</li>
+                    <li>• Iniciar programa de controle de hipertensão (345 funcionários)</li>
+                    <li>• Setup de telemedicina para reduzir internações</li>
+                  </ul>
                 </div>
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">94%</div>
-                  <p className="text-sm text-blue-700">Precisão</p>
+
+                <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                  <h4 className="font-medium text-amber-800 mb-2">⚡ Curto Prazo (1-3 meses)</h4>
+                  <ul className="space-y-2 text-sm text-amber-700">
+                    <li>• Programa de obesidade (276 funcionários afetados)</li>
+                    <li>• Fisioterapia corporativa para casos osteomusculares</li>
+                    <li>• Rastreamento diabetes (84 funcionários)</li>
+                  </ul>
                 </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">87%</div>
-                  <p className="text-sm text-green-700">Recall</p>
+
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h4 className="font-medium text-green-800 mb-2">🎯 Médio Prazo (3-6 meses)</h4>
+                  <ul className="space-y-2 text-sm text-green-700">
+                    <li>• Programa completo de saúde mental (415 funcionários)</li>
+                    <li>• Academia corporativa e reeducação alimentar</li>
+                    <li>• Protocolos clínicos para todas as condições crônicas</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-medium text-blue-800 mb-2">📊 Resultados Esperados em 12 meses</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <span className="text-blue-600">Sinistralidade:</span>
+                      <div className="font-bold">110% → 74%</div>
+                    </div>
+                    <div>
+                      <span className="text-blue-600">Economia:</span>
+                      <div className="font-bold text-green-600">R$ 1.64M</div>
+                    </div>
+                    <div>
+                      <span className="text-blue-600">ROI:</span>
+                      <div className="font-bold">273%</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>

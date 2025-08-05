@@ -941,11 +941,11 @@ export function CareManagement() {
           <Calendar className="h-4 w-4" />
           Agendar Consultas em Lote
         </Button>
-        <Button variant="outline" className="gap-2 bg-transparent">
+        <Button variant="outline" className="gap-2">
           <FileText className="h-4 w-4" />
           Relatório de Cuidados
         </Button>
-        <Button variant="outline" className="gap-2 bg-transparent">
+        <Button variant="outline" className="gap-2">
           <Phone className="h-4 w-4" />
           Telemedicina Urgente
         </Button>

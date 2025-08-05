@@ -1,24 +1,23 @@
-import type React from "react"
-import type { Metadata } from "next"
+import "@/app/globals.css"
 import { Inter } from "next/font/google"
-import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
-  title: "UKor Health Analytics v168",
-  description: "Plataforma de análise de saúde corporativa com dados reais da Unimed-BH",
+export const metadata = {
+  title: "Relatório de Sinistralidade - Ukor Health Analytics",
+  description: "Análise completa de sinistralidade e recomendações estratégicas",
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

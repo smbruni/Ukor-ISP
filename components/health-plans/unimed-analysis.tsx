@@ -1,581 +1,900 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Progress } from "@/components/ui/progress"
+import { AlertTriangle, TrendingUp, Heart, Target } from "lucide-react"
 import {
   ResponsiveContainer,
+  LineChart,
   Line,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts"
-import {
-  Shield,
-  TrendingDown,
-  TrendingUp,
-  DollarSign,
-  Users,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  FileText,
-  BarChart3,
-  Target,
-  Heart,
-  Brain,
-  Stethoscope,
-  Pill,
-} from "lucide-react"
 
 export function UnimedAnalysis() {
-  const [selectedPeriod, setSelectedPeriod] = useState("12m")
-  const [selectedRegion, setSelectedRegion] = useState("all")
+  const [activeTab, setActiveTab] = useState("overview")
 
-  // Dados reais da Unimed-BH
-  const unimedMetrics = [
-    {
-      title: "Vidas Cobertas",
-      value: "2.847",
-      change: "+3.2%",
-      trend: "up",
-      icon: Users,
-      description: "Colaboradores ativos",
-      detail: "Crescimento orgânico",
-    },
-    {
-      title: "Sinistralidade",
-      value: "67.3%",
-      change: "-12.8%",
-      trend: "down",
-      icon: TrendingDown,
-      description: "Abaixo da meta (75%)",
-      detail: "Excelente performance",
-    },
-    {
-      title: "Custo PMPM",
-      value: "R$ 421",
-      change: "-8.5%",
-      trend: "down",
-      icon: DollarSign,
-      description: "Por membro por mês",
-      detail: "Economia significativa",
-    },
-    {
-      title: "Satisfação NPS",
-      value: "8.4",
-      change: "+0.6",
-      trend: "up",
-      icon: Heart,
-      description: "Score de satisfação",
-      detail: "Acima da média do setor",
-    },
-  ]
-
-  // Evolução mensal da sinistralidade
-  const sinistralidadeEvolution = [
-    { month: "Jan", sinistralidade: 82.1, meta: 75, economia: 0 },
-    { month: "Fev", sinistralidade: 79.8, meta: 75, economia: 45000 },
-    { month: "Mar", sinistralidade: 76.2, meta: 75, economia: 78000 },
-    { month: "Abr", sinistralidade: 74.5, meta: 75, economia: 89000 },
-    { month: "Mai", sinistralidade: 71.8, meta: 75, economia: 125000 },
-    { month: "Jun", sinistralidade: 69.4, meta: 75, economia: 156000 },
-    { month: "Jul", sinistralidade: 68.1, meta: 75, economia: 178000 },
-    { month: "Ago", sinistralidade: 67.9, meta: 75, economia: 189000 },
-    { month: "Set", sinistralidade: 66.8, meta: 75, economia: 201000 },
-    { month: "Out", sinistralidade: 67.2, meta: 75, economia: 195000 },
-    { month: "Nov", sinistralidade: 67.0, meta: 75, economia: 198000 },
-    { month: "Dez", sinistralidade: 67.3, meta: 75, economia: 192000 },
-  ]
-
-  // Distribuição de custos por especialidade
-  const costsBySpecialty = [
-    { specialty: "Cardiologia", cost: 245000, cases: 342, avgCost: 716, trend: "+5%" },
-    { specialty: "Ortopedia", cost: 198000, cases: 156, avgCost: 1269, trend: "-2%" },
-    { specialty: "Oncologia", cost: 189000, cases: 23, avgCost: 8217, trend: "+12%" },
-    { specialty: "Neurologia", cost: 167000, cases: 89, avgCost: 1876, trend: "+8%" },
-    { specialty: "Gastroenterologia", cost: 134000, cases: 234, avgCost: 573, trend: "-5%" },
-    { specialty: "Endocrinologia", cost: 98000, cases: 198, avgCost: 495, trend: "+3%" },
-  ]
-
-  // Top procedimentos
-  const topProcedures = [
-    { procedure: "Consulta Cardiológica", quantity: 1245, cost: 89000, unit: 71.5 },
-    { procedure: "Exame Ecocardiograma", quantity: 456, cost: 67000, unit: 147 },
-    { procedure: "Ressonância Magnética", quantity: 234, cost: 156000, unit: 667 },
-    { procedure: "Cirurgia Ortopédica", quantity: 89, cost: 234000, unit: 2629 },
-    { procedure: "Quimioterapia", quantity: 67, cost: 189000, unit: 2821 },
-  ]
-
-  // Indicadores de qualidade
-  const qualityIndicators = [
-    { indicator: "Tempo Médio Autorização", value: "2.3h", target: "4h", status: "excellent" },
-    { indicator: "Taxa Glosa", value: "1.2%", target: "3%", status: "excellent" },
-    { indicator: "Satisfação Atendimento", value: "94%", target: "85%", status: "excellent" },
-    { indicator: "Tempo Agendamento", value: "3.1 dias", target: "5 dias", status: "good" },
-    { indicator: "Resolução 1º Contato", value: "78%", target: "70%", status: "good" },
-    { indicator: "Reincidência 30 dias", value: "8.5%", target: "12%", status: "excellent" },
-  ]
-
-  // Análise de risco por faixa etária
-  const riskByAge = [
-    { age: "18-25", population: 427, riskScore: 2.1, cost: 89000 },
-    { age: "26-35", population: 996, riskScore: 3.4, cost: 234000 },
-    { age: "36-45", population: 798, riskScore: 4.8, cost: 456000 },
-    { age: "46-55", population: 512, riskScore: 6.9, cost: 678000 },
-    { age: "56-65", population: 114, riskScore: 8.7, cost: 345000 },
-  ]
-
-  // Programas de prevenção
-  const preventionPrograms = [
-    {
-      name: "Check-up Executivo",
-      participants: 1245,
-      completion: 87,
-      investment: 156000,
-      savings: 534000,
-      roi: "342%",
-    },
-    {
-      name: "Programa Diabetes",
-      participants: 198,
-      completion: 94,
-      investment: 89000,
-      savings: 267000,
-      roi: "300%",
-    },
-    {
-      name: "Saúde Mental",
-      participants: 456,
-      completion: 76,
-      investment: 123000,
-      savings: 389000,
-      roi: "316%",
-    },
-    {
-      name: "Vacinação Corporativa",
-      participants: 2704,
-      completion: 95,
-      investment: 67000,
-      savings: 234000,
-      roi: "349%",
-    },
-  ]
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "excellent":
-        return "bg-green-100 text-green-800"
-      case "good":
-        return "bg-blue-100 text-blue-800"
-      case "warning":
-        return "bg-yellow-100 text-yellow-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
+  // Dados reais da Unimed - Grupo Fedla
+  const contractInfo = {
+    company: "Grupo Fedla",
+    operator: "Unimed-BH",
+    period: "ABR/24 à MAR/25",
+    products: ["UNIFÁCIL FLEX ESTADUAL", "UNIPART FLEX NACIONAL", "SEGUROS UNIMED"],
+    totalBeneficiaries: 987,
+    activeBeneficiaries: 957,
+    utilizationRate: 97.0,
+    totalCost: 2803650.76,
+    accumulatedClaims: 110.04,
+    adjustment: 25.0,
+    adjustmentMonth: "01/2025",
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "excellent":
-        return <CheckCircle className="h-4 w-4 text-green-600" />
-      case "good":
-        return <Target className="h-4 w-4 text-blue-600" />
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-600" />
-      default:
-        return <Clock className="h-4 w-4 text-gray-600" />
-    }
+  // Dados mensais reais
+  const monthlyData = [
+    {
+      month: "Abr/24",
+      lives: 836,
+      revenue: 162436,
+      coparticipation: 29504,
+      utilization: 308075,
+      limit: 122148,
+      sinistralidade: 171.05,
+    },
+    {
+      month: "Mai/24",
+      lives: 738,
+      revenue: 182899,
+      coparticipation: 28343,
+      utilization: 186012,
+      limit: 137174,
+      sinistralidade: 86.21,
+    },
+    {
+      month: "Jun/24",
+      lives: 914,
+      revenue: 162864,
+      coparticipation: 31070,
+      utilization: 148566,
+      limit: 121827,
+      sinistralidade: 72.33,
+    },
+    {
+      month: "Jul/24",
+      lives: 836,
+      revenue: 177208,
+      coparticipation: 32552,
+      utilization: 248573,
+      limit: 132906,
+      sinistralidade: 121.9,
+    },
+    {
+      month: "Ago/24",
+      lives: 914,
+      revenue: 208549,
+      coparticipation: 31407,
+      utilization: 215614,
+      limit: 156411,
+      sinistralidade: 88.33,
+    },
+    {
+      month: "Set/24",
+      lives: 738,
+      revenue: 194569,
+      coparticipation: 35788,
+      utilization: 202913,
+      limit: 145927,
+      sinistralidade: 85.9,
+    },
+    {
+      month: "Out/24",
+      lives: 836,
+      revenue: 179083,
+      coparticipation: 32806,
+      utilization: 447590,
+      limit: 134313,
+      sinistralidade: 231.61,
+    },
+    {
+      month: "Nov/24",
+      lives: 914,
+      revenue: 191674,
+      coparticipation: 34326,
+      utilization: 338427,
+      limit: 143756,
+      sinistralidade: 158.66,
+    },
+    {
+      month: "Dez/24",
+      lives: 738,
+      revenue: 191768,
+      coparticipation: 27105,
+      utilization: 297316,
+      limit: 143826,
+      sinistralidade: 140.91,
+    },
+    {
+      month: "Jan/25",
+      lives: 836,
+      revenue: 188886,
+      coparticipation: 33782,
+      utilization: 179964,
+      limit: 141665,
+      sinistralidade: 77.39,
+    },
+    {
+      month: "Fev/25",
+      lives: 914,
+      revenue: 195169,
+      coparticipation: 37632,
+      utilization: 240287,
+      limit: 146377,
+      sinistralidade: 103.84,
+    },
+    {
+      month: "Mar/25",
+      lives: 912,
+      revenue: 376672,
+      coparticipation: 34262,
+      utilization: 229171,
+      limit: 282504,
+      sinistralidade: 51.75,
+    },
+  ]
+
+  // Utilização por empresa (dados reais)
+  const companyUtilization = [
+    { company: "Euroville", cost: 628737.27, percentage: 22.43, activeLives: 268, totalLives: 268, utilization: 27.18 },
+    {
+      company: "Auto Japan Norte",
+      cost: 546649.49,
+      percentage: 19.5,
+      activeLives: 53,
+      totalLives: 141,
+      utilization: 5.38,
+    },
+    {
+      company: "Delta Filmes Ltda",
+      cost: 347034.35,
+      percentage: 12.38,
+      activeLives: 114,
+      totalLives: 115,
+      utilization: 11.56,
+    },
+    {
+      company: "BDG Autoville Veículos",
+      cost: 278242.59,
+      percentage: 9.92,
+      activeLives: 123,
+      totalLives: 91,
+      utilization: 12.47,
+    },
+    {
+      company: "BDG Serviços Financeiros",
+      cost: 274231.06,
+      percentage: 9.78,
+      activeLives: 97,
+      totalLives: 108,
+      utilization: 9.84,
+    },
+    { company: "Euroville JF", cost: 269548.69, percentage: 9.61, activeLives: 40, totalLives: 70, utilization: 4.06 },
+    {
+      company: "Auto Japan Veículos",
+      cost: 221047.68,
+      percentage: 7.88,
+      activeLives: 120,
+      totalLives: 37,
+      utilization: 12.17,
+    },
+    { company: "Euroville VLV", cost: 51766.03, percentage: 1.85, activeLives: 47, totalLives: 8, utilization: 4.77 },
+  ]
+
+  // Utilização por tipo de serviço (dados reais)
+  const serviceUtilization = [
+    { service: "Consulta Eletiva", cost: 335914, quantity: 2990, percentage: 11.98 },
+    { service: "Consulta Pronto Socorro", cost: 120825, quantity: 1568, percentage: 4.31 },
+    { service: "Internação", cost: 1352894, quantity: 123, percentage: 48.26 },
+    { service: "Exames", cost: 455764, quantity: 14066, percentage: 16.26 },
+    { service: "Terapias", cost: 60540, quantity: 1630, percentage: 2.16 },
+    { service: "Procedimentos Ambulatoriais", cost: 477602, quantity: 5943, percentage: 17.04 },
+  ]
+
+  // Distribuição demográfica real
+  const demographicData = {
+    totalBeneficiaries: 987,
+    holders: 675,
+    dependents: 312,
+    holderPercentage: 68.46,
+    dependentPercentage: 31.54,
+    maleHolders: 405,
+    femaleHolders: 270,
+    maleDependents: 114,
+    femaleDependents: 198,
+    dependentRatio: 0.46,
   }
+
+  // Maiores usuários (dados reais)
+  const topUsers = [
+    {
+      ranking: 1,
+      company: "Auto Japan Norte",
+      age: 31,
+      gender: "M",
+      cost: 469167,
+      condition: "Politraumatismo (intervenções cirúrgicas ortopédicas)",
+      chronic: true,
+    },
+    {
+      ranking: 2,
+      company: "Euroville",
+      age: 43,
+      gender: "F",
+      cost: 161190,
+      condition: "Tratamento oncológico – CA Mama",
+      chronic: true,
+    },
+    {
+      ranking: 3,
+      company: "Delta Filmes",
+      age: 41,
+      gender: "M",
+      cost: 98443,
+      condition: "Neoplasia maligna do colón e pâncreas",
+      chronic: true,
+    },
+    {
+      ranking: 4,
+      company: "Euroville JF",
+      age: 37,
+      gender: "M",
+      cost: 81246,
+      condition: "Tratamento oncológico – Neoplasia maligna do colón",
+      chronic: true,
+    },
+    {
+      ranking: 5,
+      company: "BDG Serviços Finan.",
+      age: 46,
+      gender: "F",
+      cost: 79486,
+      condition: "Septicemia e cirurgia de ureterorrenolitotripsia",
+      chronic: false,
+    },
+    {
+      ranking: 6,
+      company: "Euroville JF",
+      age: 5,
+      gender: "M",
+      cost: 76531,
+      condition: "Encefalomielite viral",
+      chronic: true,
+    },
+    {
+      ranking: 7,
+      company: "Delta Filmes",
+      age: 51,
+      gender: "F",
+      cost: 66140,
+      condition: "Tratamento oncológico – CA Mama",
+      chronic: true,
+    },
+    {
+      ranking: 8,
+      company: "BDG Serviços Finan.",
+      age: 27,
+      gender: "M",
+      cost: 56664,
+      condition: "Internação clínica psiquiátrica",
+      chronic: true,
+    },
+    {
+      ranking: 9,
+      company: "BDG Autoville",
+      age: 40,
+      gender: "F",
+      cost: 49075,
+      condition: "Terapia com imunobiológico",
+      chronic: true,
+    },
+    {
+      ranking: 10,
+      company: "Euroville Veículos",
+      age: 81,
+      gender: "F",
+      cost: 41869,
+      condition: "Internação em UTI + infecção respiratória grave",
+      chronic: true,
+    },
+  ]
+
+  // Exames preventivos (dados reais)
+  const preventiveExams = {
+    mammography: { coverage: 35.03, performed: 62, eligible: 177 },
+    cytopathology: { coverage: 28.92, performed: 118, eligible: 408 },
+    bloodOccult: { coverage: 6.86, performed: 7, eligible: 102 },
+  }
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82ca9d"]
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Análise Unimed-BH</h1>
-          <p className="text-gray-600 mt-1">
-            Dados reais de sinistralidade e performance • Contrato Empresarial Premium
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Badge className="bg-red-100 text-red-800">Dados Reais</Badge>
-          <Button variant="outline" size="sm">
-            <FileText className="h-4 w-4 mr-2" />
-            Relatório Mensal
-          </Button>
-          <Button size="sm">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Dashboard Completo
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Análise Unimed-BH - Grupo Fedla</h2>
+        <p className="text-muted-foreground">Relatório detalhado baseado em dados reais do período ABR/24 à MAR/25</p>
       </div>
 
-      {/* Alert de Performance */}
-      <Alert className="border-green-200 bg-green-50">
-        <CheckCircle className="h-4 w-4 text-green-600" />
-        <AlertDescription className="text-green-800">
-          <strong>Performance Excepcional:</strong> Sinistralidade 7.7 pontos abaixo da meta, gerando economia de R$
-          2.1M no ano. Programa de prevenção apresenta ROI médio de 327%.
-        </AlertDescription>
-      </Alert>
+      {/* Informações do Contrato */}
+      <Card className="border-l-4 border-l-red-500">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-red-500" />
+            Situação Crítica - Sinistralidade Elevada
+          </CardTitle>
+          <CardDescription>
+            Contrato com sinistralidade de {contractInfo.accumulatedClaims}% - Reajuste de {contractInfo.adjustment}%
+            aplicado
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <p className="text-sm text-muted-foreground">Beneficiários Ativos</p>
+              <p className="text-2xl font-bold">{contractInfo.activeBeneficiaries.toLocaleString()}</p>
+              <p className="text-xs text-green-600">Taxa de utilização: {contractInfo.utilizationRate}%</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Custo Total</p>
+              <p className="text-2xl font-bold">R$ {(contractInfo.totalCost / 1000000).toFixed(2)}M</p>
+              <p className="text-xs text-muted-foreground">Período de 12 meses</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Sinistralidade</p>
+              <p className="text-2xl font-bold text-red-600">{contractInfo.accumulatedClaims}%</p>
+              <p className="text-xs text-red-600">Meta: 75%</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Reajuste Aplicado</p>
+              <p className="text-2xl font-bold text-orange-600">{contractInfo.adjustment}%</p>
+              <p className="text-xs text-muted-foreground">Vigência: {contractInfo.adjustmentMonth}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Métricas Principais */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {unimedMetrics.map((metric, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-blue-100">
-                    <metric.icon className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">{metric.title}</p>
-                    <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">{metric.description}</span>
-                  <div
-                    className={`flex items-center space-x-1 ${
-                      metric.trend === "up" ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {metric.trend === "up" ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-                    <span className="text-sm font-medium">{metric.change}</span>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-500">{metric.detail}</p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Tabs defaultValue="sinistralidade" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="sinistralidade">Sinistralidade</TabsTrigger>
-          <TabsTrigger value="custos">Análise de Custos</TabsTrigger>
-          <TabsTrigger value="qualidade">Indicadores</TabsTrigger>
-          <TabsTrigger value="prevencao">Prevenção</TabsTrigger>
-          <TabsTrigger value="risco">Gestão de Risco</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+          <TabsTrigger value="companies">Por Empresa</TabsTrigger>
+          <TabsTrigger value="services">Serviços</TabsTrigger>
+          <TabsTrigger value="demographics">Demografia</TabsTrigger>
+          <TabsTrigger value="high-cost">Alto Custo</TabsTrigger>
+          <TabsTrigger value="prevention">Prevenção</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="sinistralidade" className="space-y-6">
+        <TabsContent value="overview" className="space-y-6">
+          {/* Evolução Mensal da Sinistralidade */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingDown className="h-5 w-5" />
-                Evolução da Sinistralidade
-              </CardTitle>
-              <CardDescription>Performance mensal vs. meta contratual de 75%</CardDescription>
+              <CardTitle>Evolução da Sinistralidade</CardTitle>
+              <CardDescription>Variação mensal da sinistralidade - Dados reais Unimed-BH</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={sinistralidadeEvolution}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey="sinistralidade"
-                      stroke="#ef4444"
-                      fill="#fef2f2"
-                      name="Sinistralidade (%)"
-                    />
-                    <Line type="monotone" dataKey="meta" stroke="#10b981" strokeDasharray="5 5" name="Meta (75%)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+            <CardContent className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={monthlyData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip
+                    formatter={(value, name) => [
+                      name === "sinistralidade" ? `${value}%` : `R$ ${value.toLocaleString()}`,
+                      name === "sinistralidade"
+                        ? "Sinistralidade"
+                        : name === "utilization"
+                          ? "Utilização"
+                          : name === "revenue"
+                            ? "Receita"
+                            : name,
+                    ]}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="sinistralidade"
+                    stroke="#ef4444"
+                    strokeWidth={3}
+                    name="Sinistralidade %"
+                  />
+                  <Line type="monotone" dataKey="utilization" stroke="#3b82f6" strokeWidth={2} name="Utilização" />
+                  <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} name="Receita" />
+                </LineChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* KPIs Principais */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card>
-              <CardHeader>
-                <CardTitle>Economia Mensal Acumulada</CardTitle>
-                <CardDescription>Valor economizado vs. meta de sinistralidade</CardDescription>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Custo Médio por Vida</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={sinistralidadeEvolution.slice(-6)}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <Tooltip formatter={(value) => [`R$ ${value.toLocaleString()}`, "Economia"]} />
-                      <Bar dataKey="economia" fill="#10b981" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
+                <div className="text-2xl font-bold">R$ 2.941</div>
+                <p className="text-xs text-muted-foreground">Por beneficiário/ano</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Resumo Anual</CardTitle>
-                <CardDescription>Consolidado de performance 2024</CardDescription>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Internações</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">R$ 2.1M</div>
-                    <div className="text-sm text-green-700">Economia Total</div>
-                  </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">7.7pp</div>
-                    <div className="text-sm text-blue-700">Abaixo da Meta</div>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm">Meta Contratual:</span>
-                    <span className="font-medium">75.0%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Sinistralidade Atual:</span>
-                    <span className="font-medium text-green-600">67.3%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Melhor Mês:</span>
-                    <span className="font-medium">66.8% (Set)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Tendência:</span>
-                    <Badge className="bg-green-100 text-green-800">Estável</Badge>
-                  </div>
-                </div>
+              <CardContent>
+                <div className="text-2xl font-bold">123</div>
+                <p className="text-xs text-muted-foreground">48.26% do custo total</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Consultas Totais</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">4.558</div>
+                <p className="text-xs text-muted-foreground">2.990 eletivas + 1.568 PS</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Taxa Consulta/Usuário</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">4.06</div>
+                <p className="text-xs text-muted-foreground">Meta ANS: 6.00</p>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        <TabsContent value="custos" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Stethoscope className="h-5 w-5" />
-                  Custos por Especialidade
-                </CardTitle>
-                <CardDescription>Distribuição de gastos médicos por área</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {costsBySpecialty.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-medium">{item.specialty}</h4>
-                          <Badge variant={item.trend.startsWith("+") ? "destructive" : "secondary"} className="text-xs">
-                            {item.trend}
-                          </Badge>
-                        </div>
-                        <div className="grid grid-cols-3 gap-2 text-sm text-gray-600">
-                          <div>
-                            <span className="block text-xs">Custo Total</span>
-                            <span className="font-medium">R$ {item.cost.toLocaleString()}</span>
-                          </div>
-                          <div>
-                            <span className="block text-xs">Casos</span>
-                            <span className="font-medium">{item.cases}</span>
-                          </div>
-                          <div>
-                            <span className="block text-xs">Custo Médio</span>
-                            <span className="font-medium">R$ {item.avgCost}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Pill className="h-5 w-5" />
-                  Top Procedimentos
-                </CardTitle>
-                <CardDescription>Procedimentos com maior impacto financeiro</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {topProcedures.map((proc, index) => (
-                    <div key={index} className="p-3 border rounded-lg">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-sm">{proc.procedure}</h4>
-                        <Badge variant="outline" className="text-xs">
-                          #{index + 1}
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 text-xs">
-                        <div>
-                          <span className="text-gray-500">Quantidade</span>
-                          <div className="font-medium">{proc.quantity}</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Custo Total</span>
-                          <div className="font-medium">R$ {proc.cost.toLocaleString()}</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Unitário</span>
-                          <div className="font-medium">R$ {proc.unit}</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="qualidade" className="space-y-6">
+        <TabsContent value="companies" className="space-y-6">
+          {/* Utilização por Empresa */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5" />
-                Indicadores de Qualidade
-              </CardTitle>
-              <CardDescription>Métricas de performance operacional e satisfação</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {qualityIndicators.map((indicator, index) => (
-                  <div key={index} className="p-4 border rounded-lg">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        {getStatusIcon(indicator.status)}
-                        <h4 className="font-medium text-sm">{indicator.indicator}</h4>
-                      </div>
-                      <Badge className={getStatusColor(indicator.status)}>
-                        {indicator.status === "excellent" ? "Excelente" : "Bom"}
-                      </Badge>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Atual:</span>
-                        <span className="font-bold text-lg">{indicator.value}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Meta:</span>
-                        <span className="text-sm font-medium">{indicator.target}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="prevencao" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Programas de Prevenção
-              </CardTitle>
-              <CardDescription>ROI e performance dos programas preventivos</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {preventionPrograms.map((program, index) => (
-                  <div key={index} className="p-4 border rounded-lg">
-                    <div className="flex justify-between items-start mb-4">
-                      <h4 className="font-semibold">{program.name}</h4>
-                      <Badge className="bg-green-100 text-green-800">ROI: {program.roi}</Badge>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span>Participantes:</span>
-                        <span className="font-medium">{program.participants}</span>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>Adesão:</span>
-                          <span className="font-medium">{program.completion}%</span>
-                        </div>
-                        <Progress value={program.completion} className="h-2" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="text-gray-600">Investimento:</span>
-                          <div className="font-medium">R$ {program.investment.toLocaleString()}</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Economia:</span>
-                          <div className="font-medium text-green-600">R$ {program.savings.toLocaleString()}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="risco" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Brain className="h-5 w-5" />
-                Análise de Risco por Faixa Etária
-              </CardTitle>
-              <CardDescription>Estratificação de risco e custos por idade</CardDescription>
+              <CardTitle>Utilização por Empresa</CardTitle>
+              <CardDescription>Distribuição de custos e utilização entre as empresas do Grupo Fedla</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {riskByAge.map((group, index) => (
-                  <div key={index} className="p-4 border rounded-lg">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="text-lg font-bold">{group.age}</div>
-                        <Badge variant="outline">{group.population} pessoas</Badge>
+                {companyUtilization.map((company, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium">{company.company}</h4>
+                        <Badge
+                          variant={
+                            company.percentage > 15 ? "destructive" : company.percentage > 10 ? "secondary" : "default"
+                          }
+                        >
+                          {company.percentage.toFixed(2)}%
+                        </Badge>
                       </div>
-                      <div className="text-right">
-                        <div className="text-sm text-gray-600">Score de Risco</div>
-                        <div className="text-xl font-bold">{group.riskScore}</div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-600">População:</span>
-                        <div className="font-medium">{group.population} colaboradores</div>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Custo Anual:</span>
-                        <div className="font-medium">R$ {group.cost.toLocaleString()}</div>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Per Capita:</span>
-                        <div className="font-medium">
-                          R$ {Math.round(group.cost / group.population).toLocaleString()}
+                      <div className="grid grid-cols-3 gap-4 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Custo:</span>
+                          <div className="font-medium">R$ {company.cost.toLocaleString()}</div>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Vidas Ativas:</span>
+                          <div className="font-medium">{company.activeLives}</div>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Utilização:</span>
+                          <div className="font-medium">{company.utilization.toFixed(2)}%</div>
                         </div>
                       </div>
-                    </div>
-                    <div className="mt-3">
-                      <Progress value={group.riskScore * 10} className="h-2" />
+                      <div className="mt-2">
+                        <Progress value={company.percentage} className="h-2" />
+                      </div>
                     </div>
                   </div>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Gráfico de Distribuição */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Distribuição de Custos por Empresa</CardTitle>
+              <CardDescription>Participação percentual no custo total</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={companyUtilization}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    dataKey="percentage"
+                    label={({ company, percentage }) => `${company}: ${percentage.toFixed(1)}%`}
+                  >
+                    {companyUtilization.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => [`${value.toFixed(2)}%`, "Participação"]} />
+                </PieChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="services" className="space-y-6">
+          {/* Utilização por Tipo de Serviço */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Utilização por Tipo de Serviço</CardTitle>
+              <CardDescription>Distribuição de custos e quantidade por categoria de atendimento</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={serviceUtilization}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="service" angle={-45} textAnchor="end" height={100} />
+                  <YAxis yAxisId="left" />
+                  <YAxis yAxisId="right" orientation="right" />
+                  <Tooltip
+                    formatter={(value, name) => [
+                      name === "cost" ? `R$ ${value.toLocaleString()}` : value.toLocaleString(),
+                      name === "cost" ? "Custo" : "Quantidade",
+                    ]}
+                  />
+                  <Bar yAxisId="left" dataKey="cost" fill="#8884d8" name="Custo" />
+                  <Bar yAxisId="right" dataKey="quantity" fill="#82ca9d" name="Quantidade" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Análise de Eficiência */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Custo Médio Internação</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-red-600">R$ 11.007</div>
+                <p className="text-xs text-muted-foreground">123 internações no período</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Custo Médio Consulta</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">R$ 100</div>
+                <p className="text-xs text-muted-foreground">4.558 consultas no período</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Custo Médio Exame</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">R$ 32</div>
+                <p className="text-xs text-muted-foreground">14.066 exames no período</p>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="demographics" className="space-y-6">
+          {/* Distribuição Demográfica */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Distribuição por Titularidade</CardTitle>
+                <CardDescription>Proporção entre titulares e dependentes</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: "Titulares", value: demographicData.holderPercentage, count: demographicData.holders },
+                        {
+                          name: "Dependentes",
+                          value: demographicData.dependentPercentage,
+                          count: demographicData.dependents,
+                        },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, value }) => `${name}: ${value.toFixed(1)}%`}
+                    >
+                      <Cell fill="#0088FE" />
+                      <Cell fill="#00C49F" />
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Distribuição por Sexo</CardTitle>
+                <CardDescription>Divisão entre homens e mulheres por categoria</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Titulares</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-3 bg-blue-50 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">{demographicData.maleHolders}</div>
+                        <div className="text-sm text-blue-600">Homens</div>
+                      </div>
+                      <div className="text-center p-3 bg-pink-50 rounded-lg">
+                        <div className="text-2xl font-bold text-pink-600">{demographicData.femaleHolders}</div>
+                        <div className="text-sm text-pink-600">Mulheres</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-2">Dependentes</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-3 bg-blue-50 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">{demographicData.maleDependents}</div>
+                        <div className="text-sm text-blue-600">Homens</div>
+                      </div>
+                      <div className="text-center p-3 bg-pink-50 rounded-lg">
+                        <div className="text-2xl font-bold text-pink-600">{demographicData.femaleDependents}</div>
+                        <div className="text-sm text-pink-600">Mulheres</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-center p-3 bg-gray-50 rounded-lg">
+                    <div className="text-lg font-bold">{demographicData.dependentRatio}</div>
+                    <div className="text-sm text-muted-foreground">Razão dependente por titular</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="high-cost" className="space-y-6">
+          {/* Maiores Usuários */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Top 10 Maiores Usuários</CardTitle>
+              <CardDescription>
+                Usuários com maior impacto financeiro - Total: R$ 1.179.811 (42% do custo total)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {topUsers.map((user, index) => (
+                  <div
+                    key={index}
+                    className={`p-4 border rounded-lg ${user.chronic ? "border-l-4 border-l-red-500" : "border-l-4 border-l-yellow-500"}`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <Badge variant="outline">#{user.ranking}</Badge>
+                        <span className="font-medium">{user.company}</span>
+                        <Badge variant={user.chronic ? "destructive" : "secondary"}>
+                          {user.chronic ? "Crônico" : "Pontual"}
+                        </Badge>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-lg">R$ {user.cost.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {user.age} anos - {user.gender}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{user.condition}</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Análise de Casos Crônicos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Casos Oncológicos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-red-600">4</div>
+                <p className="text-xs text-muted-foreground">R$ 406.619 em custos</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Casos Crônicos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-orange-600">8</div>
+                <p className="text-xs text-muted-foreground">80% dos top usuários</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Impacto Financeiro</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-purple-600">42%</div>
+                <p className="text-xs text-muted-foreground">Do custo total (10 usuários)</p>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="prevention" className="space-y-6">
+          {/* Exames Preventivos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Mamografia</CardTitle>
+                <CardDescription>Mulheres entre 40-69 anos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center mb-4">
+                  <div className="text-3xl font-bold text-blue-600">{preventiveExams.mammography.coverage}%</div>
+                  <p className="text-sm text-muted-foreground">Cobertura</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Realizados:</span>
+                    <span className="font-medium">{preventiveExams.mammography.performed}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Elegíveis:</span>
+                    <span className="font-medium">{preventiveExams.mammography.eligible}</span>
+                  </div>
+                  <Progress value={preventiveExams.mammography.coverage} className="h-2" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Citopatológico</CardTitle>
+                <CardDescription>Mulheres entre 25-69 anos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center mb-4">
+                  <div className="text-3xl font-bold text-green-600">{preventiveExams.cytopathology.coverage}%</div>
+                  <p className="text-sm text-muted-foreground">Cobertura</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Realizados:</span>
+                    <span className="font-medium">{preventiveExams.cytopathology.performed}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Elegíveis:</span>
+                    <span className="font-medium">{preventiveExams.cytopathology.eligible}</span>
+                  </div>
+                  <Progress value={preventiveExams.cytopathology.coverage} className="h-2" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Sangue Oculto</CardTitle>
+                <CardDescription>Pessoas entre 50-69 anos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center mb-4">
+                  <div className="text-3xl font-bold text-red-600">{preventiveExams.bloodOccult.coverage}%</div>
+                  <p className="text-sm text-muted-foreground">Cobertura CRÍTICA</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Realizados:</span>
+                    <span className="font-medium">{preventiveExams.bloodOccult.performed}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Elegíveis:</span>
+                    <span className="font-medium">{preventiveExams.bloodOccult.eligible}</span>
+                  </div>
+                  <Progress value={preventiveExams.bloodOccult.coverage} className="h-2" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Recomendações Estratégicas */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Estratégias de Redução da Sinistralidade</CardTitle>
+              <CardDescription>Recomendações baseadas na análise dos dados reais</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-red-600 mb-3 flex items-center gap-2">
+                    <Target className="h-4 w-4" />
+                    Ações Prioritárias
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-2">
+                      <AlertTriangle className="h-4 w-4 text-red-500 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium">Gestão de Crônicos</div>
+                        <div className="text-muted-foreground">Foco nos 10 maiores usuários (R$ 1.18M)</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <AlertTriangle className="h-4 w-4 text-red-500 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium">Campanhas de Rastreamento</div>
+                        <div className="text-muted-foreground">Elevar cobertura de exames preventivos</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <AlertTriangle className="h-4 w-4 text-red-500 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium">Controle de Internações</div>
+                        <div className="text-muted-foreground">48% do custo em apenas 123 internações</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-medium text-green-600 mb-3 flex items-center gap-2">
+                    <Heart className="h-4 w-4" />
+                    Oportunidades
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-2">
+                      <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium">Alta Adesão à Rede</div>
+                        <div className="text-muted-foreground">97% de utilização - excelente engajamento</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium">Prevenção Direcionada</div>
+                        <div className="text-muted-foreground">Foco em sangue oculto (6.86% cobertura)</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-2">
+                      <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium">Gestão por Empresa</div>
+                        <div className="text-muted-foreground">Euroville concentra 22% dos custos</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
