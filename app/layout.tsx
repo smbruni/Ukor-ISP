@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "Relatório de Sinistralidade - Ukor Health Analytics",
   description: "Análise completa de sinistralidade e recomendações estratégicas",
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 export default function RootLayout({ children }) {
